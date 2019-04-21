@@ -1,7 +1,7 @@
 {
     "name": "meimy",
     "version": "1.0.0",
-    "main": "index.ts",
+    "main": "src/index.ts",
     "license": "MIT",
     "scripts": {
         "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit"
