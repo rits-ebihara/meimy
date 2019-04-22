@@ -7,7 +7,7 @@ import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { createLoadAppListAction } from '../../actions/EimAppListActions';
 import NavigateActions from '../../actions/NavigateActions';
 import config from '../../Config';
-import IAccountManagerState from '../../IAccountManagerState';
+import { IAccountManagerState } from '../../IAccountManagerState';
 import IEimAppList from '../../states/IEimAppListState';
 
 class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {

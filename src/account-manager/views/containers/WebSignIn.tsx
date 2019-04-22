@@ -9,7 +9,7 @@ import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { asyncSaveAccountAction } from '../../actions/AccountActions';
 import NavigateActions from '../../actions/NavigateActions';
 import config from '../../Config';
-import IAccountManagerState from '../../IAccountManagerState';
+import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
 import IWebSignInState from '../../states/IWebSignInState';
 

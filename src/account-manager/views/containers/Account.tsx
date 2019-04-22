@@ -13,7 +13,7 @@ import { asyncRemoveAccountAction, asyncSaveAccountAction } from '../../actions/
 import navigateController from '../../actions/NavigateActions';
 import { createShowWebPageAction } from '../../actions/WebSignInActions';
 import config from '../../Config';
-import IAccountManagerState from '../../IAccountManagerState';
+import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';

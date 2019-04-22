@@ -8,7 +8,7 @@ import { createSetAccountAction } from '../../actions/AccountActions';
 import { asyncLoadAccountListAfterShow } from '../../actions/AccountListActions';
 import navigateController from '../../actions/NavigateActions';
 import config from '../../Config';
-import IStatus from '../../IAccountManagerState';
+import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { createInitAccountState, IAccountState } from '../../states/IAccountState';
@@ -81,7 +81,7 @@ class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
     }
 }
 
-const mapStateToProps = (state: IStatus): IProps<IAccountListState> => {
+const mapStateToProps = (state: IAccountManagerState): IProps<IAccountListState> => {
     return {
         state: state.accountList,
     };

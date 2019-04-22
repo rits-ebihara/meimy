@@ -1,6 +1,6 @@
 import { ReducersMapObject } from 'redux';
 
-import IAccountManagerState from './IAccountManagerState';
+import { IAccountManagerState } from './IAccountManagerState';
 import accountListReducer from './reducers/AccountListReducer';
 import accountReducer from './reducers/AccountReducer';
 import appListReducer from './reducers/EimAppListReducer';
