@@ -4,7 +4,9 @@
     "main": "dist/index.js",
     "license": "MIT",
     "scripts": {
-        "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit"
+        "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit",
+        "build": "rm -rf ./dist && tsc",
+        "copyResource": " cp -r ./src/resources ./dist/resources"
     },
     "devDependencies": {
         "@types/clone": "^0.1.30",
