@@ -12,7 +12,7 @@ declare class EimAccount implements IEimAccount {
     save: () => Promise<void>;
     loadUser: () => Promise<void>;
     getServiceAdapter: () => EIMServiceAdapter;
-    getDepartmentName(): string | null | undefined;
+    getDepartmentName(): string | null;
     clear: () => void;
 }
 declare const eimAccount: EimAccount;

@@ -52,7 +52,7 @@ class EimAccount {
         const profile = user ? user.properties.profile : null;
         const department = profile ? profile.department : null;
         const properties = department ? department.properties : null;
-        const fullLabel = properties ? properties.fullLabel : null;
+        const fullLabel = properties ? properties.fullLabel || null : null;
         return fullLabel;
     }
 }
