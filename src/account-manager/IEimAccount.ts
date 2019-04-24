@@ -1,3 +1,4 @@
+import { EIMServiceAdapter } from '../eim-service';
 
 export interface IEimAccountBase {
     appKey: string;
@@ -9,6 +10,10 @@ export interface IEimAccountBase {
 export interface IEimAccountController {
     load: () => Promise<IEimAccountBase | null>;
     save: () => Promise<void>;
+    loadUser: () => Promise<void>;
+    getServiceAdapter: () => EIMServiceAdapter;
+    getDepartmentName: () => string | null;
+    clear: () => void;
 }
 
 export interface IEimAccount extends IEimAccountBase, IEimAccountController { }
