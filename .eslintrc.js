@@ -22,6 +22,13 @@ module.exports = {
     ],
     "rules": {
         "eqeqeq": "error",
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "comments": 120,
+            }
+        ],
         "react/jsx-uses-react": [1],
         "react/jsx-uses-vars": [1],
         "@typescript-eslint/interface-name-prefix": [2, "always"],

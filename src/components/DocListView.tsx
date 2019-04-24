@@ -1,29 +1,21 @@
 import Clone from 'clone';
-import { Color } from 'csstype';
-import { Button, List, Spinner, Text, View } from 'native-base';
+import { Button, Content, List, Spinner, Text } from 'native-base';
 import React, { Component } from 'react';
+import { RefreshControl } from 'react-native';
 
+import { IDocListForView, IDocListRowForView, IDocListSearchOption, IDocListSort, SearchCondition } from '../';
 import eimAccount from '../account-manager/EimAccount';
-import {
-    IDocListForView,
-    IDocListRowForView,
-    IDocListSearchOption,
-    IDocListSort,
-    SearchCondition,
-} from '../eim-service';
 
-export type CreateRowElement<T> = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
+export type CreateRowElement<T>
+    = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
 interface IProps<T> {
-    appKey: string;
+    appKey?: string;
     docListKey: string;
-    domain: string;
-    noDocsTextColor: Color;
     rowCountAtOnce: number;
     rowElement: CreateRowElement<T>;
     searchCondition?: SearchCondition<T>[];
     sortCondition?: IDocListSort<T>[];
-    spinnerColor: Color;
-    tokens: string[];
+    theme: { brandPrimary: string; textColor: string };
     onFinishLoad?: () => void;
 }
 
@@ -32,7 +24,8 @@ interface ILocalState<T> {
     offset: number;
     onSearch: boolean;
 }
-export class DocListView<T> extends Component<IProps<T>, ILocalState<T>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
     private $isMounted: boolean = false;
     public constructor(props: IProps<T>) {
         super(props);
@@ -41,36 +34,31 @@ export class DocListView<T> extends Component<IProps<T>, ILocalState<T>> {
             onSearch: false,
         };
     }
-    public render() {
+    public render = () => {
         const { docListData } = this.state;
-        const list = !docListData ? null :
-            docListData.docList.map((row) => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const cols: { [key: string]: any } = {};
-                row.columnValues.forEach((col) => {
-                    cols[col.propertyName as string] = col.value;
-                });
-                return this.props.rowElement(row, cols as T);
-            });
-        const moreButton = (
-            (this.state.onSearch) ?
-                <Spinner color={this.props.spinnerColor} />
-                : <Button full light onPress={this.loadDocList.bind(this, this.state.offset)}>
-                    <Text>さらに表示</Text>
-                </Button>
-        );
+        const list = this.createRowElement(docListData);
+        const moreButton = this.createMoreButton();
+        const refreshControl = <RefreshControl
+            refreshing={this.state.onSearch}
+            onRefresh={this.reload}
+        />;
         return (
-            <View>
+            <Content refreshControl={refreshControl}>
                 <List>
-                    {list ? list : <Spinner color={this.props.spinnerColor} />}
+                    {list ?
+                        list :
+                        <Spinner color={this.props.theme.brandPrimary} />}
                 </List>
-                {(!!docListData &&
-                    this.state.offset < docListData.metrics.totalCount) ?
-                    moreButton : null}
+                {moreButton}
                 {!!docListData && docListData.docList.length === 0
-                    ? <Text style={{ color: this.props.noDocsTextColor }}>対象の文書はありません。</Text>
+                    ? <Text style={{ color: this.props.theme.textColor }}>
+                        対象の文書はありません。</Text>
                     : null}
-            </View>
+                <RefreshControl
+                    refreshing={this.state.onSearch}
+                    onRefresh={this.reload}
+                />
+            </Content>
         );
     }
     public componentDidMount = () => {
@@ -91,14 +79,43 @@ export class DocListView<T> extends Component<IProps<T>, ILocalState<T>> {
             sort: props.sortCondition,
         };
         return await eimAccount.getServiceAdapter().getDocListForView<T>(
-            props.tokens,
-            props.appKey,
+            eimAccount.eimTokens,
+            props.appKey || eimAccount.appKey,
             props.docListKey,
             searchOptions,
         );
     }
 
-    private loadDocList(offset: number) {
+    private createRowElement =
+    (docListData: IDocListForView<T> | undefined) => {
+        return !docListData ? null :
+            docListData.docList.map((row) => {
+                const cols: {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    [key: string]: any;
+                } = {};
+                row.columnValues.forEach((col) => {
+                    cols[col.propertyName as string] = col.value;
+                });
+                return this.props.rowElement(row, cols as T);
+            });
+    }
+
+    private createMoreButton = () => {
+        const { docListData } = this.state;
+        if (!docListData) { return null; }
+        if (docListData.metrics.totalCount <= this.state.offset) {
+            return null;
+        }
+        return ((this.state.onSearch) ?
+            <Spinner color={this.props.theme.brandPrimary} />
+            : <Button full light
+                onPress={this.loadDocList.bind(this, this.state.offset)}>
+                <Text>さらに表示</Text>
+            </Button>);
+    }
+
+    private loadDocList = (offset: number) => {
         if (offset === 0) {
             this.setState({
                 docListData: undefined,
@@ -114,7 +131,8 @@ export class DocListView<T> extends Component<IProps<T>, ILocalState<T>> {
             const { state } = this;
             const docListData = Clone(result);
             if (!!state.docListData) {
-                docListData.docList = state.docListData.docList.concat(docListData.docList);
+                docListData.docList =
+                    state.docListData.docList.concat(docListData.docList);
             }
             if (this.$isMounted) {
                 this.setState({

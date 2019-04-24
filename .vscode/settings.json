@@ -12,5 +12,6 @@
             "language": "typescriptreact",
             "autoFix": true
         }
-    ]
+    ],
+    "typescriptHero.imports.multiLineWrapThreshold": 120
 }
