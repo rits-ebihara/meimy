@@ -89,7 +89,7 @@ const mapStateToProps = (state: IAccountManagerState): IProps<IAccountListState>
 
 export default connect(mapStateToProps)(AccountList);
 
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimmobile://accountmanager/?app=decision-flow\&domain=app-dev43.ope.azure.ricoh-eim.com"
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimapplink-accountmanager://accountmanager/?mapp=decision-flow\&domain=app-dev54.ope.azure.ricoh-eim.com\&appprefix=DWS\&link=https%3A%2F%2Frits3.eim.ricoh.com%2F%23%2Fapps%2FdocManagementApp%2Fdocuments%2F9dd4435823554142a069ce9ee81b1e12"

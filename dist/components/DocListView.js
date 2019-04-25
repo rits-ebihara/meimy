@@ -13,11 +13,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const clone_1 = __importDefault(require("clone"));
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
+const react_native_1 = require("react-native");
 const EimAccount_1 = __importDefault(require("../account-manager/EimAccount"));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 class DocListView extends react_1.Component {
     constructor(props) {
         super(props);
         this.$isMounted = false;
+        this.render = () => {
+            const { docListData } = this.state;
+            const list = this.createRowElement(docListData);
+            const moreButton = this.createMoreButton();
+            const refreshControl = react_1.default.createElement(react_native_1.RefreshControl, { refreshing: this.state.onSearch, onRefresh: this.reload });
+            return (react_1.default.createElement(native_base_1.Content, { refreshControl: refreshControl },
+                react_1.default.createElement(native_base_1.List, null, list ?
+                    list :
+                    react_1.default.createElement(native_base_1.Spinner, { color: this.props.theme.brandPrimary })),
+                moreButton,
+                !!docListData && docListData.docList.length === 0
+                    ? react_1.default.createElement(native_base_1.Text, { style: { color: this.props.theme.textColor } }, "\u5BFE\u8C61\u306E\u6587\u66F8\u306F\u3042\u308A\u307E\u305B\u3093\u3002")
+                    : null,
+                react_1.default.createElement(react_native_1.RefreshControl, { refreshing: this.state.onSearch, onRefresh: this.reload })));
+        };
         this.componentDidMount = () => {
             this.$isMounted = true;
             this.loadDocList(0);
@@ -35,71 +52,71 @@ class DocListView extends react_1.Component {
                 search: props.searchCondition,
                 sort: props.sortCondition,
             };
-            return await EimAccount_1.default.getServiceAdapter().getDocListForView(props.tokens, props.appKey, props.docListKey, searchOptions);
+            return await EimAccount_1.default.getServiceAdapter().getDocListForView(EimAccount_1.default.eimTokens, props.appKey || EimAccount_1.default.appKey, props.docListKey, searchOptions);
+        };
+        this.createRowElement = (docListData) => {
+            return !docListData ? null :
+                docListData.docList.map((row) => {
+                    const cols = {};
+                    row.columnValues.forEach((col) => {
+                        cols[col.propertyName] = col.value;
+                    });
+                    return this.props.rowElement(row, cols);
+                });
+        };
+        this.createMoreButton = () => {
+            const { docListData } = this.state;
+            if (!docListData) {
+                return null;
+            }
+            if (docListData.metrics.totalCount <= this.state.offset) {
+                return null;
+            }
+            return ((this.state.onSearch) ?
+                react_1.default.createElement(native_base_1.Spinner, { color: this.props.theme.brandPrimary })
+                : react_1.default.createElement(native_base_1.Button, { full: true, light: true, onPress: this.loadDocList.bind(this, this.state.offset) },
+                    react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")));
+        };
+        this.loadDocList = (offset) => {
+            if (offset === 0) {
+                this.setState({
+                    docListData: undefined,
+                    onSearch: true,
+                });
+            }
+            else {
+                this.setState({
+                    onSearch: true,
+                });
+            }
+            this.callLoadDocListData(this.props, offset).then((result) => {
+                const { state } = this;
+                const docListData = clone_1.default(result);
+                if (!!state.docListData) {
+                    docListData.docList =
+                        state.docListData.docList.concat(docListData.docList);
+                }
+                if (this.$isMounted) {
+                    this.setState({
+                        docListData,
+                        offset: offset + this.props.rowCountAtOnce,
+                        onSearch: false,
+                    });
+                }
+                if (this.props.onFinishLoad) {
+                    this.props.onFinishLoad();
+                }
+            }).catch(((e) => {
+                this.setState({
+                    onSearch: false,
+                });
+                console.warn(e);
+            }));
         };
         this.state = {
             offset: 0,
             onSearch: false,
         };
-    }
-    render() {
-        const { docListData } = this.state;
-        const list = !docListData ? null :
-            docListData.docList.map((row) => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const cols = {};
-                row.columnValues.forEach((col) => {
-                    cols[col.propertyName] = col.value;
-                });
-                return this.props.rowElement(row, cols);
-            });
-        const moreButton = ((this.state.onSearch) ?
-            react_1.default.createElement(native_base_1.Spinner, { color: this.props.spinnerColor })
-            : react_1.default.createElement(native_base_1.Button, { full: true, light: true, onPress: this.loadDocList.bind(this, this.state.offset) },
-                react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")));
-        return (react_1.default.createElement(native_base_1.View, null,
-            react_1.default.createElement(native_base_1.List, null, list ? list : react_1.default.createElement(native_base_1.Spinner, { color: this.props.spinnerColor })),
-            (!!docListData &&
-                this.state.offset < docListData.metrics.totalCount) ?
-                moreButton : null,
-            !!docListData && docListData.docList.length === 0
-                ? react_1.default.createElement(native_base_1.Text, { style: { color: this.props.noDocsTextColor } }, "\u5BFE\u8C61\u306E\u6587\u66F8\u306F\u3042\u308A\u307E\u305B\u3093\u3002")
-                : null));
-    }
-    loadDocList(offset) {
-        if (offset === 0) {
-            this.setState({
-                docListData: undefined,
-                onSearch: true,
-            });
-        }
-        else {
-            this.setState({
-                onSearch: true,
-            });
-        }
-        this.callLoadDocListData(this.props, offset).then((result) => {
-            const { state } = this;
-            const docListData = clone_1.default(result);
-            if (!!state.docListData) {
-                docListData.docList = state.docListData.docList.concat(docListData.docList);
-            }
-            if (this.$isMounted) {
-                this.setState({
-                    docListData,
-                    offset: offset + this.props.rowCountAtOnce,
-                    onSearch: false,
-                });
-            }
-            if (this.props.onFinishLoad) {
-                this.props.onFinishLoad();
-            }
-        }).catch(((e) => {
-            this.setState({
-                onSearch: false,
-            });
-            console.warn(e);
-        }));
     }
 }
 exports.DocListView = DocListView;

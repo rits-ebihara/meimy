@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit",
-        "build": "rm -rf ./dist && mkdir dist && yarn copyResource && tsc",
+        "build": "node --experimental-modules build.mjs",
         "copyResource": " cp -r ./src/resources ./dist/resources"
     },
     "devDependencies": {

@@ -7,3 +7,4 @@ __export(require("./FloatingButton/FloatingButton"));
 __export(require("./FloatingButton/FloatingMenu"));
 __export(require("./UserBadge"));
 __export(require("./DrawerView"));
+__export(require("./DocListView"));

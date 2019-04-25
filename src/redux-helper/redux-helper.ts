@@ -84,11 +84,8 @@ export const generateStore = <S>(
     const reducer = combineReducers(mixReducers);
 
     const middleware = createReactNavigationReduxMiddleware(
-        (state: S & IStateAtNavigation) => state.nav as NavigationState,
+        (state: IMixState) => state.nav as NavigationState,
     );
     const store = createStore(reducer, applyMiddleware(middleware));
-    if ('' === '') {
-
-    }
     return store;
 };

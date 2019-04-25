@@ -44,7 +44,5 @@ exports.generateStore = (navContainer, userMapper) => {
     const reducer = redux_1.combineReducers(mixReducers);
     const middleware = react_navigation_redux_helpers_1.createReactNavigationReduxMiddleware((state) => state.nav);
     const store = redux_1.createStore(reducer, redux_1.applyMiddleware(middleware));
-    if ('' === '') {
-    }
     return store;
 };

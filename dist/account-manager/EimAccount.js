@@ -58,9 +58,9 @@ class EimAccount {
 }
 const eimAccount = new EimAccount();
 exports.default = eimAccount;
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimapplink-decision-form://decision-form/?link=https%3A%2F%2Fapp-dev54.ope.azure.ricoh-eim.com%2F\&hash=%2Fapps%2FDWS%2Fdocuments%2Fa7c2cee5e03a42538e90bec4df8789d8"
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // https://applink.eim.ricoh.com/applink/decision-form?link=https%3A%2F%2F{eim domain}%2F&hash=%2Fapps%2F{app id}%2Fdocuments%2F{doc id}&andid=jp.co.ricoh.jrits.eim.decisionformat&iosid=jp.co.ricoh.jrits.eim.decisionformat
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // https://applink.eim.ricoh.com/applink/decision-form?link=https%3A%2F%2Fapp-dev54.ope.azure.ricoh-eim.com%2F&hash=%2Fapps%2FDWS%2Fdocuments%2F95f6a02d6d7a448dadeefb2819ea4e2f&andid=jp.co.ricoh.jrits.eim.decisionformat&iosid=jp.co.ricoh.jrits.eim.decisionformat
