@@ -156,7 +156,7 @@ class NavigateController {
                         if (!!hash) {
                             const paths = hash.split('/');
                             this.parentNavParams = {
-                                docId: paths.length === 5 ? paths[4] : undefined,
+                                parameter: paths.length === 5 ? paths[4] : undefined,
                             };
                         }
                         dispatch(AccountListActions_1.createSetAuthState(authState));

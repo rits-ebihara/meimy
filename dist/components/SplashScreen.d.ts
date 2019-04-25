@@ -1,0 +1,16 @@
+import { Component } from 'react';
+import { ICombinedNavProps } from '..';
+export interface INavProps {
+    parameter: string;
+}
+export interface ISplashState {
+    appName: string;
+}
+export declare abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
+    render(): JSX.Element;
+    componentDidMount: () => void;
+    private linkInitialURL;
+    private urlEvent;
+    private didComeFromAccountManager;
+    private fromAccountManager;
+}
