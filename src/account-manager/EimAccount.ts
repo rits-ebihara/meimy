@@ -1,8 +1,10 @@
 import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 
 import { EIMServiceAdapter, IUserDoc } from '../eim-service';
-import config from './Config';
+import { getConfig } from './Config';
 import { IEimAccount, IEimAccountBase } from './IEimAccount';
+
+const config = getConfig();
 
 export class EimAccount implements IEimAccount {
     public appKey: string;
@@ -20,7 +22,6 @@ export class EimAccount implements IEimAccount {
     }
     public load = async () => {
         const lastAccountString = await getGenericPassword({ service: config.lastAccountServiceName });
-        console.log(lastAccountString + '');
         if (!lastAccountString) {
             return null;
         }

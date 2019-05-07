@@ -92,4 +92,6 @@ export class Config {
 }
 
 export const config = new Config();
-export default config;
+export const getConfig = (userConfig?: Config) => {
+    return userConfig || config;
+};

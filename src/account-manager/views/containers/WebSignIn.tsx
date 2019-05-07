@@ -8,10 +8,12 @@ import UrlParse from 'url-parse';
 import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { asyncSaveAccountAction } from '../../actions/AccountActions';
 import NavigateActions from '../../actions/NavigateActions';
-import config from '../../Config';
+import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
 import IWebSignInState from '../../states/IWebSignInState';
+
+const config = getConfig();
 
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
 

@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { createLoadAppListAction } from '../../actions/EimAppListActions';
 import NavigateActions from '../../actions/NavigateActions';
-import config from '../../Config';
+import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import IEimAppList from '../../states/IEimAppListState';
 
+const config = getConfig();
 class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
     public static navigationOptions = () => {
         return {

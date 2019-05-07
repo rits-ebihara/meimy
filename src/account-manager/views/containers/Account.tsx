@@ -12,11 +12,13 @@ import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { asyncRemoveAccountAction, asyncSaveAccountAction } from '../../actions/AccountActions';
 import navigateController from '../../actions/NavigateActions';
 import { createShowWebPageAction } from '../../actions/WebSignInActions';
-import config from '../../Config';
+import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';
+
+const config = getConfig();
 
 interface IDiffState {
     loginProcessing: boolean;

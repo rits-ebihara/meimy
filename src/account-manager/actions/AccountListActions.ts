@@ -2,9 +2,11 @@ import { getGenericPassword } from 'react-native-keychain';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
 
-import config from '../Config';
+import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAuthState } from '../states/IAuthStates';
+
+const config = getConfig();
 
 export const SHOW_ACCOUNT_LIST = ShortId();
 

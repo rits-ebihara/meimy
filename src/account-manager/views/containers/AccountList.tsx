@@ -7,13 +7,14 @@ import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { createSetAccountAction } from '../../actions/AccountActions';
 import { asyncLoadAccountListAfterShow } from '../../actions/AccountListActions';
 import navigateController from '../../actions/NavigateActions';
-import config from '../../Config';
+import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { createInitAccountState, IAccountState } from '../../states/IAccountState';
 import { IAuthState } from '../../states/IAuthStates';
 
+const config = getConfig();
 class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
     public static navigationOptions = () => {
         return {

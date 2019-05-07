@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { Action, Dispatch } from 'redux';
 import { generate as ShortId } from 'shortid';
 
-import config from '../Config';
+import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAccountState } from '../states/IAccountState';
 import { asyncLoadAccountListAfterShow } from './AccountListActions';
@@ -23,6 +23,8 @@ export const createSetAccountAction = (account: IAccountState): ISetAccountActio
 };
 
 export const SAVE_ACCOUNT_ACTION = ShortId();
+
+const config = getConfig();
 
 export const asyncSaveAccountAction
     = async (account: IAccountState, dispatch: Dispatch) => {

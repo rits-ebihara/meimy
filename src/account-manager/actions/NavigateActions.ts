@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import UrlParse from 'url-parse';
 
 import { EIMServiceAdapter } from '../../eim-service';
-import config from '../Config';
+import { getConfig } from '../Config';
 import { getEimAccount } from '../EimAccount';
 import { IAuthAppQuery } from '../IEimAccount';
 import RoutePageNames from '../RoutePageNames';
@@ -16,6 +16,8 @@ import { createSetAccountAction } from './AccountActions';
 import { createSetAuthState } from './AccountListActions';
 import { createSetAppListAction } from './EimAppListActions';
 import INavigateController from './INavigateController';
+
+const config = getConfig();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class NavigateController implements INavigateController {
