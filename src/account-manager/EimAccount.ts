@@ -2,9 +2,9 @@ import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 
 import { EIMServiceAdapter, IUserDoc } from '../eim-service';
 import config from './Config';
-import { IEimAccount } from './IEimAccount';
+import { IEimAccount, IEimAccountBase } from './IEimAccount';
 
-class EimAccount implements IEimAccount {
+export class EimAccount implements IEimAccount {
     public appKey: string;
     public domain: string;
     public eimTokens: string[];
@@ -20,10 +20,14 @@ class EimAccount implements IEimAccount {
     }
     public load = async () => {
         const lastAccountString = await getGenericPassword({ service: config.lastAccountServiceName });
-        if (!!lastAccountString && typeof lastAccountString !== 'boolean') {
-            return JSON.parse(lastAccountString.password) as IEimAccount;
-        } else {
+        console.log(lastAccountString + '');
+        if (!lastAccountString) {
             return null;
+        }
+        if (typeof lastAccountString === 'boolean') {
+            return null;
+        } else {
+            return JSON.parse(lastAccountString.password) as IEimAccountBase;
         }
     }
     public save = async () => {
@@ -63,7 +67,9 @@ class EimAccount implements IEimAccount {
 
 const eimAccount = new EimAccount();
 
-export default eimAccount;
+export const getEimAccount = (obj?: EimAccount) => {
+    return obj || eimAccount;
+};
 
 // eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimapplink-decision-form://decision-form/?link=https%3A%2F%2Fapp-dev54.ope.azure.ricoh-eim.com%2F\&hash=%2Fapps%2FDWS%2Fdocuments%2Fa7c2cee5e03a42538e90bec4df8789d8"

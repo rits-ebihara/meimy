@@ -2,7 +2,7 @@ import { Body, Button, Card, CardItem, Left, Right, Text, Thumbnail, View } from
 import React from 'react';
 import { Modal, ViewStyle } from 'react-native';
 
-import eimAccount from '../account-manager/EimAccount';
+import { getEimAccount } from '../account-manager/EimAccount';
 import { IGroupDoc, IGroupProperties, IParsedResponse, IUserDoc, IUserProperties } from '../eim-service';
 import groupFace from '../resources/group.png';
 import dummyFace from '../resources/user.png';
@@ -98,6 +98,7 @@ export class UserBadge extends React.Component<IProps, IState> {
                 return;
             }
             let result: IParsedResponse<IUserDoc | IGroupDoc>;
+            const eimAccount = getEimAccount();
             result = await eimAccount.getServiceAdapter().getUserDocById(eimAccount.eimTokens, this.props.userId);
             if (!result.parsedBody) {
                 return;
@@ -135,6 +136,7 @@ export class UserBadge extends React.Component<IProps, IState> {
                 userProps.profile.department.properties.fullLabel || '',
         });
         if (userProps.faceImage) {
+            const eimAccount = getEimAccount();
             eimAccount.getServiceAdapter().getAttachmentFile(eimAccount.eimTokens, userProps.faceImage)
                 .then((response) => {
                     if (response) {

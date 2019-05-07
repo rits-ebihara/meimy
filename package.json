@@ -6,11 +6,14 @@
     "scripts": {
         "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit",
         "build": "node --experimental-modules build.mjs",
-        "copyResource": " cp -r ./src/resources ./dist/resources"
+        "copyResource": " cp -r ./src/resources ./dist/resources",
+        "test": "jest --coverage",
+        "coverage:clear": "bash -c 'rm -rf coverage'"
     },
     "devDependencies": {
         "@types/clone": "^0.1.30",
         "@types/fs-extra": "^5.0.5",
+        "@types/jest": "^24.0.12",
         "@types/moment": "^2.13.0",
         "@types/react": "^16.8.13",
         "@types/react-native": "^0.57.45",
@@ -19,10 +22,15 @@
         "@types/redux": "^3.6.0",
         "@types/shortid": "^0.0.29",
         "@types/url-parse": "^1.4.3",
-        "@typescript-eslint/eslint-plugin": "^1.6.0",
+        "@typescript-eslint/eslint-plugin": "^1.7.0",
+        "@typescript-eslint/parser": "^1.7.0",
+        "babel-jest": "^24.8.0",
         "eslint": "^5.16.0",
         "eslint-plugin-react": "^7.12.4",
         "jest": "^24.7.1",
+        "metro-react-native-babel-preset": "^0.54.0",
+        "nyc": "^14.1.0",
+        "regenerator-runtime": "^0.13.2",
         "ts-jest": "^24.0.2",
         "typescript": "^3.4.3"
     },

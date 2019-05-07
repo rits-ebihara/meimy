@@ -10,7 +10,7 @@ export interface IEimApp {
 export default interface IEimAppList {
     appList: IEimApp[];
     loading: boolean;
-}
+};;;;;;;;;;
 
 export const createInitEimAppList = (): IEimAppList => {
     return {

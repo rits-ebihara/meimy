@@ -22,5 +22,4 @@ export default interface INavigateController {
         dispatch: Dispatch<AnyAction>,
         link?: string | undefined,
         hash?: string | undefined) => void;
-
 }

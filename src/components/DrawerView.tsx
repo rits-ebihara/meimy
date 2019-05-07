@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ImageURISource, ViewStyle } from 'react-native';
 import { DrawerItemsProps } from 'react-navigation';
 
-import eimAccount from '../account-manager/EimAccount';
+import { getEimAccount } from '../account-manager/EimAccount';
 import dummyAvatar from '../resources/user.png';
 
 // import { app, routePageNames } from '../../Commons';
@@ -40,6 +40,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
         const colStyle: ViewStyle = Object.assign<{}, ViewStyle, ViewStyle>({}, viewStyle, {
             flexDirection: 'column',
         });
+        const eimAccount = getEimAccount();
         if (!eimAccount.user) {
             return null;
         }
@@ -85,6 +86,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
     }
     public componentDidMount = () => {
         this.$isMounted = true;
+        const eimAccount = getEimAccount();
         const { user } = eimAccount;
         const faceImage = user ? user.properties.faceImage : null;
         if (!faceImage) {
@@ -105,6 +107,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
         this.$isMounted = false;
     }
     public onPressChangeSite = async () => {
+        const eimAccount = getEimAccount();
         eimAccount.clear();
         await eimAccount.save();
         this.props.navigation.navigate(this.props.splashPageName);

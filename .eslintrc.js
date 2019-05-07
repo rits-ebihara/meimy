@@ -20,6 +20,7 @@ module.exports = {
         "react",
         "@typescript-eslint",
     ],
+    "parser": "@typescript-eslint/parser",
     "rules": {
         "eqeqeq": "error",
         "max-len": [
@@ -31,6 +32,7 @@ module.exports = {
         ],
         "react/jsx-uses-react": [1],
         "react/jsx-uses-vars": [1],
+        // "@typescript-eslint/semi": ["error"],
         "@typescript-eslint/interface-name-prefix": [2, "always"],
         "@typescript-eslint/explicit-function-return-type": [0],
         "@typescript-eslint/no-unused-vars": [

@@ -5,9 +5,8 @@ import DevInfo from 'react-native-device-info';
 import UrlParse from 'url-parse';
 
 import { ICombinedNavProps } from '..';
-import { config } from '../account-manager';
+import { config, getEimAccount } from '../account-manager';
 import navigateController from '../account-manager/actions/NavigateActions';
-import eimAccount from '../account-manager/EimAccount';
 
 let runOnLink = false;
 export interface INavProps {
@@ -37,7 +36,7 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
             position: 'absolute',
             top: 0,
             alignSelf: 'flex-end',
-        }
+        };
         return (
             <Container style={containerStyle}>
                 <Text style={versionStyle}>ver.{DevInfo.getVersion()}</Text>
@@ -103,6 +102,7 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
         appKey: string, siteName: string | undefined,
         link: string | undefined,
     ) => {
+        const eimAccount = getEimAccount();
         eimAccount.eimTokens = token.split(',');
         eimAccount.domain = domain;
         eimAccount.appKey = appKey;

@@ -13,5 +13,6 @@
             "autoFix": true
         }
     ],
-    "typescriptHero.imports.multiLineWrapThreshold": 120
+    "typescriptHero.imports.multiLineWrapThreshold": 120,
+    "eslint.enable": true
 }

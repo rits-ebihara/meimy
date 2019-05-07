@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { RefreshControl } from 'react-native';
 
 import { IDocListForView, IDocListRowForView, IDocListSearchOption, IDocListSort, SearchCondition } from '../';
-import eimAccount from '../account-manager/EimAccount';
+import { getEimAccount } from '../account-manager/EimAccount';
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
@@ -78,6 +78,7 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
             search: props.searchCondition,
             sort: props.sortCondition,
         };
+        const eimAccount = getEimAccount();
         return await eimAccount.getServiceAdapter().getDocListForView<T>(
             eimAccount.eimTokens,
             props.appKey || eimAccount.appKey,

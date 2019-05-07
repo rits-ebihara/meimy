@@ -186,7 +186,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         if (!account) { return; }
         // 引数の型が、 @types と異なるのでキャストし直す
         const navState = (e as NativeSyntheticEvent<NavState>).nativeEvent;
-        const { url } = navState
+        const { url } = navState;
         if (!url) { return; }
         const webview = this.webview;
         if (!webview) { return; }

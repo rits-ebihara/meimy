@@ -6,7 +6,7 @@ import UrlParse from 'url-parse';
 
 import { EIMServiceAdapter } from '../../eim-service';
 import config from '../Config';
-import eimAccount from '../EimAccount';
+import { getEimAccount } from '../EimAccount';
 import { IAuthAppQuery } from '../IEimAccount';
 import RoutePageNames from '../RoutePageNames';
 import { IAccountListState } from '../states/IAccountLisState';
@@ -115,6 +115,7 @@ class NavigateController implements INavigateController {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public openApp = async (pLinkState: IAuthState, navigation: NavigationScreenProp<any>) => {
         this.linkStates = Object.assign({}, this.linkStates, pLinkState);
+        const eimAccount = getEimAccount();
         eimAccount.appKey = this.linkStates.appKey || '';
         eimAccount.domain = this.linkStates.siteDomain || '';
         eimAccount.siteName = this.linkStates.siteName || '';
@@ -180,6 +181,7 @@ class NavigateController implements INavigateController {
             open(appKey, domain);
             return;
         }
+        const eimAccount = getEimAccount();
         // 前回アクセスしたサイトを取得する
         eimAccount.load().then((lastAccount) => {
             // 認証アプリを起動する
