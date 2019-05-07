@@ -3,7 +3,6 @@ import { IColorPalette } from '../IColorPalette';
 
 const ACCOUNT_LIST = 'account_list';
 const LAST_ACCOUNT = 'last_account';
-const MOBILE_APP_KEY = 'decision-form';
 
 /**
  * Configを設定するときの引数の型
@@ -55,7 +54,6 @@ export class Config {
     public get lastAccountServiceName() {
         return `${this._appServiceId}.${LAST_ACCOUNT}`;
     }
-    public get mobileAppKey() { return MOBILE_APP_KEY; }
     public constructor() {
         this._appServiceId = '';
         this._appKeyPrefix = '';

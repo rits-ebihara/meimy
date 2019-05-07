@@ -140,7 +140,7 @@ class NavigateController implements INavigateController {
         const accountManagerUrl = UrlParse('eimapplink-accountmanager://accountmanager/');
         const query: IAuthAppQuery = {
             appprefix: config.appKeyPrefix,
-            mapp: config.mobileAppKey,
+            mapp: config.appKeyPrefix,
         };
         const open = (_appKey?: string, _domain?: string) => {
             if (!!_appKey && !!_domain) {

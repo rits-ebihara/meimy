@@ -22,4 +22,15 @@ module.exports = {
         }
     },
     silent: false,
+    reporters: [
+        "default", [
+            "./node_modules/jest-html-reporter",
+            {
+                pageTitle: "Miemy Unit Test Report",
+                outputPath: "./coverage/test-report.html",
+                includeFailureMsg: true,
+                includeConsoleLog: true,
+            }
+        ]
+    ],
 };
