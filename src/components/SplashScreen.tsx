@@ -4,9 +4,9 @@ import { Linking, TextStyle, ViewStyle } from 'react-native';
 import DevInfo from 'react-native-device-info';
 import UrlParse from 'url-parse';
 
-import { ICombinedNavProps } from '..';
 import { config, getEimAccount } from '../account-manager';
 import navigateController from '../account-manager/actions/NavigateActions';
+import { ICombinedNavProps } from '../redux-helper/redux-helper';
 
 let runOnLink = false;
 export interface INavProps {

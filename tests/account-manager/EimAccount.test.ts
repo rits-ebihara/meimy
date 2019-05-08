@@ -115,7 +115,6 @@ describe('services', () => {
     test('getServiceAdapter', () => {
         const target = new EimAccount();
         const adapter = target.getServiceAdapter();
-        console.log(adapter);
         expect(adapter).toBeTruthy();
         // ２回目以降は同じオブジェクトを返す
         const adapterSecond = target.getServiceAdapter();

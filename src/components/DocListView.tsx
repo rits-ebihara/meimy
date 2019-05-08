@@ -3,8 +3,14 @@ import { Button, Content, List, Spinner, Text } from 'native-base';
 import React, { Component } from 'react';
 import { RefreshControl } from 'react-native';
 
-import { IDocListForView, IDocListRowForView, IDocListSearchOption, IDocListSort, SearchCondition } from '../';
 import { getEimAccount } from '../account-manager/EimAccount';
+import {
+    IDocListForView,
+    IDocListRowForView,
+    IDocListSearchOption,
+    IDocListSort,
+    SearchCondition,
+} from '../eim-service';
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;

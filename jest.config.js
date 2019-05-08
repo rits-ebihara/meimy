@@ -33,4 +33,8 @@ module.exports = {
             }
         ]
     ],
+    transformIgnorePatterns: [
+        "/node_modules/(?!native-base)/",
+        "/node_modules/(?!react-native-cookies)/",
+    ],
 };
