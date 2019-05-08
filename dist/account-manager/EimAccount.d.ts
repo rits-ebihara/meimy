@@ -1,6 +1,6 @@
 import { EIMServiceAdapter, IUserDoc } from '../eim-service';
-import { IEimAccount } from './IEimAccount';
-declare class EimAccount implements IEimAccount {
+import { IEimAccount, IEimAccountBase } from './IEimAccount';
+export declare class EimAccount implements IEimAccount {
     appKey: string;
     domain: string;
     eimTokens: string[];
@@ -8,12 +8,11 @@ declare class EimAccount implements IEimAccount {
     siteName: string;
     private serviceAdapter;
     constructor();
-    load: () => Promise<IEimAccount | null>;
+    load: () => Promise<IEimAccountBase | null>;
     save: () => Promise<void>;
     loadUser: () => Promise<void>;
     getServiceAdapter: () => EIMServiceAdapter;
     getDepartmentName(): string | null;
     clear: () => void;
 }
-declare const eimAccount: EimAccount;
-export default eimAccount;
+export declare const getEimAccount: (obj?: EimAccount | undefined) => EimAccount;

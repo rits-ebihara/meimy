@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { ICombinedNavProps } from '..';
+import { ICombinedNavProps } from '../redux-helper/redux-helper';
 export interface INavProps {
     parameter: string;
 }

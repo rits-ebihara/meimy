@@ -18,7 +18,8 @@ const react_redux_1 = require("react-redux");
 const url_parse_1 = __importDefault(require("url-parse"));
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
-const Config_1 = __importDefault(require("../../Config"));
+const Config_1 = require("../../Config");
+const config = Config_1.getConfig();
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
 // 画面内にログインフォームを表示する
 const eimLoginFormSet = `
@@ -217,9 +218,9 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 WebSignIn.navigationOptions = () => {
     return {
         headerStyle: {
-            backgroundColor: Config_1.default.colorPalets.$colorPrimary3,
+            backgroundColor: config.colorPalets.$colorPrimary3,
         },
-        headerTintColor: Config_1.default.colorPalets.$invertColor,
+        headerTintColor: config.colorPalets.$invertColor,
         headerTitle: '',
     };
 };

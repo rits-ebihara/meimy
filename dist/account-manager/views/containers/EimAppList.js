@@ -16,7 +16,8 @@ const react_native_1 = require("react-native");
 const react_redux_1 = require("react-redux");
 const EimAppListActions_1 = require("../../actions/EimAppListActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
-const Config_1 = __importDefault(require("../../Config"));
+const Config_1 = require("../../Config");
+const config = Config_1.getConfig();
 class EimAppList extends react_1.Component {
     constructor(props) {
         super(props);
@@ -47,9 +48,9 @@ class EimAppList extends react_1.Component {
 EimAppList.navigationOptions = () => {
     return {
         headerStyle: {
-            backgroundColor: Config_1.default.colorPalets.$colorPrimary3,
+            backgroundColor: config.colorPalets.$colorPrimary3,
         },
-        headerTintColor: Config_1.default.colorPalets.$invertColor,
+        headerTintColor: config.colorPalets.$invertColor,
         headerTitle: 'アプリ一覧',
     };
 };

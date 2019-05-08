@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const native_base_1 = require("native-base");
 const react_1 = __importDefault(require("react"));
 const react_native_1 = require("react-native");
-const EimAccount_1 = __importDefault(require("../account-manager/EimAccount"));
+const EimAccount_1 = require("../account-manager/EimAccount");
 const group_png_1 = __importDefault(require("../resources/group.png"));
 const user_png_1 = __importDefault(require("../resources/user.png"));
 class UserBadge extends react_1.default.Component {
@@ -20,7 +20,8 @@ class UserBadge extends react_1.default.Component {
                     return;
                 }
                 let result;
-                result = await EimAccount_1.default.getServiceAdapter().getUserDocById(EimAccount_1.default.eimTokens, this.props.userId);
+                const eimAccount = EimAccount_1.getEimAccount();
+                result = await eimAccount.getServiceAdapter().getUserDocById(eimAccount.eimTokens, this.props.userId);
                 if (!result.parsedBody) {
                     return;
                 }
@@ -93,7 +94,8 @@ class UserBadge extends react_1.default.Component {
                 userProps.profile.department.properties.fullLabel || '',
         });
         if (userProps.faceImage) {
-            EimAccount_1.default.getServiceAdapter().getAttachmentFile(EimAccount_1.default.eimTokens, userProps.faceImage)
+            const eimAccount = EimAccount_1.getEimAccount();
+            eimAccount.getServiceAdapter().getAttachmentFile(eimAccount.eimTokens, userProps.faceImage)
                 .then((response) => {
                 if (response) {
                     this.setState({

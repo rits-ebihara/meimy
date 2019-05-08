@@ -1,12 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_1 = require("react-native");
 const react_native_keychain_1 = require("react-native-keychain");
 const shortid_1 = require("shortid");
-const Config_1 = __importDefault(require("../Config"));
+const Config_1 = require("../Config");
 const IAccountLisState_1 = require("../states/IAccountLisState");
 const AccountListActions_1 = require("./AccountListActions");
 exports.SET_ACCOUNT_ACTION = shortid_1.generate();
@@ -17,6 +14,7 @@ exports.createSetAccountAction = (account) => {
     };
 };
 exports.SAVE_ACCOUNT_ACTION = shortid_1.generate();
+const config = Config_1.getConfig();
 exports.asyncSaveAccountAction = async (account, dispatch) => {
     try {
         const { siteName, siteDomain, authType, id, eimToken, lastConnect, userId, password } = account;
@@ -32,7 +30,7 @@ exports.asyncSaveAccountAction = async (account, dispatch) => {
             userId,
         };
         // 現在のリストをロード
-        const json = await react_native_keychain_1.getGenericPassword({ service: Config_1.default.accountListServiceName });
+        const json = await react_native_keychain_1.getGenericPassword({ service: config.accountListServiceName });
         let accountList = IAccountLisState_1.createInitAccountListState();
         if (!!json && typeof json !== 'boolean') {
             accountList = JSON.parse(json.password);
@@ -45,7 +43,7 @@ exports.asyncSaveAccountAction = async (account, dispatch) => {
         else {
             accountList.accounts[existIndex] = saveData;
         }
-        await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: Config_1.default.accountListServiceName });
+        await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
     }
     catch (error) {
         react_native_1.Alert.alert('error', '保存に失敗しました');
@@ -60,13 +58,13 @@ exports.asyncRemoveAccountAction = async (
 targetId, nav, dispatch) => {
     try {
         // 現在のリストをロード
-        const json = await react_native_keychain_1.getGenericPassword({ service: Config_1.default.accountListServiceName });
+        const json = await react_native_keychain_1.getGenericPassword({ service: config.accountListServiceName });
         let accountList = IAccountLisState_1.createInitAccountListState();
         if (!!json && typeof json !== 'boolean') {
             accountList = JSON.parse(json.password);
         }
         accountList.accounts = accountList.accounts.filter((a) => a.id !== targetId);
-        await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: Config_1.default.accountListServiceName });
+        await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
     }
     catch (error) {
         react_native_1.Alert.alert('error', '保存に失敗しました');

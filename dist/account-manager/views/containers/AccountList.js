@@ -17,16 +17,17 @@ const FloatingButton_1 = require("../../../components/FloatingButton/FloatingBut
 const AccountActions_1 = require("../../actions/AccountActions");
 const AccountListActions_1 = require("../../actions/AccountListActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
-const Config_1 = __importDefault(require("../../Config"));
+const Config_1 = require("../../Config");
 const RoutePageNames_1 = __importDefault(require("../../RoutePageNames"));
 const IAccountState_1 = require("../../states/IAccountState");
+const config = Config_1.getConfig();
 class AccountList extends react_1.Component {
     constructor() {
         super(...arguments);
         this.render = () => {
             // console.log(this.props.state.accounts);
             const { state } = this.props;
-            const { theme } = Config_1.default;
+            const { theme } = config;
             const listItems = state.accounts.map((account) => {
                 if (!account.id) {
                     return null;
@@ -73,9 +74,9 @@ class AccountList extends react_1.Component {
 AccountList.navigationOptions = () => {
     return {
         headerStyle: {
-            backgroundColor: Config_1.default.colorPalets.$colorPrimary3,
+            backgroundColor: config.colorPalets.$colorPrimary3,
         },
-        headerTintColor: Config_1.default.colorPalets.$invertColor,
+        headerTintColor: config.colorPalets.$invertColor,
         headerTitle: 'EIMサイト一覧',
     };
 };

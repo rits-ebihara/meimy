@@ -44,9 +44,8 @@ export declare class Config {
     readonly theme: any;
     readonly accountListServiceName: string;
     readonly lastAccountServiceName: string;
-    readonly mobileAppKey: string;
     constructor();
     setConfig(params: ISetConfigParams): void;
 }
 export declare const config: Config;
-export default config;
+export declare const getConfig: (userConfig?: Config | undefined) => Config;

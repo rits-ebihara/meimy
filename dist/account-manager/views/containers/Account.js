@@ -21,14 +21,15 @@ const eim_service_1 = require("../../../eim-service");
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const WebSignInActions_1 = require("../../actions/WebSignInActions");
-const Config_1 = __importDefault(require("../../Config"));
+const Config_1 = require("../../Config");
 const RoutePageNames_1 = __importDefault(require("../../RoutePageNames"));
+const config = Config_1.getConfig();
 class Account extends react_1.Component {
     constructor(props) {
         super(props);
         this.backupState = null;
         this.render = () => {
-            const { theme, colorPalets } = Config_1.default;
+            const { theme, colorPalets } = config;
             const { state } = this;
             const errorMessageStyle = {
                 color: theme.brandDanger,
@@ -88,7 +89,7 @@ class Account extends react_1.Component {
                     react_1.default.createElement(native_base_1.Text, null, "\u30B5\u30A4\u30F3\u30A4\u30F3"));
             }
             if (state.loginProcessing) {
-                return react_1.default.createElement(native_base_1.Spinner, { color: Config_1.default.colorPalets.$colorPrimary0 });
+                return react_1.default.createElement(native_base_1.Spinner, { color: config.colorPalets.$colorPrimary0 });
             }
             return null;
         };
@@ -272,7 +273,7 @@ class Account extends react_1.Component {
     }
 }
 Account.navigationOptions = ({ navigation }) => {
-    const { colorPalets } = Config_1.default;
+    const { colorPalets } = config;
     return {
         headerRight: (react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: navigation.getParam('remove'), style: navigation.getParam('removeButtonStyle') },
             react_1.default.createElement(native_base_1.Text, { style: { color: '#fff', fontSize: 16, marginTop: 10 } }, "\u524A\u9664"))),

@@ -14,7 +14,7 @@ const clone_1 = __importDefault(require("clone"));
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
-const EimAccount_1 = __importDefault(require("../account-manager/EimAccount"));
+const EimAccount_1 = require("../account-manager/EimAccount");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class DocListView extends react_1.Component {
     constructor(props) {
@@ -52,7 +52,8 @@ class DocListView extends react_1.Component {
                 search: props.searchCondition,
                 sort: props.sortCondition,
             };
-            return await EimAccount_1.default.getServiceAdapter().getDocListForView(EimAccount_1.default.eimTokens, props.appKey || EimAccount_1.default.appKey, props.docListKey, searchOptions);
+            const eimAccount = EimAccount_1.getEimAccount();
+            return await eimAccount.getServiceAdapter().getDocListForView(eimAccount.eimTokens, props.appKey || eimAccount.appKey, props.docListKey, searchOptions);
         };
         this.createRowElement = (docListData) => {
             return !docListData ? null :

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
-const EimAccount_1 = __importDefault(require("../account-manager/EimAccount"));
+const EimAccount_1 = require("../account-manager/EimAccount");
 const user_png_1 = __importDefault(require("../resources/user.png"));
 class DrawerContent extends react_1.Component {
     constructor(props) {
@@ -20,13 +20,14 @@ class DrawerContent extends react_1.Component {
         this.$isMounted = false;
         this.componentDidMount = () => {
             this.$isMounted = true;
-            const { user } = EimAccount_1.default;
+            const eimAccount = EimAccount_1.getEimAccount();
+            const { user } = eimAccount;
             const faceImage = user ? user.properties.faceImage : null;
             if (!faceImage) {
                 return;
             }
-            EimAccount_1.default.getServiceAdapter()
-                .getAttachmentFile(EimAccount_1.default.eimTokens, faceImage)
+            eimAccount.getServiceAdapter()
+                .getAttachmentFile(eimAccount.eimTokens, faceImage)
                 .then((result) => {
                 if (!this.$isMounted) {
                     return;
@@ -42,8 +43,9 @@ class DrawerContent extends react_1.Component {
             this.$isMounted = false;
         };
         this.onPressChangeSite = async () => {
-            EimAccount_1.default.clear();
-            await EimAccount_1.default.save();
+            const eimAccount = EimAccount_1.getEimAccount();
+            eimAccount.clear();
+            await eimAccount.save();
             this.props.navigation.navigate(this.props.splashPageName);
         };
         this.state = {};
@@ -61,10 +63,11 @@ class DrawerContent extends react_1.Component {
         const colStyle = Object.assign({}, viewStyle, {
             flexDirection: 'column',
         });
-        if (!EimAccount_1.default.user) {
+        const eimAccount = EimAccount_1.getEimAccount();
+        if (!eimAccount.user) {
             return null;
         }
-        const { user } = EimAccount_1.default;
+        const { user } = eimAccount;
         return (react_1.default.createElement(native_base_1.View, null,
             react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
                 react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: () => this.props.navigation.toggleDrawer() },
@@ -74,10 +77,10 @@ class DrawerContent extends react_1.Component {
                     react_1.default.createElement(native_base_1.Thumbnail, { circular: true, large: true, source: this.state.avatarFaceUrl || user_png_1.default })),
                 react_1.default.createElement(native_base_1.View, { style: { width: 180 } },
                     react_1.default.createElement(native_base_1.Text, null, user ? user.properties.displayName : ''),
-                    react_1.default.createElement(native_base_1.Text, null, EimAccount_1.default.getDepartmentName()))),
+                    react_1.default.createElement(native_base_1.Text, null, eimAccount.getDepartmentName()))),
             react_1.default.createElement(native_base_1.View, { style: colStyle },
                 react_1.default.createElement(native_base_1.Text, null),
-                react_1.default.createElement(native_base_1.Text, { note: true }, EimAccount_1.default.domain),
+                react_1.default.createElement(native_base_1.Text, { note: true }, eimAccount.domain),
                 react_1.default.createElement(native_base_1.Button, { bordered: true, color: this.props.buttonColor, iconLeft: true, rounded: true, style: { alignSelf: 'center', margin: 10 }, onPress: this.onPressChangeSite.bind(this) },
                     react_1.default.createElement(native_base_1.Icon, { name: "md-swap" }),
                     react_1.default.createElement(native_base_1.Text, null, "\u63A5\u7D9A\u5148\u306E\u5207\u308A\u66FF\u3048"))),

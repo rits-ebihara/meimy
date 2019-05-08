@@ -1,25 +1,26 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_keychain_1 = require("react-native-keychain");
 const eim_service_1 = require("../eim-service");
-const Config_1 = __importDefault(require("./Config"));
+const Config_1 = require("./Config");
+const config = Config_1.getConfig();
 class EimAccount {
     constructor() {
         this.load = async () => {
-            const lastAccountString = await react_native_keychain_1.getGenericPassword({ service: Config_1.default.lastAccountServiceName });
-            if (!!lastAccountString && typeof lastAccountString !== 'boolean') {
-                return JSON.parse(lastAccountString.password);
+            const lastAccountString = await react_native_keychain_1.getGenericPassword({ service: config.lastAccountServiceName });
+            if (!lastAccountString) {
+                return null;
+            }
+            if (typeof lastAccountString === 'boolean') {
+                return null;
             }
             else {
-                return null;
+                return JSON.parse(lastAccountString.password);
             }
         };
         this.save = async () => {
             const lastAccountString = JSON.stringify(this);
-            await react_native_keychain_1.setGenericPassword('dummy', lastAccountString, { service: Config_1.default.lastAccountServiceName });
+            await react_native_keychain_1.setGenericPassword('dummy', lastAccountString, { service: config.lastAccountServiceName });
         };
         this.loadUser = async () => {
             const sa = new eim_service_1.EIMServiceAdapter(this.domain);
@@ -56,8 +57,11 @@ class EimAccount {
         return fullLabel;
     }
 }
+exports.EimAccount = EimAccount;
 const eimAccount = new EimAccount();
-exports.default = eimAccount;
+exports.getEimAccount = (obj) => {
+    return obj || eimAccount;
+};
 // eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimapplink-decision-form://decision-form/?link=https%3A%2F%2Fapp-dev54.ope.azure.ricoh-eim.com%2F\&hash=%2Fapps%2FDWS%2Fdocuments%2Fa7c2cee5e03a42538e90bec4df8789d8"
 // eslint-disable-next-line max-len

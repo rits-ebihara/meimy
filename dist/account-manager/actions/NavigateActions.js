@@ -7,13 +7,14 @@ const clone_1 = __importDefault(require("clone"));
 const react_native_1 = require("react-native");
 const url_parse_1 = __importDefault(require("url-parse"));
 const eim_service_1 = require("../../eim-service");
-const Config_1 = __importDefault(require("../Config"));
-const EimAccount_1 = __importDefault(require("../EimAccount"));
+const Config_1 = require("../Config");
+const EimAccount_1 = require("../EimAccount");
 const RoutePageNames_1 = __importDefault(require("../RoutePageNames"));
 const IAccountState_1 = require("../states/IAccountState");
 const AccountActions_1 = require("./AccountActions");
 const AccountListActions_1 = require("./AccountListActions");
 const EimAppListActions_1 = require("./EimAppListActions");
+const config = Config_1.getConfig();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class NavigateController {
     constructor() {
@@ -112,12 +113,13 @@ class NavigateController {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.openApp = async (pLinkState, navigation) => {
             this.linkStates = Object.assign({}, this.linkStates, pLinkState);
-            EimAccount_1.default.appKey = this.linkStates.appKey || '';
-            EimAccount_1.default.domain = this.linkStates.siteDomain || '';
-            EimAccount_1.default.siteName = this.linkStates.siteName || '';
-            EimAccount_1.default.eimTokens = this.linkStates.tokens || [];
-            await EimAccount_1.default.save();
-            await EimAccount_1.default.loadUser();
+            const eimAccount = EimAccount_1.getEimAccount();
+            eimAccount.appKey = this.linkStates.appKey || '';
+            eimAccount.domain = this.linkStates.siteDomain || '';
+            eimAccount.siteName = this.linkStates.siteName || '';
+            eimAccount.eimTokens = this.linkStates.tokens || [];
+            await eimAccount.save();
+            await eimAccount.loadUser();
             if (this.parentMainPage) {
                 navigation.navigate(this.parentMainPage, this.parentNavParams);
             }
@@ -126,12 +128,12 @@ class NavigateController {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         navigation, dispatch, link, hash) => {
             const authState = {
-                appKeyPrefix: Config_1.default.appKeyPrefix,
+                appKeyPrefix: config.appKeyPrefix,
             };
             const accountManagerUrl = url_parse_1.default('eimapplink-accountmanager://accountmanager/');
             const query = {
-                appprefix: Config_1.default.appKeyPrefix,
-                mapp: Config_1.default.mobileAppKey,
+                appprefix: config.appKeyPrefix,
+                mapp: config.appKeyPrefix,
             };
             const open = (_appKey, _domain) => {
                 if (!!_appKey && !!_domain) {
@@ -152,7 +154,7 @@ class NavigateController {
                         react_native_1.Linking.openURL(accountManagerUrl.href);
                     }
                     else {
-                        this.parentMainPage = Config_1.default.startPage;
+                        this.parentMainPage = config.startPage;
                         if (!!hash) {
                             const paths = hash.split('/');
                             this.parentNavParams = {
@@ -175,8 +177,9 @@ class NavigateController {
                 open(appKey, domain);
                 return;
             }
+            const eimAccount = EimAccount_1.getEimAccount();
             // 前回アクセスしたサイトを取得する
-            EimAccount_1.default.load().then((lastAccount) => {
+            eimAccount.load().then((lastAccount) => {
                 // 認証アプリを起動する
                 if (!!lastAccount) {
                     open(lastAccount.appKey, lastAccount.domain);

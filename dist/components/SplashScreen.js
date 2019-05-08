@@ -17,7 +17,6 @@ const react_native_device_info_1 = __importDefault(require("react-native-device-
 const url_parse_1 = __importDefault(require("url-parse"));
 const account_manager_1 = require("../account-manager");
 const NavigateActions_1 = __importDefault(require("../account-manager/actions/NavigateActions"));
-const EimAccount_1 = __importDefault(require("../account-manager/EimAccount"));
 let runOnLink = false;
 //#region Styles
 class SplashScreen extends react_1.Component {
@@ -70,13 +69,14 @@ class SplashScreen extends react_1.Component {
                 && !!query.token);
         };
         this.fromAccountManager = async (token, domain, appKey, siteName, link) => {
-            EimAccount_1.default.eimTokens = token.split(',');
-            EimAccount_1.default.domain = domain;
-            EimAccount_1.default.appKey = appKey;
-            EimAccount_1.default.siteName = siteName || domain;
-            EimAccount_1.default.user = undefined;
-            EimAccount_1.default.save();
-            await EimAccount_1.default.loadUser();
+            const eimAccount = account_manager_1.getEimAccount();
+            eimAccount.eimTokens = token.split(',');
+            eimAccount.domain = domain;
+            eimAccount.appKey = appKey;
+            eimAccount.siteName = siteName || domain;
+            eimAccount.user = undefined;
+            eimAccount.save();
+            await eimAccount.loadUser();
             if (!!link) {
                 const linkUrl = url_parse_1.default(link);
                 const hashes = linkUrl.hash.split('/');

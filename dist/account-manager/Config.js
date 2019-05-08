@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ACCOUNT_LIST = 'account_list';
 const LAST_ACCOUNT = 'last_account';
-const MOBILE_APP_KEY = 'decision-form';
 class Config {
     get appKeyPrefix() { return this._appKeyPrefix; }
     get appServiceId() { return this._appServiceId; }
@@ -15,7 +14,6 @@ class Config {
     get lastAccountServiceName() {
         return `${this._appServiceId}.${LAST_ACCOUNT}`;
     }
-    get mobileAppKey() { return MOBILE_APP_KEY; }
     constructor() {
         this._appServiceId = '';
         this._appKeyPrefix = '';
@@ -52,4 +50,6 @@ class Config {
 }
 exports.Config = Config;
 exports.config = new Config();
-exports.default = exports.config;
+exports.getConfig = (userConfig) => {
+    return userConfig || exports.config;
+};
