@@ -44,7 +44,6 @@ jest.mock('react-native-cookies', () => ({
     get: () => Promise.resolve(null),
 }));
 describe('on load', () => {
-    // テストする内容が薄いが、テストする内容が無い・・・か？
     test('createStackNavigator', async () => {
         const fn = jest.fn(() => {
             return {};
