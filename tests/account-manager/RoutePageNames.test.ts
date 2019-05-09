@@ -20,29 +20,7 @@ jest.mock('react-navigation', () => {
         }),
     };
 });
-jest.mock('react-navigation-redux-helpers', () => {
-    return {
-        createNavigationReducer: jest.fn(),
-        createReactNavigationReduxMiddleware: jest.fn(),
-        ReducerState: {},
-    }
-});
 
-jest.mock('react-native-keychain', () => {
-    return {
-        setGenericPassword: jest.fn(),
-        getGenericPassword: jest.fn(async () => { return false }),
-    }
-});
-
-jest.mock('react-native-cookies', () => ({
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    openURL: jest.fn(),
-    canOpenURL: jest.fn(),
-    getInitialURL: jest.fn(),
-    get: () => Promise.resolve(null),
-}));
 describe('on load', () => {
     test('createStackNavigator', async () => {
         const fn = jest.fn(() => {
