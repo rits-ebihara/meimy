@@ -42,7 +42,7 @@ describe('load', () => {
         expect(loadResult).toBeNull();
     });
     test('load - not exist data', async () => {
-        (getGenericPassword as any).mockImplementation(() => {
+        (getGenericPassword as any).mockImplementation(async () => {
             return true;
         });
         const target = new EimAccount();
@@ -56,7 +56,7 @@ describe('load', () => {
             eimTokens: [],
             siteName: '',
         };
-        (getGenericPassword as any).mockImplementation(() => {
+        (getGenericPassword as any).mockImplementation(async () => {
             return {
                 service: '',
                 username: '',
