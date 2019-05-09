@@ -21,7 +21,7 @@ module.exports = {
             babelConfig: true,
         }
     },
-    silent: false,
+    silent: true,
     reporters: [
         "default", [
             "./node_modules/jest-html-reporter",

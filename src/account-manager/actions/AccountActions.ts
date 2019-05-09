@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
-import { NavigationScreenProp } from 'react-navigation';
 import { Action, Dispatch } from 'redux';
 import { generate as ShortId } from 'shortid';
 
@@ -21,8 +20,6 @@ export const createSetAccountAction = (account: IAccountState): ISetAccountActio
         type: SET_ACCOUNT_ACTION,
     };
 };
-
-export const SAVE_ACCOUNT_ACTION = ShortId();
 
 const config = getConfig();
 
@@ -71,7 +68,7 @@ export interface IRemoveAccountAction extends Action {
 
 export const asyncRemoveAccountAction = async (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    targetId: string, nav: NavigationScreenProp<any, any>, dispatch: Dispatch) => {
+    targetId: string, dispatch: Dispatch, onSuccess: () => void) => {
     try {
         // 現在のリストをロード
         const json = await getGenericPassword({ service: config.accountListServiceName });
@@ -88,5 +85,5 @@ export const asyncRemoveAccountAction = async (
     }
     // ステートを更新して、一覧に戻ったときに画面の表示が新しくなっているようにする
     await asyncLoadAccountListAfterShow(dispatch);
-    nav.pop();
+    onSuccess();
 };

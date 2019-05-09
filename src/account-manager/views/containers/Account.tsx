@@ -195,7 +195,9 @@ class Account extends Component<ICombinedNavProps<IAccountProps>, ILocaleState> 
                 {
                     onPress: () => {
                         asyncRemoveAccountAction(
-                            me.state.id as string, me.props.navigation, me.props.dispatch);
+                            me.state.id as string,
+                            me.props.dispatch,
+                            () => { me.props.navigation.pop(); });
                     },
                     style: 'destructive',
                     text: '削除',
