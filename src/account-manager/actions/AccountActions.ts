@@ -67,22 +67,25 @@ export interface IRemoveAccountAction extends Action {
 }
 
 export const asyncRemoveAccountAction = async (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     targetId: string, dispatch: Dispatch, onSuccess: () => void) => {
-    try {
-        // 現在のリストをロード
-        const json = await getGenericPassword({ service: config.accountListServiceName });
-        let accountList: IAccountListState = createInitAccountListState();
-        if (!!json && typeof json !== 'boolean') {
-            accountList = JSON.parse(json.password) as IAccountListState;
+    const save = async () => {
+        try {
+            // 現在のリストをロード
+            const json = await getGenericPassword({ service: config.accountListServiceName });
+            let accountList: IAccountListState = createInitAccountListState();
+            if (!!json && typeof json !== 'boolean') {
+                accountList = JSON.parse(json.password) as IAccountListState;
+            } else {
+                return;
+            }
+            accountList.accounts = accountList.accounts.filter((a) => a.id !== targetId);
+            await setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
+        } catch (error) {
+            Alert.alert('error', '保存に失敗しました');
+            console.error(error);
         }
-        accountList.accounts = accountList.accounts.filter((a) => a.id !== targetId);
-        await setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
-    } catch (error) {
-        Alert.alert('error', '保存に失敗しました');
-        console.error(error);
-
-    }
+    };
+    await save();
     // ステートを更新して、一覧に戻ったときに画面の表示が新しくなっているようにする
     await asyncLoadAccountListAfterShow(dispatch);
     onSuccess();

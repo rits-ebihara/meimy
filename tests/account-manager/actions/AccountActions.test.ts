@@ -306,6 +306,19 @@ describe('asyncRemoveAccountAction', () => {
         expect(mockFn.loadActionListFn).toBeCalled();
         expect(fn).toBeCalled();
     });
+    test('no exist data', async () => {
+        mocked(getGenericPassword).mockImplementation(async () => {
+            return false;
+        });
+        const mockFn = createMockFn();
+        mocked(asyncLoadAccountListAfterShow).mockImplementation(mockFn.loadActionListFn);
+        mocked(setGenericPassword).mockImplementation(mockFn.saveFn);
+        const fn = jest.fn();
+        await asyncRemoveAccountAction('account-id0', jest.fn(), fn);
+        expect(mockFn.saveFn).not.toBeCalled();
+        expect(mockFn.loadActionListFn).toBeCalled();
+        expect(fn).toBeCalled();
+    });
     test('throw', async () => {
         mocked(getGenericPassword).mockImplementation(async () => {
             throw new Error();
