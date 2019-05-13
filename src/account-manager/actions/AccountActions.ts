@@ -3,6 +3,7 @@ import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 import { Action, Dispatch } from 'redux';
 import { generate as ShortId } from 'shortid';
 
+import { dateParser } from '../../eim-service';
 import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAccountState } from '../states/IAccountState';
@@ -42,7 +43,7 @@ export const asyncSaveAccountAction
             const json = await getGenericPassword({ service: config.accountListServiceName });
             let accountList: IAccountListState = createInitAccountListState();
             if (!!json && typeof json !== 'boolean') {
-                accountList = JSON.parse(json.password) as IAccountListState;
+                accountList = JSON.parse(json.password, dateParser) as IAccountListState;
             }
             // IDで検索しなければ追加する
             const existIndex = accountList.accounts.findIndex((a) => a.id === id);

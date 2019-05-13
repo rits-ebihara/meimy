@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Moment from 'moment';
-import { NativeModules } from 'react-native';
 import UrlParse from 'url-parse';
-
-interface ISshWebClient {
-    postForm: (url: string, header: { [key: string]: string },
-        data: { [key: string]: string }, options: {}) => Promise<IResponse>;
-}
 
 export interface IResponse {
     body: string;
@@ -22,7 +16,7 @@ export interface IParsedResponse<T> extends IResponse {
     parsedBody?: T;
 }
 
-const sshWebClient = NativeModules.OkHttp3WebClient as ISshWebClient;
+// const sshWebClient = NativeModules.OkHttp3WebClient as ISshWebClient;
 
 export interface ILoginResult {
     result: 'success' | 'failed' | 'error';
@@ -226,7 +220,7 @@ export interface ISearchForm<P, T = any> {
 export type SearchCondition<P> = '(' | ')' | 'and' | 'or' | ISearchForm<P>;
 
 
-const dateParser = (_key: string, value: any) => {
+export const dateParser = (_key: string, value: any) => {
     const dateReg = /^\d{4}-\d{2}-\d{2}T(?:\d{2}:){2}\d{2}\.\d{3}Z$/;
     if (typeof value === 'string' && dateReg.test(value)) {
         return new Date(value);
@@ -318,42 +312,42 @@ export class EIMServiceAdapter {
         return response;
     }
 
-    public postForm = async (path: string,
-        token: string[],
-        data: { [key: string]: string },
-        header: { [key: string]: string } = {},
-        params?: { [key: string]: string }) => {
-        const url = this.createUrl(path, params || {});
-        const sendHeader = Object.assign({}, this.defaultHeader, header);
-        sendHeader.Cookie = token.join('; ');
-        // React Native fetch では、redirect をコントロールできない。勝手に転送されてしまうため、
-        // set-cookie の token が取得できない
-        const response = await sshWebClient.postForm(url, sendHeader, data, params || {});
-        return response;
-    }
+    // public postForm = async (path: string,
+    //     token: string[],
+    //     data: { [key: string]: string },
+    //     header: { [key: string]: string } = {},
+    //     params?: { [key: string]: string }) => {
+    //     const url = this.createUrl(path, params || {});
+    //     const sendHeader = Object.assign({}, this.defaultHeader, header);
+    //     sendHeader.Cookie = token.join('; ');
+    //     // React Native fetch では、redirect をコントロールできない。勝手に転送されてしまうため、
+    //     // set-cookie の token が取得できない
+    //     const response = await sshWebClient.postForm(url, sendHeader, data, params || {});
+    //     return response;
+    // }
 
-    public login = async (userId: string, password: string): Promise<ILoginResult> => {
-        const path = '/services/v1/login';
-        try {
-            const result = await this.postForm(path, [], { userName: userId, password });
-            if (result.statusCode === 303 && !!result.tokens) {
-                return {
-                    result: 'success',
-                    tokens: result.tokens,
-                };
-            } else {
-                return {
-                    result: 'failed',
-                    tokens: [],
-                };
-            }
-        } catch (e) {
-            return {
-                result: 'error',
-                tokens: [],
-            };
-        }
-    }
+    // public login = async (userId: string, password: string): Promise<ILoginResult> => {
+    //     const path = '/services/v1/login';
+    //     try {
+    //         const result = await this.postForm(path, [], { userName: userId, password });
+    //         if (result.statusCode === 303 && !!result.tokens) {
+    //             return {
+    //                 result: 'success',
+    //                 tokens: result.tokens,
+    //             };
+    //         } else {
+    //             return {
+    //                 result: 'failed',
+    //                 tokens: [],
+    //             };
+    //         }
+    //     } catch (e) {
+    //         return {
+    //             result: 'error',
+    //             tokens: [],
+    //         };
+    //     }
+    // }
     public validateToken = async (tokens: string[]) => {
         const response = await this.get(
             '/resources/v1/apps',

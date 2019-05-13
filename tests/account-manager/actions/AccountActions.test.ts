@@ -16,7 +16,7 @@ jest.mock('react-native-keychain', () => {
         setGenericPassword: jest.fn(),
         getGenericPassword: jest.fn(async () => { return false }),
     }
-})
+});
 jest.mock('../../../src/account-manager/actions/AccountListActions');
 jest.mock('../../../src/account-manager/Config', () => {
     return {

@@ -2,6 +2,7 @@ import { getGenericPassword } from 'react-native-keychain';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
 
+import { dateParser } from '../../eim-service';
 import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAuthState } from '../states/IAuthStates';
@@ -18,7 +19,7 @@ export const asyncLoadAccountListAfterShow = async (dispatch: Dispatch) => {
     let accountList: IAccountListState = createInitAccountListState();
     const json = await getGenericPassword({ service: config.accountListServiceName });
     if (!!json && typeof json !== 'boolean') {
-        const _accountList = JSON.parse(json.password) as IAccountListState;
+        const _accountList = JSON.parse(json.password, dateParser) as IAccountListState;
         if (('accounts' in (_accountList as IAccountListState))) {
             accountList = _accountList;
         }
