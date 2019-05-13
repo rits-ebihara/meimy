@@ -1,3 +1,4 @@
+import console = require('console');
 import { Toast } from 'native-base';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
@@ -23,11 +24,14 @@ export const LOAD_APP_LIST = ShortId();
 export interface ILoadAppListAction extends Action {
 }
 export const createLoadAppListAction =
-    (dispatch: Dispatch, navigateActions: INavigateController): ILoadAppListAction | null => {
+    async (dispatch: Dispatch, navigateActions: INavigateController): Promise<void> => {
         const { siteDomain, siteName, tokens, appKeyPrefix } = navigateActions.getLinkState();
-        if (!siteDomain || !tokens || !appKeyPrefix) { return null; }
+        if (!siteDomain || !tokens || !appKeyPrefix) { return; }
+        dispatch({
+            type: LOAD_APP_LIST,
+        });
         // アプリ一覧の取得
-        (async () => {
+        await (async () => {
             const sa = new EIMServiceAdapter(siteDomain);
             try {
                 const response = await sa.getAppList(tokens);
@@ -55,9 +59,6 @@ export const createLoadAppListAction =
                 dispatch(createSetAppListAction([]));
             }
         })();
-        return {
-            type: LOAD_APP_LIST,
-        };
     };
 
 interface ISourceEimApp {
