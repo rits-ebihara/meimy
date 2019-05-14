@@ -4,3 +4,4 @@ export * from './EimAccount';
 export * from './IAccountManagerState';
 export * from './IEimAccount';
 export * from './RoutePageNames';
+export * from './RouteMap';

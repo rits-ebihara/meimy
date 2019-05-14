@@ -27,7 +27,7 @@ describe('on load', () => {
             return {};
         });
         (createStackNavigator as any).mockImplementation(fn);
-        const RoutePageNames = await import('../../src/account-manager/RoutePageNames');
+        const RoutePageNames = await import('../../src/account-manager/RouteMap');
 
         const target = RoutePageNames.authStackNav;
         expect(target).toBeTruthy();

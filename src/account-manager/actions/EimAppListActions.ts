@@ -1,4 +1,3 @@
-import console = require('console');
 import { Toast } from 'native-base';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
