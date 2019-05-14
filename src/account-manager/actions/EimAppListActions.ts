@@ -7,6 +7,19 @@ import { EIMServiceAdapter } from '../../eim-service';
 import { IEimApp } from '../states/IEimAppListState';
 import INavigateController from './INavigateController';
 
+interface ISourceEimApp {
+    system: {};
+    properties: {
+        id: string;
+        name: string;
+        description: string;
+    };
+}
+
+interface IGetAppListResponse {
+    apps: ISourceEimApp[];
+}
+
 export const SET_APP_LIST = ShortId();
 export interface ISetAppListAction extends Action {
     appList: IEimApp[];
@@ -60,16 +73,3 @@ export const createLoadAppListAction =
             }
         })();
     };
-
-interface ISourceEimApp {
-    system: {};
-    properties: {
-        id: string;
-        name: string;
-        description: string;
-    };
-}
-
-interface IGetAppListResponse {
-    apps: ISourceEimApp[];
-}
