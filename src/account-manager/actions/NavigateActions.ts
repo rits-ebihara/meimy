@@ -20,12 +20,11 @@ import INavigateController from './INavigateController';
 const config = getConfig();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-class NavigateController implements INavigateController {
+export class NavigateController implements INavigateController {
     public parentMainPage?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public parentNavParams?: { [key: string]: any };
-    private linkStates: IAuthState = {
-    };
+    private linkStates: IAuthState = {};
     public navigateForLink = async (
         accountListState: IAccountListState,
         pLinkState: IAuthState,
@@ -39,8 +38,9 @@ class NavigateController implements INavigateController {
             if (!account) {
                 // なければアカウント新規作成画面に遷移する
                 account = createInitAccountState();
-                account.siteName = this.linkStates.siteDomain || '';
-                account.siteDomain = this.linkStates.siteDomain || '';
+                const name = this.linkStates.siteDomain || '';
+                account.siteName = name;
+                account.siteDomain = name;
             }
             dispatch(createSetAccountAction(account));
             if (replace) {
@@ -60,7 +60,7 @@ class NavigateController implements INavigateController {
             if (!!connected) {
                 // 成功
                 // 呼び出しアプリを起動
-                this.openApp({}, navigation);
+                await this.openApp({}, navigation);
                 return true;
             } else {
                 // 失敗
@@ -68,44 +68,34 @@ class NavigateController implements INavigateController {
                 transferAccountPage();
                 return true;
             }
-        } else {
+        } else if (!!this.linkStates.siteDomain) {
             // サイトドメインが決まっている
-            if (!!this.linkStates.siteDomain) {
-                // トークンがある
-                const sa = new EIMServiceAdapter(this.linkStates.siteDomain);
-                // 接続済みの場合
-                // トークンがある場合は、検証する
-                const connected = await sa.validateToken(this.linkStates.tokens || []);
-                // 検証の結果
-                if (connected) {
-                    // 認証が成功の場合
-                    // アプリ一覧を取得
-                    // アプリ一覧の画面に遷移する
-                    if (this.linkStates.appKeyPrefix) {
-                        dispatch(createSetAppListAction([]));
-                        if (replace) {
-                            navigation.replace(RoutePageNames.appListPageName);
-                        } else {
-                            navigation.navigate(RoutePageNames.appListPageName);
-                        }
-                    } else {
-                        // アプリフレフィックスがなければサイト一覧画面に遷移する
-                        if (replace) {
-                            navigation.replace(RoutePageNames.accountListPageName);
-                        } else {
-                            navigation.navigate(RoutePageNames.accountListPageName);
-                        }
-                    }
-                    return true;
+            // トークンがある
+            const sa = new EIMServiceAdapter(this.linkStates.siteDomain);
+            // 接続済みの場合
+            // トークンがある場合は、検証する
+            const connected = await sa.validateToken(this.linkStates.tokens || []);
+            // 検証の結果
+            if (connected) {
+                // 認証が成功の場合
+                // アプリ一覧を取得
+                // アプリ一覧の画面に遷移する
+                const moveTo = (replace) ? navigation.replace : navigation.navigate;
+                if (this.linkStates.appKeyPrefix) {
+                    dispatch(createSetAppListAction([]));
+                    moveTo(RoutePageNames.appListPageName);
                 } else {
-                    // 失敗の場合、アカウントの画面に遷移する
-                    transferAccountPage();
+                    moveTo(RoutePageNames.accountListPageName);
                 }
                 return true;
             } else {
-                // ドメインの指定がない場合は、なにもしない
-                return false;
+                // 失敗の場合、アカウントの画面に遷移する
+                transferAccountPage();
             }
+            return true;
+        } else {
+            // ドメインの指定がない場合は、なにもしない
+            return false;
         }
     }
     public clear = () => {
@@ -125,6 +115,7 @@ class NavigateController implements INavigateController {
         await eimAccount.save();
         await eimAccount.loadUser();
         if (this.parentMainPage) {
+            console.log('called2');
             navigation.navigate(this.parentMainPage, this.parentNavParams);
         }
     }

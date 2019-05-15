@@ -1,9 +1,9 @@
-import { Toast } from 'native-base';
 import { mocked } from 'ts-jest/utils';
 
 import {
     createLoadAppListAction,
     createSetAppListAction,
+    LOAD_APP_LIST,
     SET_APP_LIST,
 } from '../../../src/account-manager/actions/EimAppListActions';
 import INavigateController from '../../../src/account-manager/actions/INavigateController';
@@ -101,7 +101,6 @@ describe('createLoadAppListAction', () => {
     });
     test('success', async () => {
         const dispatch = jest.fn();
-        const toastShow = jest.fn();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mocked(EIMServiceAdapter).mockImplementation((): EIMServiceAdapter => {
             return {
@@ -111,22 +110,18 @@ describe('createLoadAppListAction', () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
         });
-        mocked(Toast.show).mockImplementation(() => {
-            return {
-                show: toastShow,
-            };
-        });
-        await createLoadAppListAction(dispatch, getNavController(getLinkState()));
+        const onError = jest.fn();
+        await createLoadAppListAction(dispatch, getNavController(getLinkState()), onError);
         expect(dispatch).toBeCalledTimes(2);
         const expectEimApps = getExpectEimApps();
         expect(dispatch).toHaveBeenLastCalledWith({
             appList: expectEimApps, type: SET_APP_LIST
         });
-        expect(toastShow).not.toBeCalled();
+        expect(onError).not.toBeCalled();
     });
     test('success: no name', async () => {
         const dispatch = jest.fn();
-        const toastShow = jest.fn();
+        const onError = jest.fn();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mocked(EIMServiceAdapter).mockImplementation((): EIMServiceAdapter => {
             return {
@@ -136,14 +131,9 @@ describe('createLoadAppListAction', () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
         });
-        mocked(Toast.show).mockImplementation(() => {
-            return {
-                show: toastShow,
-            };
-        });
         const linkState = getLinkState();
         linkState.siteName = '';
-        await createLoadAppListAction(dispatch, getNavController(linkState));
+        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
         expect(dispatch).toBeCalledTimes(2);
         const expectEimApps = getExpectEimApps();
         expectEimApps[0].siteName = expectEimApps[0].siteDomain;
@@ -151,11 +141,11 @@ describe('createLoadAppListAction', () => {
         expect(dispatch).toHaveBeenLastCalledWith({
             appList: expectEimApps, type: SET_APP_LIST
         });
-        expect(toastShow).not.toBeCalled();
+        expect(onError).not.toBeCalled();
     });
     test('faild', async () => {
         const dispatch = jest.fn();
-        const toastShow = jest.fn();
+        const onError = jest.fn();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mocked(EIMServiceAdapter).mockImplementation((): EIMServiceAdapter => {
             return {
@@ -165,17 +155,13 @@ describe('createLoadAppListAction', () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
         });
-        mocked(Toast.show).mockImplementation(toastShow);
-        await createLoadAppListAction(dispatch, getNavController(getLinkState()));
-        expect(dispatch).toBeCalledTimes(2);
-        expect(dispatch).toHaveBeenLastCalledWith({
-            appList: [], type: SET_APP_LIST
-        });
-        expect(toastShow).toBeCalled();
+        await createLoadAppListAction(dispatch, getNavController(getLinkState()), onError);
+        expect(dispatch).toBeCalledWith({ type: LOAD_APP_LIST });
+        expect(onError).toBeCalled();
     });
     test('no siteDomain', async () => {
         const dispatch = jest.fn();
-        const toastShow = jest.fn();
+        const onError = jest.fn();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mocked(EIMServiceAdapter).mockImplementation((): EIMServiceAdapter => {
             return {
@@ -187,14 +173,13 @@ describe('createLoadAppListAction', () => {
         });
         const linkState = getLinkState();
         linkState.siteDomain = '';
-        mocked(Toast.show).mockImplementation(toastShow);
-        await createLoadAppListAction(dispatch, getNavController(linkState));
+        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
         expect(dispatch).toBeCalledTimes(0);
-        expect(toastShow).not.toBeCalled();
+        expect(onError).not.toBeCalled();
     });
     test('no token', async () => {
         const dispatch = jest.fn();
-        const toastShow = jest.fn();
+        const onError = jest.fn();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mocked(EIMServiceAdapter).mockImplementation((): EIMServiceAdapter => {
             return {
@@ -206,9 +191,8 @@ describe('createLoadAppListAction', () => {
         });
         const linkState = getLinkState();
         linkState.tokens = undefined;
-        mocked(Toast.show).mockImplementation(toastShow);
-        await createLoadAppListAction(dispatch, getNavController(linkState));
+        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
         expect(dispatch).toBeCalledTimes(0);
-        expect(toastShow).not.toBeCalled();
+        expect(onError).not.toBeCalled();
     });
 });

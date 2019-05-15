@@ -1,4 +1,4 @@
-import { Toast } from 'native-base';
+// import { Toast } from 'native-base';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
 
@@ -36,7 +36,7 @@ export const LOAD_APP_LIST = ShortId();
 export interface ILoadAppListAction extends Action {
 }
 export const createLoadAppListAction =
-    async (dispatch: Dispatch, navigateActions: INavigateController): Promise<void> => {
+    async (dispatch: Dispatch, navigateActions: INavigateController, onError: () => void): Promise<void> => {
         const { siteDomain, siteName, tokens, appKeyPrefix } = navigateActions.getLinkState();
         if (!siteDomain || !tokens || !appKeyPrefix) { return; }
         dispatch({
@@ -64,11 +64,7 @@ export const createLoadAppListAction =
                 dispatch(createSetAppListAction(appList));
             } catch (e) {
                 console.error(e);
-                Toast.show({
-                    text: 'ネットワークエラーが発生しました。',
-                    type: 'warning',
-                });
-                dispatch(createSetAppListAction([]));
+                onError();
             }
         })();
     };

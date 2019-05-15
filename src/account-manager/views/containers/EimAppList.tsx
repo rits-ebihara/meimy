@@ -1,10 +1,10 @@
-import { Body, Container, ListItem, Spinner, Text } from 'native-base';
+import { Body, Container, ListItem, Spinner, Text, Toast } from 'native-base';
 import React, { Component } from 'react';
 import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
 import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
-import { createLoadAppListAction } from '../../actions/EimAppListActions';
+import { createLoadAppListAction, createSetAppListAction } from '../../actions/EimAppListActions';
 import NavigateActions from '../../actions/NavigateActions';
 import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
@@ -46,7 +46,13 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
         );
     }
     public componentDidMount = () => {
-        createLoadAppListAction(this.props.dispatch, NavigateActions);
+        createLoadAppListAction(this.props.dispatch, NavigateActions, () => {
+            Toast.show({
+                text: 'ネットワークエラーが発生しました。',
+                type: 'warning',
+            });
+            this.props.dispatch(createSetAppListAction([]));
+        });
     }
     public onPressItem = (appKey: string) => {
         NavigateActions.openApp({ appKey }, this.props.navigation);
