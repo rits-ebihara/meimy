@@ -8,7 +8,7 @@ import { IDocListForView } from './IDocListForView';
 import { IDocListSearchOption } from './IDocListSearchOption';
 import { IParsedResponse, IResponse } from './IResponse';
 import { IResponseDownloadFile } from './IResponseDownloadFile';
-import { IWordResources } from './IWordResources';
+import { ILangResources } from './ILangResources';
 
 export const dateParser = (_key: string, value: any) => {
     const dateReg = /^\d{4}-\d{2}-\d{2}T(?:\d{2}:){2}\d{2}\.\d{3}Z$/;
@@ -177,13 +177,13 @@ export class EIMServiceAdapter {
         );
         return result;
     }
-    public getWordResource = async (tokens: string[], appId: string): Promise<IWordResources> => {
+    public getWordResource = async (tokens: string[], appId: string): Promise<ILangResources> => {
         try {
             const result = await this.get(
                 `/resources/v1/apps/${appId}/strings`,
                 tokens);
             if (result.statusCode === 200) {
-                return JSON.parse(result.body) as IWordResources;
+                return JSON.parse(result.body) as ILangResources;
             } else {
                 throw new Error(`文字列リソースの取得に失敗しました。 (status code:${result.statusCode}`);
             }
