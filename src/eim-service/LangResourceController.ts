@@ -1,6 +1,7 @@
 import path from 'path';
 import * as rnfs from 'react-native-fs';
 
+import { getEimAccount } from '../account-manager/EimAccount';
 import { EIMServiceAdapter } from './EIMServiceAdapter';
 import { ILangResourceStrings } from './ILangResources';
 
@@ -8,43 +9,67 @@ const dirName = 'word_resources';
 
 type LangType = keyof ILangResourceStrings;
 
+const getInitLangResource = (): ILangResourceStrings => {
+    return {
+        de: {},
+        en: {},
+        es: {},
+        fr: {},
+        it: {},
+        ja: {},
+        nl: {},
+    }
+};
+
 export class LangResourceController {
     private cachePath: string;
     public constructor() {
         this.cachePath = path.join(rnfs.CachesDirectoryPath, dirName);
     }
     public getLangWord = async (
-        _site: string,
-        _appKey: string,
+        site: string,
+        appKey: string,
         key: string,
-        _lang: LangType,
+        lang: LangType,
         esa: EIMServiceAdapter) => {
         const langStrings = await this.loadWordResource(
-            _site, _appKey, esa
+            site, appKey, esa
         );
-        const langString = langStrings[_lang];
+        const langString = langStrings[lang];
         const result = langString[key] || key;
         return result;
     }
     public createCacheDir = async () => {
-        // キャッシュフォルダに 言語リソース
+        // キャッシュフォルダに 言語リソースフォルダを作成する
         const existDir = await rnfs.exists(this.cachePath);
         if (existDir) {
             await rnfs.unlink(this.cachePath);
         }
         await rnfs.mkdir(this.cachePath);
     }
-    private loadWordResource = async (_site: string, _appKey: string, _esa: EIMServiceAdapter) => {
-        const res: ILangResourceStrings = {
-            "de": {},
-            "ja": {},
-            "en": {},
-            "it": {},
-            "fr": {},
-            "es": {},
-            "nl": {}
-        };
-        return res;
+    private loadWordResource = async (site: string, appKey: string, esa: EIMServiceAdapter) => {
+        const filePath = path.join(rnfs.CachesDirectoryPath,
+            `${site}_${appKey}.json`);
+        let result: ILangResourceStrings;
+        try {
+            if (await rnfs.exists(filePath)) {
+                // キャッシュにファイルが有る場合、それを返す
+                const data = await rnfs.readFile(filePath);
+                result = JSON.parse(data) as ILangResourceStrings
+            } else {
+                // ファイルがない場合、ロードする
+                const eimAccount = getEimAccount();
+                const response = await esa.getLangResource(eimAccount.eimTokens, appKey);
+                result = response.strings;
+                // キャッシュに保存する
+                await rnfs.writeFile(filePath, JSON.stringify(result));
+            }
+        } catch (e) {
+            console.warn(e);
+            // エラーが発生した場合は初期値
+            result = getInitLangResource();
+        }
+        return result;
     }
 }
 

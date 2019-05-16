@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "license": "MIT",
     "scripts": {
-        "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit",
+        "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit -p tsconfig.build.json",
         "build": "node --experimental-modules build.mjs",
         "copyResource": " cp -r ./src/resources ./dist/resources",
         "test:watch": "jest --watch",
