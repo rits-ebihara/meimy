@@ -26,13 +26,17 @@
         "@typescript-eslint/eslint-plugin": "^1.7.0",
         "@typescript-eslint/parser": "^1.7.0",
         "babel-jest": "^24.8.0",
-        "eslint": "^5.16.0",
         "eslint-plugin-react": "^7.12.4",
-        "jest": "^24.7.1",
+        "eslint": "^5.16.0",
         "jest-date-mock": "^1.0.7",
         "jest-html-reporter": "^2.5.0",
+        "jest": "^24.7.1",
         "metro-react-native-babel-preset": "^0.54.0",
         "nyc": "^14.1.0",
+        "react-native": "^0.59.8",
+        "react-redux": "^7.0.3",
+        "react": "^16.8.6",
+        "redux": "^4.0.1",
         "regenerator-runtime": "^0.13.2",
         "ts-jest": "^24.0.2",
         "typescript": "^3.4.3"
@@ -50,13 +54,13 @@
         "react-native-keychain": "^3.1.1",
         "react-navigation": "^3.9",
         "react-navigation-redux-helpers": "^3.0.2",
-        "react-redux": "^7.0.2",
-        "redux": "^4.0.1",
         "shortid": "^2.2.14",
         "url-parse": "^1.4.6"
     },
     "peerDependencies": {
         "react": ">= 16.0.0",
-        "react-native": ">= 0.58.0"
+        "react-native": ">= 0.58.0",
+        "react-redux": ">= 7.0.2",
+        "redux": ">= 4.0.0"
     }
 }
