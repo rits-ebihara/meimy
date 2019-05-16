@@ -43,8 +43,6 @@
         "fs-extra": "^7.0.1",
         "moment": "^2.24.0",
         "native-base": "^2.12.1",
-        "react": "^16.8.6",
-        "react-native": "^0.59.5",
         "react-native-cookies": "^3.3.0",
         "react-native-device-info": "^1.5.1",
         "react-native-fs": "^2.13.3",
@@ -57,5 +55,8 @@
         "shortid": "^2.2.14",
         "url-parse": "^1.4.6"
     },
-    "peerDependencies": {}
+    "peerDependencies": {
+        "react": ">= 16.0.0",
+        "react-native": ">= 0.58.0"
+    }
 }
