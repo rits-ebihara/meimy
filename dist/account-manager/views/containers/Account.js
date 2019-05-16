@@ -117,7 +117,7 @@ class Account extends react_1.Component {
                 },
                 {
                     onPress: () => {
-                        AccountActions_1.asyncRemoveAccountAction(me.state.id, me.props.navigation, me.props.dispatch);
+                        AccountActions_1.asyncRemoveAccountAction(me.state.id, me.props.dispatch, () => { me.props.navigation.pop(); });
                     },
                     style: 'destructive',
                     text: '削除',

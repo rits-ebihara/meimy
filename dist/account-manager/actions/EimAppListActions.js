@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const native_base_1 = require("native-base");
 const shortid_1 = __importDefault(require("shortid"));
 const eim_service_1 = require("../../eim-service");
 exports.SET_APP_LIST = shortid_1.default();
@@ -14,13 +13,16 @@ exports.createSetAppListAction = (appList) => {
     };
 };
 exports.LOAD_APP_LIST = shortid_1.default();
-exports.createLoadAppListAction = (dispatch, navigateActions) => {
+exports.createLoadAppListAction = async (dispatch, navigateActions, onError) => {
     const { siteDomain, siteName, tokens, appKeyPrefix } = navigateActions.getLinkState();
     if (!siteDomain || !tokens || !appKeyPrefix) {
-        return null;
+        return;
     }
+    dispatch({
+        type: exports.LOAD_APP_LIST,
+    });
     // アプリ一覧の取得
-    (async () => {
+    await (async () => {
         const sa = new eim_service_1.EIMServiceAdapter(siteDomain);
         try {
             const response = await sa.getAppList(tokens);
@@ -42,14 +44,7 @@ exports.createLoadAppListAction = (dispatch, navigateActions) => {
         }
         catch (e) {
             console.error(e);
-            native_base_1.Toast.show({
-                text: 'ネットワークエラーが発生しました。',
-                type: 'warning',
-            });
-            dispatch(exports.createSetAppListAction([]));
+            onError();
         }
     })();
-    return {
-        type: exports.LOAD_APP_LIST,
-    };
 };

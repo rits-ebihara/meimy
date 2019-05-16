@@ -28,8 +28,9 @@ class NavigateController {
                 if (!account) {
                     // なければアカウント新規作成画面に遷移する
                     account = IAccountState_1.createInitAccountState();
-                    account.siteName = this.linkStates.siteDomain || '';
-                    account.siteDomain = this.linkStates.siteDomain || '';
+                    const name = this.linkStates.siteDomain || '';
+                    account.siteName = name;
+                    account.siteDomain = name;
                 }
                 dispatch(AccountActions_1.createSetAccountAction(account));
                 if (replace) {
@@ -49,7 +50,7 @@ class NavigateController {
                 if (!!connected) {
                     // 成功
                     // 呼び出しアプリを起動
-                    this.openApp({}, navigation);
+                    await this.openApp({}, navigation);
                     return true;
                 }
                 else {
@@ -59,49 +60,37 @@ class NavigateController {
                     return true;
                 }
             }
-            else {
+            else if (!!this.linkStates.siteDomain) {
                 // サイトドメインが決まっている
-                if (!!this.linkStates.siteDomain) {
-                    // トークンがある
-                    const sa = new eim_service_1.EIMServiceAdapter(this.linkStates.siteDomain);
-                    // 接続済みの場合
-                    // トークンがある場合は、検証する
-                    const connected = await sa.validateToken(this.linkStates.tokens || []);
-                    // 検証の結果
-                    if (connected) {
-                        // 認証が成功の場合
-                        // アプリ一覧を取得
-                        // アプリ一覧の画面に遷移する
-                        if (this.linkStates.appKeyPrefix) {
-                            dispatch(EimAppListActions_1.createSetAppListAction([]));
-                            if (replace) {
-                                navigation.replace(RoutePageNames_1.default.appListPageName);
-                            }
-                            else {
-                                navigation.navigate(RoutePageNames_1.default.appListPageName);
-                            }
-                        }
-                        else {
-                            // アプリフレフィックスがなければサイト一覧画面に遷移する
-                            if (replace) {
-                                navigation.replace(RoutePageNames_1.default.accountListPageName);
-                            }
-                            else {
-                                navigation.navigate(RoutePageNames_1.default.accountListPageName);
-                            }
-                        }
-                        return true;
+                // トークンがある
+                const sa = new eim_service_1.EIMServiceAdapter(this.linkStates.siteDomain);
+                // 接続済みの場合
+                // トークンがある場合は、検証する
+                const connected = await sa.validateToken(this.linkStates.tokens || []);
+                // 検証の結果
+                if (connected) {
+                    // 認証が成功の場合
+                    // アプリ一覧を取得
+                    // アプリ一覧の画面に遷移する
+                    const moveTo = (replace) ? navigation.replace : navigation.navigate;
+                    if (this.linkStates.appKeyPrefix) {
+                        dispatch(EimAppListActions_1.createSetAppListAction([]));
+                        moveTo(RoutePageNames_1.default.appListPageName);
                     }
                     else {
-                        // 失敗の場合、アカウントの画面に遷移する
-                        transferAccountPage();
+                        moveTo(RoutePageNames_1.default.accountListPageName);
                     }
                     return true;
                 }
                 else {
-                    // ドメインの指定がない場合は、なにもしない
-                    return false;
+                    // 失敗の場合、アカウントの画面に遷移する
+                    transferAccountPage();
                 }
+                return true;
+            }
+            else {
+                // ドメインの指定がない場合は、なにもしない
+                return false;
             }
         };
         this.clear = () => {
@@ -121,6 +110,7 @@ class NavigateController {
             await eimAccount.save();
             await eimAccount.loadUser();
             if (this.parentMainPage) {
+                console.log('called2');
                 navigation.navigate(this.parentMainPage, this.parentNavParams);
             }
         };
@@ -191,4 +181,5 @@ class NavigateController {
         };
     }
 }
+exports.NavigateController = NavigateController;
 exports.default = new NavigateController();

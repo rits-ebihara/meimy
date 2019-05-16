@@ -1,4 +1,5 @@
-import { exists, mkdir, readFile, unlink, writeFile } from 'react-native-fs';
+import * as dateMock from 'jest-date-mock';
+import { exists, mkdir, readDir, readFile, unlink, writeFile } from 'react-native-fs';
 import { mocked } from 'ts-jest/utils';
 
 import { getEimAccount } from '../../src/account-manager/EimAccount';
@@ -14,6 +15,7 @@ jest.mock('react-native-fs', () => {
         }),
         unlink: jest.fn(),
         mkdir: jest.fn(),
+        readDir: jest.fn(),
         readFile: jest.fn(),
         writeFile: jest.fn(),
     };
@@ -147,8 +149,42 @@ describe('loadWordResource', () => {
         const result = await target['loadWordResource']('site1', 'appkey', esa);
         expect(result).toEqual(langStrings);
         expect(writeFile).toBeCalledWith(
-            '\\test\\site1_appkey.json',
+            '\\test\\word_resources\\site1_appkey.json',
             JSON.stringify(langStrings),
         );
+    });
+});
+
+describe('deleteOldCache', () => {
+    beforeEach(() => {
+        mocked(unlink).mockClear();
+    });
+    afterEach(() => {
+        dateMock.clear();
+    });
+    test('delete', async () => {
+        dateMock.advanceTo(new Date(2018, 0, 2, 0, 0, 0));
+        mocked(readDir).mockImplementation(async () => {
+            return [
+                {
+                    mtime: new Date(2018, 0, 1, 11, 59, 59),
+                    path: '/test/word_resources/cache1.json',
+                }, {
+                    mtime: new Date(2018, 0, 1, 12, 0, 0),
+                    path: '/test/word_resources/cache2.json',
+                }, {
+                    mtime: new Date(2018, 0, 1, 12, 10, 0),
+                    path: '/test/word_resources/cache3.json',
+                }, {
+                    mtime: new Date(2018, 0, 1, 11, 59, 0),
+                    path: '/test/word_resources/cache4.json',
+                },
+            ] as any[];
+        });
+        const target = new LangResourceController();
+        await target['deleteOldCache']();
+        expect(unlink).toBeCalledTimes(2);
+        expect(unlink).toBeCalledWith('/test/word_resources/cache1.json');
+        expect(unlink).toBeCalledWith('/test/word_resources/cache4.json');
     });
 });

@@ -9,4 +9,4 @@ export declare const createSetAppListAction: (appList: IEimApp[]) => ISetAppList
 export declare const LOAD_APP_LIST: string;
 export interface ILoadAppListAction extends Action {
 }
-export declare const createLoadAppListAction: (dispatch: Dispatch<import("redux").AnyAction>, navigateActions: INavigateController) => ILoadAppListAction | null;
+export declare const createLoadAppListAction: (dispatch: Dispatch<import("redux").AnyAction>, navigateActions: INavigateController, onError: () => void) => Promise<void>;

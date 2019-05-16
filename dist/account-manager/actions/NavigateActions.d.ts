@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { IAccountListState } from '../states/IAccountLisState';
 import { IAuthState } from '../states/IAuthStates';
 import INavigateController from './INavigateController';
-declare class NavigateController implements INavigateController {
+export declare class NavigateController implements INavigateController {
     parentMainPage?: string;
     parentNavParams?: {
         [key: string]: any;

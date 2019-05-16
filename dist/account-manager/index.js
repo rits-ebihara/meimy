@@ -7,3 +7,4 @@ __export(require("./Store"));
 __export(require("./Config"));
 __export(require("./EimAccount"));
 __export(require("./RoutePageNames"));
+__export(require("./RouteMap"));

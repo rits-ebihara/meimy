@@ -1,3 +1,4 @@
+import moment = require('moment');
 import path from 'path';
 import * as rnfs from 'react-native-fs';
 
@@ -48,10 +49,10 @@ export class LangResourceController {
         await rnfs.mkdir(this.cachePath);
     }
     private loadWordResource = async (site: string, appKey: string, esa: EIMServiceAdapter) => {
-        const filePath = path.join(rnfs.CachesDirectoryPath,
-            `${site}_${appKey}.json`);
+        const filePath = this.createCacheFilePath(site, appKey);
         let result: ILangResourceStrings;
         try {
+            this.deleteOldCache();
             if (await rnfs.exists(filePath)) {
                 // キャッシュにファイルが有る場合、それを返す
                 const data = await rnfs.readFile(filePath);
@@ -70,6 +71,22 @@ export class LangResourceController {
             result = getInitLangResource();
         }
         return result;
+    }
+
+    private deleteOldCache = async () => {
+        const mDate = moment(new Date());
+        mDate.add(-12, 'hours');
+        const files = await rnfs.readDir(this.cachePath);
+        const asyncAll: Promise<void>[] = [];
+        files.filter((item) => (item.mtime || new Date(0)) < mDate.toDate())
+            .forEach((item) => {
+                asyncAll.push(rnfs.unlink(item.path));
+            });
+        await Promise.all(asyncAll);
+    }
+
+    private createCacheFilePath(site: string, appKey: string) {
+        return path.join(this.cachePath, `${site}_${appKey}.json`);
     }
 }
 

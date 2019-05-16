@@ -31,10 +31,13 @@ class EimAppList extends react_1.Component {
             return (react_1.default.createElement(native_base_1.Container, null, this.props.state.loading ? react_1.default.createElement(native_base_1.Spinner, { color: "blue" }) : appListBox));
         };
         this.componentDidMount = () => {
-            const action = EimAppListActions_1.createLoadAppListAction(this.props.dispatch, NavigateActions_1.default);
-            if (!!action) {
-                this.props.dispatch(action);
-            }
+            EimAppListActions_1.createLoadAppListAction(this.props.dispatch, NavigateActions_1.default, () => {
+                native_base_1.Toast.show({
+                    text: 'ネットワークエラーが発生しました。',
+                    type: 'warning',
+                });
+                this.props.dispatch(EimAppListActions_1.createSetAppListAction([]));
+            });
         };
         this.onPressItem = (appKey) => {
             NavigateActions_1.default.openApp({ appKey }, this.props.navigation);
