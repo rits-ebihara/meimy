@@ -5,3 +5,4 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./ClientError"));
 __export(require("./EIMServiceAdapter"));
+__export(require("./LangResourceController"));
