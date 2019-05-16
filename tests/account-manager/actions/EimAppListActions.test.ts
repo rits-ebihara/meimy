@@ -9,11 +9,10 @@ import {
 import INavigateController from '../../../src/account-manager/actions/INavigateController';
 import { IAuthState } from '../../../src/account-manager/states/IAuthStates';
 import { IEimApp } from '../../../src/account-manager/states/IEimAppListState';
-import { EIMServiceAdapter } from '../../../src/eim-service';
+import { EIMServiceAdapter } from '../../../src/eim-service/EIMServiceAdapter';
 
-jest.mock('../../../src/eim-service/index', () => {
+jest.mock('../../../src/eim-service/EIMServiceAdapter.ts', () => {
     return {
-        ...jest.requireActual('../../../src/eim-service/index'),
         EIMServiceAdapter: jest.fn(),
     };
 });

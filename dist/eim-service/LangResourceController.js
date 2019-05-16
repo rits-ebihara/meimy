@@ -10,8 +10,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const moment = require("moment");
-const path_1 = __importDefault(require("path"));
+const moment_1 = __importDefault(require("moment"));
 const rnfs = __importStar(require("react-native-fs"));
 const EimAccount_1 = require("../account-manager/EimAccount");
 const dirName = 'word_resources';
@@ -69,7 +68,7 @@ class LangResourceController {
             return result;
         };
         this.deleteOldCache = async () => {
-            const mDate = moment(new Date());
+            const mDate = moment_1.default(new Date());
             mDate.add(-12, 'hours');
             const files = await rnfs.readDir(this.cachePath);
             const asyncAll = [];
@@ -79,10 +78,10 @@ class LangResourceController {
             });
             await Promise.all(asyncAll);
         };
-        this.cachePath = path_1.default.join(rnfs.CachesDirectoryPath, dirName);
+        this.cachePath = `${rnfs.CachesDirectoryPath}/${dirName}`;
     }
     createCacheFilePath(site, appKey) {
-        return path_1.default.join(this.cachePath, `${site}_${appKey}.json`);
+        return `${this.cachePath}/${site}_${appKey}.json`;
     }
 }
 exports.LangResourceController = LangResourceController;

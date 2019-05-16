@@ -2,7 +2,7 @@
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
 
-import { EIMServiceAdapter } from '../../eim-service';
+import { EIMServiceAdapter } from '../../eim-service/EIMServiceAdapter';
 import { IEimApp } from '../states/IEimAppListState';
 import INavigateController from './INavigateController';
 

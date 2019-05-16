@@ -6,7 +6,7 @@ import { NavigateController } from '../../../src/account-manager/actions/Navigat
 import routePageNames from '../../../src/account-manager/RoutePageNames';
 import { IAccountListState } from '../../../src/account-manager/states/IAccountLisState';
 import { IAuthState } from '../../../src/account-manager/states/IAuthStates';
-import { EIMServiceAdapter } from '../../../src/eim-service';
+import { EIMServiceAdapter } from '../../../src/eim-service/EIMServiceAdapter';
 
 jest.mock('react-native', () => {
     return {
@@ -17,7 +17,7 @@ jest.mock('react-native', () => {
 });
 jest.mock('react-navigation');
 jest.mock('native-base');
-jest.mock('../../../src/eim-service/index', () => {
+jest.mock('../../../src/eim-service/EIMServiceAdapter.ts', () => {
     return {
         EIMServiceAdapter: jest.fn(),
     };

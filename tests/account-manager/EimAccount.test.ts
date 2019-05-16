@@ -1,8 +1,8 @@
 import { getGenericPassword } from 'react-native-keychain';
 
 import { EimAccount, getEimAccount } from '../../src/account-manager/EimAccount';
-import { EIMServiceAdapter, IUserDoc } from '../../src/eim-service/';
-
+import { IUserDoc } from '../../src/eim-service/EIMDocInterface';
+import { EIMServiceAdapter } from '../../src/eim-service/EIMServiceAdapter';
 
 jest.mock('react-native-keychain', () => {
     return {
@@ -11,7 +11,7 @@ jest.mock('react-native-keychain', () => {
     }
 });
 
-jest.mock('../../src/eim-service/index');
+jest.mock('../../src/eim-service/EIMServiceAdapter.ts');
 
 describe('new', () => {
     test('createNew', () => {

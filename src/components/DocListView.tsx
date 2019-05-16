@@ -4,13 +4,8 @@ import React, { Component } from 'react';
 import { RefreshControl } from 'react-native';
 
 import { getEimAccount } from '../account-manager/EimAccount';
-import {
-    IDocListForView,
-    IDocListRowForView,
-    IDocListSearchOption,
-    IDocListSort,
-    SearchCondition,
-} from '../eim-service';
+import { IDocListForView, IDocListRowForView } from '../eim-service/IDocListForView';
+import { IDocListSearchOption, IDocListSort, SearchCondition } from '../eim-service/IDocListSearchOption';
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;

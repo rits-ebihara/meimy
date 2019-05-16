@@ -9,7 +9,7 @@ import { LangResourceController } from '../../src/eim-service/LangResourceContro
 
 jest.mock('react-native-fs', () => {
     return {
-        CachesDirectoryPath: '/test/',
+        CachesDirectoryPath: '/test',
         exists: jest.fn(async () => {
             return false;
         }),
@@ -67,14 +67,14 @@ describe('createCacheDir', () => {
     test('exist dir', async () => {
         mocked(exists).mockImplementation(async () => true);
         await target['createCacheDir']();
-        expect(unlink).toBeCalledWith('\\test\\word_resources');
-        expect(mkdir).toBeCalledWith('\\test\\word_resources');
+        expect(unlink).toBeCalledWith('/test/word_resources');
+        expect(mkdir).toBeCalledWith('/test/word_resources');
     });
     test('not exist dir', async () => {
         mocked(exists).mockImplementation(async () => false);
         await target['createCacheDir']();
         expect(unlink).not.toBeCalled();
-        expect(mkdir).toBeCalledWith('\\test\\word_resources');
+        expect(mkdir).toBeCalledWith('/test/word_resources');
     });
 });
 
@@ -149,7 +149,7 @@ describe('loadWordResource', () => {
         const result = await target['loadWordResource']('site1', 'appkey', esa);
         expect(result).toEqual(langStrings);
         expect(writeFile).toBeCalledWith(
-            '\\test\\word_resources\\site1_appkey.json',
+            '/test/word_resources/site1_appkey.json',
             JSON.stringify(langStrings),
         );
     });

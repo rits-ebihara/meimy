@@ -1,4 +1,5 @@
-import { EIMServiceAdapter, IUserDoc } from '../eim-service';
+import { IUserDoc } from '../eim-service/EIMDocInterface';
+import { EIMServiceAdapter } from '../eim-service/EIMServiceAdapter';
 import { IEimAccount, IEimAccountBase } from './IEimAccount';
 export declare class EimAccount implements IEimAccount {
     appKey: string;

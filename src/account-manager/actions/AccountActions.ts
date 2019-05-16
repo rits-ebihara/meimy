@@ -3,7 +3,7 @@ import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 import { Action, Dispatch } from 'redux';
 import { generate as ShortId } from 'shortid';
 
-import { dateParser } from '../../eim-service';
+import { dateParser } from '../../eim-service/EIMServiceAdapter';
 import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAccountState } from '../states/IAccountState';

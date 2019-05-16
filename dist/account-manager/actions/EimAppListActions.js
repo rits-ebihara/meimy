@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const shortid_1 = __importDefault(require("shortid"));
-const eim_service_1 = require("../../eim-service");
+const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 exports.SET_APP_LIST = shortid_1.default();
 exports.createSetAppListAction = (appList) => {
     return {
@@ -23,7 +23,7 @@ exports.createLoadAppListAction = async (dispatch, navigateActions, onError) => 
     });
     // アプリ一覧の取得
     await (async () => {
-        const sa = new eim_service_1.EIMServiceAdapter(siteDomain);
+        const sa = new EIMServiceAdapter_1.EIMServiceAdapter(siteDomain);
         try {
             const response = await sa.getAppList(tokens);
             const responseObj = JSON.parse(response.body);

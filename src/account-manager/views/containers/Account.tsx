@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import ShortId from 'shortid';
 
 import { FloatingButton } from '../../../components/FloatingButton/FloatingButton';
-import { EIMServiceAdapter } from '../../../eim-service';
+import { EIMServiceAdapter } from '../../../eim-service/EIMServiceAdapter';
 import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { asyncRemoveAccountAction, asyncSaveAccountAction } from '../../actions/AccountActions';
 import navigateController from '../../actions/NavigateActions';

@@ -1,6 +1,7 @@
 import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 
-import { EIMServiceAdapter, IUserDoc } from '../eim-service';
+import { IUserDoc } from '../eim-service/EIMDocInterface';
+import { EIMServiceAdapter } from '../eim-service/EIMServiceAdapter';
 import { getConfig } from './Config';
 import { IEimAccount, IEimAccountBase } from './IEimAccount';
 

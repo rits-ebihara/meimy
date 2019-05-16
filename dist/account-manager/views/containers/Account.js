@@ -17,7 +17,7 @@ const react_native_1 = require("react-native");
 const react_redux_1 = require("react-redux");
 const shortid_1 = __importDefault(require("shortid"));
 const FloatingButton_1 = require("../../../components/FloatingButton/FloatingButton");
-const eim_service_1 = require("../../../eim-service");
+const EIMServiceAdapter_1 = require("../../../eim-service/EIMServiceAdapter");
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const WebSignInActions_1 = require("../../actions/WebSignInActions");
@@ -126,7 +126,7 @@ class Account extends react_1.Component {
         };
         this.onPressConnect = async () => {
             // トークンがあればそれを検証
-            const client = new eim_service_1.EIMServiceAdapter(this.state.siteDomain);
+            const client = new EIMServiceAdapter_1.EIMServiceAdapter(this.state.siteDomain);
             if (this.state.eimToken.length !== 0) {
                 const tokenResult = await client.validateToken(this.state.eimToken);
                 if (tokenResult) {

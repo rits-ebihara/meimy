@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const clone_1 = __importDefault(require("clone"));
 const react_native_1 = require("react-native");
 const url_parse_1 = __importDefault(require("url-parse"));
-const eim_service_1 = require("../../eim-service");
+const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 const Config_1 = require("../Config");
 const EimAccount_1 = require("../EimAccount");
 const RoutePageNames_1 = __importDefault(require("../RoutePageNames"));
@@ -44,7 +44,7 @@ class NavigateController {
             if (!!this.linkStates.siteDomain && !!this.linkStates.appKey) {
                 // ドメインとアプリが決まっている
                 // トークンがある
-                const sa = new eim_service_1.EIMServiceAdapter(this.linkStates.siteDomain);
+                const sa = new EIMServiceAdapter_1.EIMServiceAdapter(this.linkStates.siteDomain);
                 const connected = await sa.validateToken(this.linkStates.tokens || []);
                 // トークン検証
                 if (!!connected) {
@@ -63,7 +63,7 @@ class NavigateController {
             else if (!!this.linkStates.siteDomain) {
                 // サイトドメインが決まっている
                 // トークンがある
-                const sa = new eim_service_1.EIMServiceAdapter(this.linkStates.siteDomain);
+                const sa = new EIMServiceAdapter_1.EIMServiceAdapter(this.linkStates.siteDomain);
                 // 接続済みの場合
                 // トークンがある場合は、検証する
                 const connected = await sa.validateToken(this.linkStates.tokens || []);

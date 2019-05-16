@@ -1,5 +1,4 @@
-import moment = require('moment');
-import path from 'path';
+import moment from 'moment';
 import * as rnfs from 'react-native-fs';
 
 import { getEimAccount } from '../account-manager/EimAccount';
@@ -25,7 +24,7 @@ const getInitLangResource = (): ILangResourceStrings => {
 export class LangResourceController {
     private cachePath: string;
     public constructor() {
-        this.cachePath = path.join(rnfs.CachesDirectoryPath, dirName);
+        this.cachePath = `${rnfs.CachesDirectoryPath}/${dirName}`;
     }
     public getLangWord = async (
         site: string,
@@ -86,7 +85,7 @@ export class LangResourceController {
     }
 
     private createCacheFilePath(site: string, appKey: string) {
-        return path.join(this.cachePath, `${site}_${appKey}.json`);
+        return `${this.cachePath}/${site}_${appKey}.json`;
     }
 }
 

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_1 = require("react-native");
 const react_native_keychain_1 = require("react-native-keychain");
 const shortid_1 = require("shortid");
-const eim_service_1 = require("../../eim-service");
+const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 const Config_1 = require("../Config");
 const IAccountLisState_1 = require("../states/IAccountLisState");
 const AccountListActions_1 = require("./AccountListActions");
@@ -33,7 +33,7 @@ exports.asyncSaveAccountAction = async (account, dispatch) => {
         const json = await react_native_keychain_1.getGenericPassword({ service: config.accountListServiceName });
         let accountList = IAccountLisState_1.createInitAccountListState();
         if (!!json && typeof json !== 'boolean') {
-            accountList = JSON.parse(json.password, eim_service_1.dateParser);
+            accountList = JSON.parse(json.password, EIMServiceAdapter_1.dateParser);
         }
         // IDで検索しなければ追加する
         const existIndex = accountList.accounts.findIndex((a) => a.id === id);

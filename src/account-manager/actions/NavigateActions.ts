@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { Dispatch } from 'redux';
 import UrlParse from 'url-parse';
 
-import { EIMServiceAdapter } from '../../eim-service';
+import { EIMServiceAdapter } from '../../eim-service/EIMServiceAdapter';
 import { getConfig } from '../Config';
 import { getEimAccount } from '../EimAccount';
 import { IAuthAppQuery } from '../IEimAccount';

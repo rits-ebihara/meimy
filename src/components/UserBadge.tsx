@@ -3,7 +3,8 @@ import React from 'react';
 import { Modal, ViewStyle } from 'react-native';
 
 import { getEimAccount } from '../account-manager/EimAccount';
-import { IGroupDoc, IGroupProperties, IParsedResponse, IUserDoc, IUserProperties } from '../eim-service';
+import { IGroupDoc, IGroupProperties, IUserDoc, IUserProperties } from '../eim-service/EIMDocInterface';
+import { IParsedResponse } from '../eim-service/IResponse';
 import groupFace from '../resources/group.png';
 import dummyFace from '../resources/user.png';
 

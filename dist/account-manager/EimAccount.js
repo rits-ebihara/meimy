@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_keychain_1 = require("react-native-keychain");
-const eim_service_1 = require("../eim-service");
+const EIMServiceAdapter_1 = require("../eim-service/EIMServiceAdapter");
 const Config_1 = require("./Config");
 const config = Config_1.getConfig();
 class EimAccount {
@@ -23,7 +23,7 @@ class EimAccount {
             await react_native_keychain_1.setGenericPassword('dummy', lastAccountString, { service: config.lastAccountServiceName });
         };
         this.loadUser = async () => {
-            const sa = new eim_service_1.EIMServiceAdapter(this.domain);
+            const sa = new EIMServiceAdapter_1.EIMServiceAdapter(this.domain);
             const user = await sa.getLoginUser(this.eimTokens);
             if (!!user) {
                 this.user = user;
@@ -31,7 +31,7 @@ class EimAccount {
         };
         this.getServiceAdapter = () => {
             if (!this.serviceAdapter) {
-                this.serviceAdapter = new eim_service_1.EIMServiceAdapter(this.domain);
+                this.serviceAdapter = new EIMServiceAdapter_1.EIMServiceAdapter(this.domain);
             }
             return this.serviceAdapter;
         };

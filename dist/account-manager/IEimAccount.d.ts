@@ -1,4 +1,4 @@
-import { EIMServiceAdapter } from '../eim-service';
+import { EIMServiceAdapter } from '../eim-service/EIMServiceAdapter';
 export interface IEimAccountBase {
     appKey: string;
     domain: string;
