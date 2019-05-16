@@ -6,9 +6,9 @@ import { ClientError } from './ClientError';
 import { IDoc, IGroupDoc, IUserDoc } from './EIMDocInterface';
 import { IDocListForView } from './IDocListForView';
 import { IDocListSearchOption } from './IDocListSearchOption';
+import { ILangResources } from './ILangResources';
 import { IParsedResponse, IResponse } from './IResponse';
 import { IResponseDownloadFile } from './IResponseDownloadFile';
-import { ILangResources } from './ILangResources';
 
 export const dateParser = (_key: string, value: any) => {
     const dateReg = /^\d{4}-\d{2}-\d{2}T(?:\d{2}:){2}\d{2}\.\d{3}Z$/;
@@ -177,7 +177,7 @@ export class EIMServiceAdapter {
         );
         return result;
     }
-    public getWordResource = async (tokens: string[], appId: string): Promise<ILangResources> => {
+    public getLangResource = async (tokens: string[], appId: string): Promise<ILangResources> => {
         try {
             const result = await this.get(
                 `/resources/v1/apps/${appId}/strings`,
