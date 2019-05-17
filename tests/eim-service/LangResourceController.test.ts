@@ -6,7 +6,7 @@ import { getEimAccount } from '../../src/account-manager/EimAccount';
 import { IDoc } from '../../src/eim-service/EIMDocInterface';
 import { EIMServiceAdapter } from '../../src/eim-service/EIMServiceAdapter';
 import { ILangResources, ILangResourceStrings } from '../../src/eim-service/ILangResources';
-import { LangResourceController } from '../../src/eim-service/LangResourceController';
+import { getLangResourceController, LangResourceController } from '../../src/eim-service/LangResourceController';
 
 jest.mock('react-native-fs', () => {
     return {
@@ -36,13 +36,16 @@ jest.mock('../../src/account-manager/EimAccount.ts', () => {
 
 const langStrings: ILangResourceStrings = {
     de: {
-        "word1": "b1"
+        "word01": "b1",
+        "word02": "b2"
     },
     ja: {
-        "word1": "日１"
+        "word01": "日１",
+        "word02": "日２"
     },
     en: {
-        "word1": "en1"
+        "word01": "en1",
+        "word02": "en2"
     },
     it: {},
     fr: {},
@@ -90,7 +93,7 @@ describe('getLangWord', () => {
     test('exist word', async () => {
         const esa = new EIMServiceAdapter('domain');
         const result = await target.getLangWord(
-            'domain', 'appkey', 'word1', 'en', esa);
+            'domain', 'appkey', 'word01', 'en', esa);
         expect(result).toEqual('en1');
     });
     test('no exist word', async () => {
@@ -201,11 +204,10 @@ interface ITestDoc {
     jType: {
         type2label: string;
     };
-    jTypeArray: [
-        {
-            type2label: string;
-        }
-    ];
+    jTypeArray: { type2label: string }[];
+    jTypeArray3: {
+        type3: { type2label: string };
+    }[];
 }
 
 // 文書のラベルを更新する
@@ -226,7 +228,17 @@ const testDoc: IDoc<ITestDoc> = {
                 {
                     type2label: 'word02',
                 },
+                {
+                    type2label: 'word00',
+                },
             ],
+            jTypeArray3: [
+                {
+                    type3: {
+                        type2label: 'word02',
+                    }
+                }
+            ]
         },
     },
     form: {
@@ -241,33 +253,36 @@ const testDoc: IDoc<ITestDoc> = {
                     "type": "string",
                     "multiple": false,
                     "label": false
-                },
-                {
+                }, {
                     "name": "body",
                     "type": "richtext",
                     "multiple": false,
-                },
-                {
+                }, {
                     "name": "type",
                     "type": "string",
                     "multiple": false,
                     "label": true
-                },
-                {
+                }, {
                     "name": "check",
                     "type": "boolean",
                     "multiple": false,
-                },
-                {
+                }, {
                     "name": "jType",
                     "type": "cprop1",
                     "multiple": false,
-                },
-                {
+                }, {
                     "name": "jTypeArray",
                     "type": "cprop1",
                     "multiple": true,
-                }
+                }, {
+                    "name": "jTypeArray2",
+                    "type": "cprop1",
+                    "multiple": true,
+                }, {
+                    "name": "jTypeArray3",
+                    "type": "cprop2",
+                    "multiple": true,
+                },
             ],
             "propertyType": [
                 {
@@ -278,9 +293,25 @@ const testDoc: IDoc<ITestDoc> = {
                             "type": "string",
                             "multiple": false,
                             "label": true
+                        }, {
+                            "name": "type2label2",
+                            "type": "string",
+                            "multiple": false,
+                            "label": true
+                        }
+                    ]
+                }, {
+                    "name": "cprop2",
+                    "properties": [
+                        {
+                            "name": "type3",
+                            "type": "cprop1",
+                            "multiple": false,
+                            "label": true
                         }
                     ]
                 }
+
             ],
         },
     },
@@ -289,13 +320,52 @@ const testDoc: IDoc<ITestDoc> = {
     },
 };
 
+const expectConvertDoc = {
+    title: "テスト０２",
+    body: {
+        html: '<p>p</p>',
+        text: 'p',
+    },
+    check: false,
+    type: '日１',
+    jType: {
+        type2label: '日２'
+    },
+    jTypeArray: [
+        {
+            type2label: '日２',
+        },
+        {
+            type2label: 'word00',
+        },
+    ],
+    jTypeArray3: [
+        {
+            type3: {
+                type2label: '日２',
+            }
+        }
+    ]
+};
+
 describe('convertDocLabel', async () => {
     let target: LangResourceController;
     beforeEach(() => {
         target = new LangResourceController();
+        target['loadWordResource'] = async () => {
+            return langStrings;
+        };
     });
     test('normal type', async () => {
-        const result = await target.convertDocLabel(testDoc);
-        expect(result).not.toEqual(testDoc.document.properties);
+        const esa = new EIMServiceAdapter('domain');
+        const result =
+            await target.convertDocLabel('', '', testDoc, 'ja', esa);
+        expect(result).toEqual(expectConvertDoc);
     });
+});
+
+test('get instance', async () => {
+    const target = await getLangResourceController();
+    const target2 = await getLangResourceController();
+    expect(target2).toStrictEqual(target);
 });

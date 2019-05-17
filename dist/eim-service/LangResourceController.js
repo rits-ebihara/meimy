@@ -10,7 +10,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const clone_1 = __importDefault(require("clone"));
 const moment_1 = __importDefault(require("moment"));
+const object_path_1 = __importDefault(require("object-path"));
 const rnfs = __importStar(require("react-native-fs"));
 const EimAccount_1 = require("../account-manager/EimAccount");
 const dirName = 'word_resources';
@@ -40,6 +42,47 @@ class LangResourceController {
                 await rnfs.unlink(this.cachePath);
             }
             await rnfs.mkdir(this.cachePath);
+        };
+        this.convertDocLabel = async (site, appKey, source, lang, esa) => {
+            const cloneDoc = clone_1.default(source.document.properties);
+            const langStrings = await this.loadWordResource(site, appKey, esa);
+            const propertyTypes = source.form.documentModel.propertyType;
+            const scanDefs = (obj, properties) => {
+                // ラベル設定してあるプロパティを変換する
+                properties
+                    .filter(item => item.label === true && item.type === 'string')
+                    .forEach(item => {
+                    const value = object_path_1.default.get(obj, item.name, '');
+                    if (!!value) {
+                        const convertedValue = langStrings[lang][value] || value;
+                        object_path_1.default.set(cloneDoc, item.name, convertedValue);
+                    }
+                });
+                // 独自型を掘り下げる
+                properties
+                    .forEach(item => {
+                    const propType = propertyTypes.find(i => i.name === item.type);
+                    if (!propType) {
+                        return;
+                    }
+                    const childObj = object_path_1.default.get(obj, item.name, null);
+                    if (!childObj) {
+                        return;
+                    }
+                    if (Array.isArray(childObj)) {
+                        childObj.forEach((arrayObj, i) => {
+                            scanDefs(arrayObj, propType.properties);
+                        });
+                    }
+                    else {
+                        scanDefs(childObj, propType.properties);
+                    }
+                });
+            };
+            const sourceProp = source.document.properties;
+            const props = source.form.documentModel.documentModelProperties;
+            scanDefs(sourceProp, props);
+            return cloneDoc;
         };
         this.loadWordResource = async (site, appKey, esa) => {
             const filePath = this.createCacheFilePath(site, appKey);
