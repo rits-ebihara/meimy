@@ -5,7 +5,7 @@ import * as rnfs from 'react-native-fs';
 
 import { IDoc } from '../../src/eim-service/EIMDocInterface';
 import { getEimAccount } from '../account-manager/EimAccount';
-import { IProperty } from './EIMDocInterface';
+import { IDocModelProperty } from './EIMDocInterface';
 import { EIMServiceAdapter } from './EIMServiceAdapter';
 import { ILangResourceStrings } from './ILangResources';
 
@@ -66,12 +66,13 @@ export class LangResourceController {
             site, appKey, esa
         );
         const propertyTypes = source.form.documentModel.propertyType;
-        const scanDefs = (obj: object, properties: IProperty[], parentPropPath = '') => {
+        const scanDefs = (obj: object, properties: IDocModelProperty[], parentPropPath = '') => {
             // ラベル設定してあるプロパティを変換する
             this.convertPropValue<T>(properties, parentPropPath, obj, langStrings, lang, cloneDoc);
             // 独自型を掘り下げる
             properties
                 .forEach(item => {
+                    if (!propertyTypes) { return; }
                     const propType = propertyTypes.find(i => i.name === item.type);
                     if (!propType) { return; }
                     const myPropPath =
@@ -133,7 +134,7 @@ export class LangResourceController {
     }
 
     private convertPropValue = <T extends object>(
-        properties: IProperty[], parentPropPath: string, obj: object,
+        properties: IDocModelProperty[], parentPropPath: string, obj: object,
         langStrings: ILangResourceStrings, lang: LangType, cloneDoc: T) => {
         properties
             .filter(item => item.label === true && item.type === 'string')

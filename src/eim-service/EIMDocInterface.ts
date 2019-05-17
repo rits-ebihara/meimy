@@ -134,26 +134,195 @@ export interface IGroupDoc {
     properties: IGroupProperties;
 }
 
-export interface IProperty {
-    name: string;
-    type: string;
-    multiple?: boolean;
-    label?: boolean;
+export interface IFormEvent {
+    onload?: string;
 }
 
-export interface IPropertyType {
+export interface IActionScript {
+    type: 'simple' | 'function';
+    name?: string;
+    args?: any;
+    script?: string;
+    progressOnFailure?: boolean;
+}
+
+type showHide = 'show' | 'hide';
+
+export interface IFormControlVisibility {
+    creating: showHide;
+    updating: showHide;
+    browsing: showHide;
+}
+
+export interface IFormAction {
     name: string;
-    properties: IProperty[];
+    label?: string;
+    appearance?: {
+        type?: 'simple' | 'delete' | 'arrow' | 'icon';
+        narrow?: boolean;
+        color?: 'white' | 'gray' | 'blue' | 'orange' | 'green';
+        icon?: string;
+        arrowDirection?: 'left' | 'right';
+        size?: 'small' | 'medium' | 'large' | 'x-large';
+    };
+    layout?: {
+        position: 'left' | 'right';
+        order: number;
+    };
+    scripts: IActionScript[];
+    visibility: IFormControlVisibility;
+}
+
+type direction = 'vertical' | 'horizontal';
+
+export interface IFormFieldRestriction {
+    name: 'required' | 'maxLength' | 'minLength' | 'maximum' | 'minimum' | 'regex';
+    value: string;
+}
+
+export interface IFormFieldButton {
+    name: string;
+    show: boolean | string;
+}
+export interface IFormSectionBadge {
+    name: string;
+    type: 'circleIndigo' | 'circleGray' | 'circleTeal' | 'circleTealO' | 'circleCyanO' |
+    'circleOrange' | 'circleRed' | 'circleRedO' | 'squareIndigo' | 'squareGray' |
+    'squareTeal' | 'squareOrange' | 'squareRed';
+    label?: string;
+    icon?: string;
+    isInitialDisplay?: boolean;
+}
+export interface IFormTableLayoutCell {
+    name: string;
+    type: 'label' | 'fieldLabel' | 'fieldMain';
+    label?: string;
+    fieldName?: string;
+    width?: number;
+    rowSpan?: number;
+    cellSpan?: number;
+}
+export interface IFormTableLayoutRow {
+    name: string;
+    isInitialDisplay?: boolean;
+    cells: IFormTableLayoutCell[];
+}
+export interface IFormTableLayout {
+    width?: number;
+    isStriped?: boolean;
+    rows: IFormTableLayoutRow[];
+}
+export interface IFormFieldGroup {
+    name: string;
+    fieldNames: string[];
+    propertyNames: string[];
+    visibility: {
+        creating: boolean;
+        updating: boolean;
+        browsing: boolean;
+    };
+    conditions: {
+        state: string;
+        users: string[];
+        values: any;
+    };
+}
+export interface IFormSection {
+    id: string;
+    name: string;
+    label?: string;
+    description?: string;
+    buttonFields?: string[];
+    fieldNames: string[];
+    direction?: direction;
+    type?: 'typeA' | 'typeB';
+    badges?: IFormSectionBadge[];
+    spread?: boolean;
+    initSpread?: boolean;
+    fieldLayout?: string;
+    tableLayout?: IFormTableLayout;
+    noBorder?: boolean;
+    parentSectionName?: string;
+}
+export interface IDocModelPropertyRestriction {
+    required?: boolean;
+    unique?: boolean;
+    maxLength?: number;
+    minLength?: number;
+    maximum?: number;
+    minimum?: number;
+    regex?: number;
+}
+export interface IDocModelProperty {
+    name: string;
+    type: string;
+    label?: boolean;
+    multiple: boolean;
+    fulltextsearch?: boolean;
+    restriction?: IDocModelPropertyRestriction;
+}
+export interface IDocModelPropertyType {
+    name: string;
+    properties: IDocModelProperty[];
+}
+export interface IDocumentModel {
+    key?: string;
+    title: string;
+    useVersion: boolean;
+    useRevision: boolean;
+    documentModelProperties: IDocModelProperty[];
+    propertyType?: IDocModelPropertyType[];
+
+}
+export interface IFormField {
+    name: string;
+    label?: string;
+    description?: string;
+    noLabel?: boolean;
+    labelDirection?: direction;
+    defaultValue?: any;
+    documentPropertyName?: string;
+    direction?: direction;
+    message?: {
+        restriction: IFormFieldRestriction[];
+    };
+    readOnly?: {
+        creating: boolean;
+        updating: boolean;
+    };
+    buttons?: IFormFieldButton[];
+    control: {
+        controlType: string;
+        settings: any;
+    };
+}
+export interface IFormFeature {
+    copyUrl?: boolean;
+    showProperty?: boolean;
+    shareDocument?: boolean;
+    controlVersion?: boolean;
+    controlVersionAction?: boolean;
 }
 export interface IForm {
+    key?: string;
+    name: string;
+    title: string;
+    description?: string;
+    styleSheetString?: string;
+    events?: IFormEvent;
+    validation?: string;
+    bibliographicInformation?: {
+        show: boolean;
+    };
+    formActions?: IFormAction[];
+    formFields: IFormField[];
     layout: {
-        sections: any[];
+        sections: IFormSection[];
     };
-    formActions: any[];
-    documentModel: {
-        documentModelProperties: IProperty[];
-        propertyType: IPropertyType[];
-    };
+    fieldGroups?: IFormFieldGroup[];
+    documentModel: IDocumentModel;
+    feature?: IFormFeature;
+    discardConfirmDialog?: boolean;
 }
 
 export interface IDoc<T = {}> {
