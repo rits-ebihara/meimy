@@ -134,8 +134,31 @@ export interface IGroupDoc {
     properties: IGroupProperties;
 }
 
+export interface IProperty {
+    name: string;
+    type: string;
+    multiple?: boolean;
+    label?: boolean;
+}
+
+export interface IPropertyType {
+    name: string;
+    properties: IProperty[];
+}
+export interface IForm {
+    layout: {
+        sections: any[];
+    };
+    formActions: any[];
+    documentModel: {
+        documentModelProperties: IProperty[];
+        propertyType: IPropertyType[];
+    };
+}
+
 export interface IDoc<T = {}> {
     system: ISystem;
+    form: IForm;
     document: {
         properties: T;
     };

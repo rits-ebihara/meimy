@@ -3,6 +3,7 @@ import { exists, mkdir, readDir, readFile, unlink, writeFile } from 'react-nativ
 import { mocked } from 'ts-jest/utils';
 
 import { getEimAccount } from '../../src/account-manager/EimAccount';
+import { IDoc } from '../../src/eim-service/EIMDocInterface';
 import { EIMServiceAdapter } from '../../src/eim-service/EIMServiceAdapter';
 import { ILangResources, ILangResourceStrings } from '../../src/eim-service/ILangResources';
 import { LangResourceController } from '../../src/eim-service/LangResourceController';
@@ -186,5 +187,115 @@ describe('deleteOldCache', () => {
         expect(unlink).toBeCalledTimes(2);
         expect(unlink).toBeCalledWith('/test/word_resources/cache1.json');
         expect(unlink).toBeCalledWith('/test/word_resources/cache4.json');
+    });
+});
+
+interface ITestDoc {
+    title: string;
+    body: {
+        html: string;
+        text: string;
+    };
+    check: boolean;
+    type: string;
+    jType: {
+        type2label: string;
+    };
+    jTypeArray: [
+        {
+            type2label: string;
+        }
+    ];
+}
+
+// 文書のラベルを更新する
+const testDoc: IDoc<ITestDoc> = {
+    document: {
+        properties: {
+            title: "テスト０２",
+            body: {
+                html: '<p>p</p>',
+                text: 'p',
+            },
+            check: false,
+            type: 'word01',
+            jType: {
+                type2label: 'word02'
+            },
+            jTypeArray: [
+                {
+                    type2label: 'word02',
+                },
+            ],
+        },
+    },
+    form: {
+        layout: {
+            sections: [],
+        },
+        formActions: [],
+        documentModel: {
+            documentModelProperties: [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "multiple": false,
+                    "label": false
+                },
+                {
+                    "name": "body",
+                    "type": "richtext",
+                    "multiple": false,
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "multiple": false,
+                    "label": true
+                },
+                {
+                    "name": "check",
+                    "type": "boolean",
+                    "multiple": false,
+                },
+                {
+                    "name": "jType",
+                    "type": "cprop1",
+                    "multiple": false,
+                },
+                {
+                    "name": "jTypeArray",
+                    "type": "cprop1",
+                    "multiple": true,
+                }
+            ],
+            "propertyType": [
+                {
+                    "name": "cprop1",
+                    "properties": [
+                        {
+                            "name": "type2label",
+                            "type": "string",
+                            "multiple": false,
+                            "label": true
+                        }
+                    ]
+                }
+            ],
+        },
+    },
+    system: {
+        documentId: 'id',
+    },
+};
+
+describe('convertDocLabel', async () => {
+    let target: LangResourceController;
+    beforeEach(() => {
+        target = new LangResourceController();
+    });
+    test('normal type', async () => {
+        const result = await target.convertDocLabel(testDoc);
+        expect(result).not.toEqual(testDoc.document.properties);
     });
 });

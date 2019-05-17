@@ -1,6 +1,7 @@
 import moment from 'moment';
 import * as rnfs from 'react-native-fs';
 
+import { IDoc } from '../../dist/eim-service/EIMDocInterface';
 import { getEimAccount } from '../account-manager/EimAccount';
 import { EIMServiceAdapter } from './EIMServiceAdapter';
 import { ILangResourceStrings } from './ILangResources';
@@ -23,9 +24,11 @@ const getInitLangResource = (): ILangResourceStrings => {
 
 export class LangResourceController {
     private cachePath: string;
+
     public constructor() {
         this.cachePath = `${rnfs.CachesDirectoryPath}/${dirName}`;
     }
+
     public getLangWord = async (
         site: string,
         appKey: string,
@@ -39,6 +42,7 @@ export class LangResourceController {
         const result = langString[key] || key;
         return result;
     }
+
     public createCacheDir = async () => {
         // キャッシュフォルダに 言語リソースフォルダを作成する
         const existDir = await rnfs.exists(this.cachePath);
@@ -47,6 +51,11 @@ export class LangResourceController {
         }
         await rnfs.mkdir(this.cachePath);
     }
+
+    public convertDocLabel = <T>(source: IDoc<T>): T => {
+        return source.document.properties;
+    }
+
     private loadWordResource = async (site: string, appKey: string, esa: EIMServiceAdapter) => {
         const filePath = this.createCacheFilePath(site, appKey);
         let result: ILangResourceStrings;
