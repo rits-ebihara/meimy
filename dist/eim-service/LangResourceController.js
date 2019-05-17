@@ -47,35 +47,32 @@ class LangResourceController {
             const cloneDoc = clone_1.default(source.document.properties);
             const langStrings = await this.loadWordResource(site, appKey, esa);
             const propertyTypes = source.form.documentModel.propertyType;
-            const scanDefs = (obj, properties) => {
+            const scanDefs = (obj, properties, parentPropPath = '') => {
                 // ラベル設定してあるプロパティを変換する
-                properties
-                    .filter(item => item.label === true && item.type === 'string')
-                    .forEach(item => {
-                    const value = object_path_1.default.get(obj, item.name, '');
-                    if (!!value) {
-                        const convertedValue = langStrings[lang][value] || value;
-                        object_path_1.default.set(cloneDoc, item.name, convertedValue);
-                    }
-                });
+                this.convertPropValue(properties, parentPropPath, obj, langStrings, lang, cloneDoc);
                 // 独自型を掘り下げる
                 properties
                     .forEach(item => {
+                    if (!propertyTypes) {
+                        return;
+                    }
                     const propType = propertyTypes.find(i => i.name === item.type);
                     if (!propType) {
                         return;
                     }
+                    const myPropPath = ((!!parentPropPath) ? parentPropPath + '.' : '')
+                        + item.name;
                     const childObj = object_path_1.default.get(obj, item.name, null);
                     if (!childObj) {
                         return;
                     }
                     if (Array.isArray(childObj)) {
                         childObj.forEach((arrayObj, i) => {
-                            scanDefs(arrayObj, propType.properties);
+                            scanDefs(arrayObj, propType.properties, `${myPropPath}.${i}`);
                         });
                     }
                     else {
-                        scanDefs(childObj, propType.properties);
+                        scanDefs(childObj, propType.properties, myPropPath);
                     }
                 });
             };
@@ -120,6 +117,19 @@ class LangResourceController {
                 asyncAll.push(rnfs.unlink(item.path));
             });
             await Promise.all(asyncAll);
+        };
+        this.convertPropValue = (properties, parentPropPath, obj, langStrings, lang, cloneDoc) => {
+            properties
+                .filter(item => item.label === true && item.type === 'string')
+                .forEach(item => {
+                const myPropPath = ((!!parentPropPath) ? parentPropPath + '.' : '')
+                    + item.name;
+                const value = object_path_1.default.get(obj, item.name, '');
+                if (!!value) {
+                    const convertedValue = langStrings[lang][value] || value;
+                    object_path_1.default.set(cloneDoc, myPropPath, convertedValue);
+                }
+            });
         };
         this.cachePath = `${rnfs.CachesDirectoryPath}/${dirName}`;
     }

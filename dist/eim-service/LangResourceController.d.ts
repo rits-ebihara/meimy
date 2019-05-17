@@ -8,6 +8,7 @@ export declare class LangResourceController {
     convertDocLabel: <T extends object>(site: string, appKey: string, source: IDoc<T>, lang: "de" | "ja" | "en" | "it" | "fr" | "es" | "nl", esa: EIMServiceAdapter) => Promise<T>;
     private loadWordResource;
     private deleteOldCache;
+    private convertPropValue;
     private createCacheFilePath;
 }
 export declare const getLangResourceController: () => Promise<LangResourceController>;
