@@ -3,6 +3,7 @@ import { mocked } from 'ts-jest/utils';
 import { SET_ACCOUNT_ACTION } from '../../../src/account-manager/actions/AccountActions';
 import { SET_APP_LIST } from '../../../src/account-manager/actions/EimAppListActions';
 import { NavigateController } from '../../../src/account-manager/actions/NavigateActions';
+import { getEimAccount } from '../../../src/account-manager/EimAccount';
 import routePageNames from '../../../src/account-manager/RoutePageNames';
 import { IAccountListState } from '../../../src/account-manager/states/IAccountLisState';
 import { IAuthState } from '../../../src/account-manager/states/IAuthStates';
@@ -24,18 +25,11 @@ jest.mock('../../../src/eim-service/EIMServiceAdapter.ts', () => {
 });
 jest.mock('../../../src/account-manager/EimAccount', () => {
     return {
-        getEimAccount: () => {
-            return {
-                save: jest.fn(),
-                loadUser: jest.fn(),
-            }
-        }
+        getEimAccount: jest.fn(),
     };
-})
+});
 
 describe('navigateForLink', () => {
-
-
     describe('has domain and appkey', () => {
         let target: NavigateController;
         let navigation: any;
@@ -81,7 +75,6 @@ describe('navigateForLink', () => {
             };
             dispatch = jest.fn();
         });
-
         test('failed connect, no replace -> move to account page', async () => {
             mocked(EIMServiceAdapter).mockImplementation(() => {
                 return {
@@ -343,5 +336,113 @@ describe('navigateForLink', () => {
         expect(dispatch).not.toBeCalled();
         expect(navigation.replace).not.toBeCalled();
         expect(navigation.navigate).not.toBeCalled();
+    });
+});
+
+test('clear', () => {
+    const target = new NavigateController();
+    target['linkStates'] = {
+        siteDomain: 'domain',
+        appKey: 'appkey',
+    };
+    target.clear();
+    expect(target.getLinkState()).toEqual({});
+});
+
+describe('openApp', () => {
+    test('exist parentMainPage -> goto parentMainPage', async () => {
+        const listState: IAuthState = {};
+        const navigation = {
+            navigate: jest.fn(),
+        };
+        const eimAccountSave = jest.fn();
+        const eimAccountLoadUser = jest.fn();
+        mocked(getEimAccount).mockImplementation(() => {
+            return {
+                save: eimAccountSave,
+                loadUser: eimAccountLoadUser,
+            } as any;
+        });
+        const target = new NavigateController();
+        target.parentMainPage = 'main_page';
+        target.parentNavParams = {};
+        await target.openApp(listState, navigation as any);
+        expect(eimAccountSave).toBeCalled();
+        expect(eimAccountLoadUser).toBeCalled();
+        expect(navigation.navigate).toBeCalledWith(
+            'main_page', target.parentNavParams,
+        );
+    });
+    test('not exist parentMainPage -> 何もしない', async () => {
+        const listState: IAuthState = {};
+        const navigation = {
+            navigate: jest.fn(),
+        };
+        const eimAccountSave = jest.fn();
+        const eimAccountLoadUser = jest.fn();
+        mocked(getEimAccount).mockImplementation(() => {
+            return {
+                save: eimAccountSave,
+                loadUser: eimAccountLoadUser,
+            } as any;
+        });
+        const target = new NavigateController();
+        target.parentMainPage = '';
+        target.parentNavParams = {};
+        await target.openApp(listState, navigation as any);
+        expect(eimAccountSave).toBeCalled();
+        expect(eimAccountLoadUser).toBeCalled();
+        expect(navigation.navigate).not.toBeCalled();
+    });
+});
+
+describe('openAccountManager', () => {
+    let target: NavigateController;
+    beforeEach(() => {
+        target = new NavigateController;
+        target['_openAccountManager'] = jest.fn();
+
+    });
+    test('exist link and hash -> open appKey, and domain', async () => {
+        const navigation = {
+            name: 'navigate',
+        };
+        const dispatch = jest.fn();
+        const link = 'http://app-dev16.ope.azure.ricoh-eim.com/';
+        const hash = '/apps/app_key/documents/doc_id';
+        await target.openAccountManager(
+            navigation as any,
+            dispatch,
+            link,
+            hash);
+        expect(target['_openAccountManager']).toBeCalledWith(
+            dispatch, navigation,
+            link, hash,
+            'app_key', 'app-dev16.ope.azure.ricoh-eim.com');
+    });
+    test('no exist (link and hash) and exist account -> load and open', async () => {
+        mocked(getEimAccount).mockImplementation(() => {
+            return {
+                load: async () => {
+                    return {
+                        appKey: 'app-key',
+                        domain: 'domain',
+                        eimTokens: [],
+                        siteName: 'site-name',
+                    }
+                }
+            } as any;
+        });
+        const navigation = {
+            name: 'navigate',
+        };
+        const dispatch = jest.fn();
+        await target.openAccountManager(
+            navigation as any,
+            dispatch);
+        expect(target['_openAccountManager']).toBeCalledWith(
+            dispatch, navigation,
+            undefined, undefined,
+            'app-key', 'domain');
     });
 });
