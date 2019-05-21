@@ -113,6 +113,15 @@ describe('loadWordResource', () => {
         target = new LangResourceController();
         esa = new EIMServiceAdapter('site1');
     });
+    test('cached memory', async () => {
+        target['memoryCache'] = {
+            site: 'site1',
+            appKey: 'app-key1',
+            data: langStrings,
+        };
+        const result = await target['loadWordResource']('site1', 'app-key1', esa);
+        expect(result).toStrictEqual(target['memoryCache'].data);
+    });
     test('cached file', async () => {
         // キャッシュにある場合、それを読み込み、返す
         mocked(exists).mockImplementation(async () => (true));
@@ -121,6 +130,11 @@ describe('loadWordResource', () => {
         });
         const result = await target['loadWordResource']('site1', 'appkey', esa);
         expect(result).toEqual(langStrings);
+        expect(target['memoryCache']).toEqual({
+            site: 'site1',
+            appKey: 'appkey',
+            data: langStrings,
+        });
     });
     test('error on cached file', async () => {
         // キャッシュにある場合、それを読み込み、返す
@@ -284,7 +298,7 @@ const testDoc: IDoc<ITestDoc> = {
                     "multiple": true,
                 },
             ],
-            "propertyType": [
+            propertyType: [
                 {
                     "name": "cprop1",
                     "properties": [
@@ -313,8 +327,8 @@ const testDoc: IDoc<ITestDoc> = {
                 }
 
             ],
-        },
-    },
+        } as any,
+    } as any,
     system: {
         documentId: 'id',
     },

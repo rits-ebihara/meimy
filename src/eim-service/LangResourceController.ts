@@ -27,6 +27,11 @@ const getInitLangResource = (): ILangResourceStrings => {
 
 export class LangResourceController {
     private cachePath: string;
+    private memoryCache?: {
+        site: string;
+        appKey: string;
+        data: ILangResourceStrings;
+    };
 
     public constructor() {
         this.cachePath = `${rnfs.CachesDirectoryPath}/${dirName}`;
@@ -99,6 +104,11 @@ export class LangResourceController {
     private loadWordResource = async (site: string, appKey: string, esa: EIMServiceAdapter) => {
         const filePath = this.createCacheFilePath(site, appKey);
         let result: ILangResourceStrings;
+        const { memoryCache } = this;
+        if (!!memoryCache &&
+            memoryCache.site === site && memoryCache.appKey === appKey) {
+            return memoryCache.data;
+        }
         try {
             this.deleteOldCache();
             if (await rnfs.exists(filePath)) {
@@ -113,6 +123,12 @@ export class LangResourceController {
                 // キャッシュに保存する
                 await rnfs.writeFile(filePath, JSON.stringify(result));
             }
+            // メモリキャッシュに格納する
+            this.memoryCache = {
+                site,
+                appKey,
+                data: result,
+            };
         } catch (e) {
             console.warn(e);
             // エラーが発生した場合は初期値
