@@ -9,7 +9,7 @@ module.exports = {
         "!**/node_modules/**",
     ],
     coverageReporters: [
-        "html", "text"
+        "html", "text", "lcov"
     ],
     preset: "react-native",
     transform: {
