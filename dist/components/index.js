@@ -9,3 +9,4 @@ __export(require("./UserBadge"));
 __export(require("./DrawerView"));
 __export(require("./DocListView"));
 __export(require("./SplashScreen"));
+__export(require("./HTMLViewer"));

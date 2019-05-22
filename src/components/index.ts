@@ -4,3 +4,4 @@ export * from './UserBadge';
 export * from './DrawerView';
 export * from './DocListView';
 export * from './SplashScreen';
+export * from './HTMLViewer';

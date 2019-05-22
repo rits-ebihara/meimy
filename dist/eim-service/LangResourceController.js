@@ -84,6 +84,11 @@ class LangResourceController {
         this.loadWordResource = async (site, appKey, esa) => {
             const filePath = this.createCacheFilePath(site, appKey);
             let result;
+            const { memoryCache } = this;
+            if (!!memoryCache &&
+                memoryCache.site === site && memoryCache.appKey === appKey) {
+                return memoryCache.data;
+            }
             try {
                 this.deleteOldCache();
                 if (await rnfs.exists(filePath)) {
@@ -99,6 +104,12 @@ class LangResourceController {
                     // キャッシュに保存する
                     await rnfs.writeFile(filePath, JSON.stringify(result));
                 }
+                // メモリキャッシュに格納する
+                this.memoryCache = {
+                    site,
+                    appKey,
+                    data: result,
+                };
             }
             catch (e) {
                 console.warn(e);

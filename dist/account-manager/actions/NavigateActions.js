@@ -19,74 +19,80 @@ const config = Config_1.getConfig();
 class NavigateController {
     constructor() {
         this.linkStates = {};
+        this.transferAccountPage = (accountListState, dispatch, navigation, replace = false, siteDomain) => {
+            const accountList = accountListState.accounts;
+            let account = accountList.find((a) => a.siteDomain === this.linkStates.siteDomain);
+            if (!account) {
+                // なければアカウント新規作成画面に遷移する
+                account = IAccountState_1.createInitAccountState();
+                const name = siteDomain;
+                account.siteName = name;
+                account.siteDomain = name;
+            }
+            dispatch(AccountActions_1.createSetAccountAction(account));
+            if (replace) {
+                navigation.replace(RoutePageNames_1.default.accountPageName);
+            }
+            else {
+                navigation.navigate(RoutePageNames_1.default.accountPageName);
+            }
+        };
+        this.determinedAppAndDomain = async (siteDomain, navigation, accountListState, dispatch, replace = false) => {
+            // トークンがある
+            const sa = new EIMServiceAdapter_1.EIMServiceAdapter(siteDomain);
+            const connected = await sa.validateToken(this.linkStates.tokens || []);
+            // トークン検証
+            if (!!connected) {
+                // 成功
+                // 呼び出しアプリを起動
+                await this.openApp({}, navigation);
+                return true;
+            }
+            else {
+                // 失敗
+                // アカウント画面に遷移する
+                this.transferAccountPage(accountListState, dispatch, navigation, replace, siteDomain);
+                return true;
+            }
+        };
+        this.deteminedAppOnly = async (domain, replace, navigation, dispatch, accountListState) => {
+            const sa = new EIMServiceAdapter_1.EIMServiceAdapter(domain);
+            // 接続済みの場合
+            // トークンがある場合は、検証する
+            const connected = await sa.validateToken(this.linkStates.tokens || []);
+            // 検証の結果
+            if (connected) {
+                // 認証が成功の場合
+                // アプリ一覧を取得
+                // アプリ一覧の画面に遷移する
+                const moveTo = (replace) ? navigation.replace : navigation.navigate;
+                if (this.linkStates.appKeyPrefix) {
+                    dispatch(EimAppListActions_1.createSetAppListAction([]));
+                    moveTo(RoutePageNames_1.default.appListPageName);
+                }
+                else {
+                    moveTo(RoutePageNames_1.default.accountListPageName);
+                }
+                return true;
+            }
+            else {
+                // 失敗の場合、アカウントの画面に遷移する
+                this.transferAccountPage(accountListState, dispatch, navigation, replace, domain);
+            }
+            return true;
+        };
         this.navigateForLink = async (accountListState, pLinkState, dispatch, 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         navigation, replace = false) => {
-            const transferAccountPage = () => {
-                const accountList = accountListState.accounts;
-                let account = accountList.find((a) => a.siteDomain === this.linkStates.siteDomain);
-                if (!account) {
-                    // なければアカウント新規作成画面に遷移する
-                    account = IAccountState_1.createInitAccountState();
-                    const name = this.linkStates.siteDomain || '';
-                    account.siteName = name;
-                    account.siteDomain = name;
-                }
-                dispatch(AccountActions_1.createSetAccountAction(account));
-                if (replace) {
-                    navigation.replace(RoutePageNames_1.default.accountPageName);
-                }
-                else {
-                    navigation.navigate(RoutePageNames_1.default.accountPageName);
-                }
-            };
             this.linkStates = Object.assign({}, this.linkStates, pLinkState);
             if (!!this.linkStates.siteDomain && !!this.linkStates.appKey) {
                 // ドメインとアプリが決まっている
-                // トークンがある
-                const sa = new EIMServiceAdapter_1.EIMServiceAdapter(this.linkStates.siteDomain);
-                const connected = await sa.validateToken(this.linkStates.tokens || []);
-                // トークン検証
-                if (!!connected) {
-                    // 成功
-                    // 呼び出しアプリを起動
-                    await this.openApp({}, navigation);
-                    return true;
-                }
-                else {
-                    // 失敗
-                    // アカウント画面に遷移する
-                    transferAccountPage();
-                    return true;
-                }
+                return await this.determinedAppAndDomain(this.linkStates.siteDomain, navigation, accountListState, dispatch, replace);
             }
             else if (!!this.linkStates.siteDomain) {
                 // サイトドメインが決まっている
                 // トークンがある
-                const sa = new EIMServiceAdapter_1.EIMServiceAdapter(this.linkStates.siteDomain);
-                // 接続済みの場合
-                // トークンがある場合は、検証する
-                const connected = await sa.validateToken(this.linkStates.tokens || []);
-                // 検証の結果
-                if (connected) {
-                    // 認証が成功の場合
-                    // アプリ一覧を取得
-                    // アプリ一覧の画面に遷移する
-                    const moveTo = (replace) ? navigation.replace : navigation.navigate;
-                    if (this.linkStates.appKeyPrefix) {
-                        dispatch(EimAppListActions_1.createSetAppListAction([]));
-                        moveTo(RoutePageNames_1.default.appListPageName);
-                    }
-                    else {
-                        moveTo(RoutePageNames_1.default.accountListPageName);
-                    }
-                    return true;
-                }
-                else {
-                    // 失敗の場合、アカウントの画面に遷移する
-                    transferAccountPage();
-                }
-                return true;
+                return await this.deteminedAppOnly(this.linkStates.siteDomain, replace, navigation, dispatch, accountListState);
             }
             else {
                 // ドメインの指定がない場合は、なにもしない
@@ -110,54 +116,18 @@ class NavigateController {
             await eimAccount.save();
             await eimAccount.loadUser();
             if (this.parentMainPage) {
-                console.log('called2');
                 navigation.navigate(this.parentMainPage, this.parentNavParams);
             }
         };
-        this.openAccountManager = (
+        this.openAccountManager = async (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         navigation, dispatch, link, hash) => {
-            const authState = {
-                appKeyPrefix: config.appKeyPrefix,
-            };
-            const accountManagerUrl = url_parse_1.default('eimapplink-accountmanager://accountmanager/');
-            const query = {
-                appprefix: config.appKeyPrefix,
-                mapp: config.appKeyPrefix,
-            };
-            const open = (_appKey, _domain) => {
-                if (!!_appKey && !!_domain) {
-                    query.appkey = _appKey;
-                    query.domain = _domain;
-                    authState.appKey = _appKey;
-                    authState.siteDomain = _domain;
-                }
-                if (!!link) {
-                    const linkUrl = url_parse_1.default(link);
-                    linkUrl.set('hash', hash);
-                    query.link = linkUrl.href;
-                    authState.link = linkUrl.href;
-                }
-                accountManagerUrl.set('query', query);
-                react_native_1.Linking.canOpenURL(accountManagerUrl.href).then((result) => {
-                    if (result) {
-                        react_native_1.Linking.openURL(accountManagerUrl.href);
-                    }
-                    else {
-                        this.parentMainPage = config.startPage;
-                        if (!!hash) {
-                            const paths = hash.split('/');
-                            this.parentNavParams = {
-                                parameter: paths.length === 5 ? paths[4] : undefined,
-                            };
-                        }
-                        dispatch(AccountListActions_1.createSetAuthState(authState));
-                        navigation.navigate(RoutePageNames_1.default.authPageName);
-                    }
-                });
-            };
             let appKey;
             let domain;
+            // 部分適用
+            const open = (appKey, domain) => {
+                return this._openAccountManager(dispatch, navigation, link, hash, appKey, domain);
+            };
             // メールなど文書を開くリンクから開く
             if (!!link && !!hash) {
                 const linkUrl = url_parse_1.default(link);
@@ -169,13 +139,52 @@ class NavigateController {
             }
             const eimAccount = EimAccount_1.getEimAccount();
             // 前回アクセスしたサイトを取得する
-            eimAccount.load().then((lastAccount) => {
+            await eimAccount.load().then((lastAccount) => {
                 // 認証アプリを起動する
                 if (!!lastAccount) {
                     open(lastAccount.appKey, lastAccount.domain);
                 }
                 else {
                     open();
+                }
+            });
+        };
+        this._openAccountManager = (dispatch, navigation, link, hash, appKey, domain) => {
+            const authState = {
+                appKeyPrefix: config.appKeyPrefix,
+            };
+            const accountManagerUrl = url_parse_1.default('eimapplink-accountmanager://accountmanager/');
+            const query = {
+                appprefix: config.appKeyPrefix,
+                mapp: config.appKeyPrefix,
+            };
+            if (!!appKey && !!domain) {
+                query.appkey = appKey;
+                query.domain = domain;
+                authState.appKey = appKey;
+                authState.siteDomain = domain;
+            }
+            if (!!link) {
+                const linkUrl = url_parse_1.default(link);
+                linkUrl.set('hash', hash);
+                query.link = linkUrl.href;
+                authState.link = linkUrl.href;
+            }
+            accountManagerUrl.set('query', query);
+            react_native_1.Linking.canOpenURL(accountManagerUrl.href).then((result) => {
+                if (result) {
+                    react_native_1.Linking.openURL(accountManagerUrl.href);
+                }
+                else {
+                    this.parentMainPage = config.startPage;
+                    if (!!hash) {
+                        const paths = hash.split('/');
+                        this.parentNavParams = {
+                            parameter: paths.length === 5 ? paths[4] : undefined,
+                        };
+                    }
+                    dispatch(AccountListActions_1.createSetAuthState(authState));
+                    navigation.navigate(RoutePageNames_1.default.authPageName);
                 }
             });
         };

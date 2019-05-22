@@ -2,6 +2,7 @@ import { IDoc } from '../../src/eim-service/EIMDocInterface';
 import { EIMServiceAdapter } from './EIMServiceAdapter';
 export declare class LangResourceController {
     private cachePath;
+    private memoryCache?;
     constructor();
     getLangWord: (site: string, appKey: string, key: string, lang: "de" | "ja" | "en" | "it" | "fr" | "es" | "nl", esa: EIMServiceAdapter) => Promise<string>;
     createCacheDir: () => Promise<void>;
