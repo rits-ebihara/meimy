@@ -1,6 +1,8 @@
+import { Linking } from 'react-native';
 import { mocked } from 'ts-jest/utils';
 
 import { SET_ACCOUNT_ACTION } from '../../../src/account-manager/actions/AccountActions';
+import { SET_AUTH_STATE } from '../../../src/account-manager/actions/AccountListActions';
 import { SET_APP_LIST } from '../../../src/account-manager/actions/EimAppListActions';
 import { NavigateController } from '../../../src/account-manager/actions/NavigateActions';
 import { getEimAccount } from '../../../src/account-manager/EimAccount';
@@ -12,7 +14,8 @@ import { EIMServiceAdapter } from '../../../src/eim-service/EIMServiceAdapter';
 jest.mock('react-native', () => {
     return {
         Linking: {
-            canOpenUrl: jest.fn(),
+            canOpenURL: jest.fn(),
+            openURL: jest.fn(),
         },
     };
 });
@@ -26,6 +29,16 @@ jest.mock('../../../src/eim-service/EIMServiceAdapter.ts', () => {
 jest.mock('../../../src/account-manager/EimAccount', () => {
     return {
         getEimAccount: jest.fn(),
+    };
+});
+jest.mock('../../../src/account-manager/Config.ts', () => {
+    return {
+        getConfig: () => {
+            return {
+                appKeyPrefix: 'app-prefix',
+                startPage: 'start-page',
+            };
+        }
     };
 });
 
@@ -420,6 +433,23 @@ describe('openAccountManager', () => {
             link, hash,
             'app_key', 'app-dev16.ope.azure.ricoh-eim.com');
     });
+    test('exist miss link and hash -> open appKey, and domain', async () => {
+        const navigation = {
+            name: 'navigate',
+        };
+        const dispatch = jest.fn();
+        const link = 'http://app-dev16.ope.azure.ricoh-eim.com/';
+        const hash = '/apps/app_key/documents';
+        await target.openAccountManager(
+            navigation as any,
+            dispatch,
+            link,
+            hash);
+        expect(target['_openAccountManager']).toBeCalledWith(
+            dispatch, navigation,
+            link, hash,
+            undefined, 'app-dev16.ope.azure.ricoh-eim.com');
+    });
     test('no exist (link and hash) and exist account -> load and open', async () => {
         mocked(getEimAccount).mockImplementation(() => {
             return {
@@ -444,5 +474,180 @@ describe('openAccountManager', () => {
             dispatch, navigation,
             undefined, undefined,
             'app-key', 'domain');
+    });
+    test('no exist (link and hash and account) -> load and open', async () => {
+        mocked(getEimAccount).mockImplementation(() => {
+            return {
+                load: async () => {
+                    return null;
+                },
+            } as any;
+        });
+        const navigation = {
+            name: 'navigate',
+        };
+        const dispatch = jest.fn();
+        await target.openAccountManager(
+            navigation as any,
+            dispatch);
+        expect(target['_openAccountManager']).toBeCalledWith(
+            dispatch, navigation,
+            undefined, undefined,
+            undefined, undefined);
+    });
+});
+
+describe('_openAccountManager', () => {
+    let target: NavigateController;
+    let dispatch: jest.Mock;
+    let navigation: any;
+
+    beforeAll(() => {
+    });
+    beforeEach(() => {
+        target = new NavigateController();
+        dispatch = jest.fn();
+        navigation = {
+            navigate: jest.fn(),
+        };
+        mocked(Linking.openURL).mockClear();
+    });
+    test('link, hash, appkey, domain is undefined, exist account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return true;
+        }));
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?appprefix=app-prefix&mapp=app-prefix';
+        await target['_openAccountManager'](dispatch, navigation);
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).toBeCalledWith(expectURL);
+    });
+    test('link, hash is undefined, exist appkey, domain, account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return true;
+        }));
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?'
+            + 'appprefix=app-prefix&mapp=app-prefix&appkey=app-key&domain=domain';
+        await target['_openAccountManager'](
+            dispatch, navigation,
+            undefined, undefined,
+            'app-key', 'domain');
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).toBeCalledWith(expectURL);
+    });
+    test('exist link, hash, appkey, domain, account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return true;
+        }));
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?'
+            + 'appprefix=app-prefix&mapp=app-prefix&appkey=app-key&domain=domain'
+            + '&link=https%3A%2F%2Fexsample.com%2F%23%2Fa%2Fb%2Fc%2F';
+        await target['_openAccountManager'](
+            dispatch, navigation,
+            'https://exsample.com/', '/a/b/c/',
+            'app-key', 'domain');
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).toBeCalledWith(expectURL);
+    });
+    test('link, hash, appkey, domain is undefined, no exist account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return false;
+        }));
+        await target['_openAccountManager'](dispatch, navigation);
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?appprefix=app-prefix&mapp=app-prefix';
+        const expectAuthState = {
+            appKeyPrefix: 'app-prefix',
+        }
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).not.toBeCalled();
+        expect(target.parentMainPage).toEqual('start-page');
+        expect(dispatch).toBeCalledWith({
+            authState: expectAuthState,
+            type: SET_AUTH_STATE
+        });
+        expect(navigation.navigate).toBeCalledWith('auth');
+    });
+    test('link, hash is undefined, exist appkey, domain, no exit account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return false;
+        }));
+        await target['_openAccountManager'](
+            dispatch, navigation,
+            undefined, undefined,
+            'app-key', 'domain');
+        const expectAuthState = {
+            appKeyPrefix: 'app-prefix',
+            appKey: 'app-key',
+            siteDomain: 'domain',
+        }
+
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?'
+            + 'appprefix=app-prefix&mapp=app-prefix&appkey=app-key&domain=domain';
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).not.toBeCalled();
+        expect(target.parentMainPage).toEqual('start-page');
+        expect(target.parentNavParams).toEqual(undefined)
+        expect(dispatch).toBeCalledWith({
+            authState: expectAuthState,
+            type: SET_AUTH_STATE
+        });
+        expect(navigation.navigate).toBeCalledWith('auth');
+    });
+    test('exist link, hash, appkey, domain, no exist account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return false;
+        }));
+        await target['_openAccountManager'](
+            dispatch, navigation,
+            'https://exsample.com/', '/a/b/c/d',
+            'app-key', 'domain');
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?'
+            + 'appprefix=app-prefix&mapp=app-prefix&appkey=app-key&domain=domain'
+            + '&link=https%3A%2F%2Fexsample.com%2F%23%2Fa%2Fb%2Fc%2F';
+        const expectAuthState = {
+            appKeyPrefix: 'app-prefix',
+            appKey: 'app-key',
+            siteDomain: 'domain',
+            link: 'https://exsample.com/#/a/b/c/d',
+        }
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).not.toBeCalled();
+        expect(target.parentMainPage).toEqual('start-page');
+        expect(target.parentNavParams).toEqual({
+            parameter: 'd',
+        })
+        expect(dispatch).toBeCalledWith({
+            authState: expectAuthState,
+            type: SET_AUTH_STATE
+        });
+        expect(navigation.navigate).toBeCalledWith('auth');
+    });
+    test('exist link,missed hash, appkey, domain, no exist account manager app', async () => {
+        mocked(Linking.canOpenURL).mockImplementation(jest.fn(async () => {
+            return false;
+        }));
+        await target['_openAccountManager'](
+            dispatch, navigation,
+            'https://exsample.com/', '/a/b/c',
+            'app-key', 'domain');
+        const expectURL = 'eimapplink-accountmanager://accountmanager/?'
+            + 'appprefix=app-prefix&mapp=app-prefix&appkey=app-key&domain=domain'
+            + '&link=https%3A%2F%2Fexsample.com%2F%23%2Fa%2Fb%2Fc%2F';
+        const expectAuthState = {
+            appKeyPrefix: 'app-prefix',
+            appKey: 'app-key',
+            siteDomain: 'domain',
+            link: 'https://exsample.com/#/a/b/c',
+        }
+        expect(Linking.canOpenURL).toBeCalledWith(expectURL);
+        expect(Linking.openURL).not.toBeCalled();
+        expect(target.parentMainPage).toEqual('start-page');
+        expect(target.parentNavParams).toEqual({
+            parameter: undefined,
+        })
+        expect(dispatch).toBeCalledWith({
+            authState: expectAuthState,
+            type: SET_AUTH_STATE,
+        });
+        expect(navigation.navigate).toBeCalledWith('auth');
     });
 });

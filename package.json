@@ -7,8 +7,9 @@
         "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit -p tsconfig.build.json",
         "build": "node --experimental-modules build.mjs",
         "copyResource": " cp -r ./src/resources ./dist/resources",
-        "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage",
+        "test": "jest",
+        "test:watch": "yarn test --watch",
+        "test:coverage": "yarn test --coverage",
         "coverage:clear": "bash -c 'rm -rf coverage'"
     },
     "devDependencies": {

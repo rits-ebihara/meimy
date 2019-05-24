@@ -17,8 +17,6 @@ import { createSetAuthState } from './AccountListActions';
 import { createSetAppListAction } from './EimAppListActions';
 import INavigateController from './INavigateController';
 
-const config = getConfig();
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class NavigateController implements INavigateController {
     public parentMainPage?: string;
@@ -190,11 +188,13 @@ export class NavigateController implements INavigateController {
             }
         });
     }
-    private _openAccountManager = (
+    private _openAccountManager = async (
         dispatch: Dispatch, navigation: NavigationScreenProp<any>,
         link?: string, hash?: string,
         appKey?: string, domain?: string
     ) => {
+        const config = getConfig();
+
         const authState: IAuthState = {
             appKeyPrefix: config.appKeyPrefix,
         };
@@ -215,8 +215,9 @@ export class NavigateController implements INavigateController {
             query.link = linkUrl.href;
             authState.link = linkUrl.href;
         }
+
         accountManagerUrl.set('query', query);
-        Linking.canOpenURL(accountManagerUrl.href).then((result) => {
+        await Linking.canOpenURL(accountManagerUrl.href).then((result) => {
             if (result) {
                 Linking.openURL(accountManagerUrl.href);
             } else {
