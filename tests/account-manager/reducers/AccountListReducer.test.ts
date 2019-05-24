@@ -56,7 +56,7 @@ describe('', () => {
             tokens: ['token'],
         };
         const action: ISetAuthState = {
-            authState: authState,
+            authState,
             type: SET_AUTH_STATE,
         };
         const state = accountListReducer(initState, action);
