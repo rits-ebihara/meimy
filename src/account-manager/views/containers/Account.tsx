@@ -47,7 +47,8 @@ interface IErrors {
     siteErrorMessage: string;
     hasError: boolean;
 }
-class Account extends Component<ICombinedNavProps<IAccountProps>, ILocaleState> {
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocaleState> {
     public static navigationOptions = ({ navigation }: NavigationScreenProps) => {
         const { colorPalets } = config;
         return {
@@ -364,4 +365,4 @@ const mapStateToProps = (state: IAccountManagerState): IProps<IAccountProps> => 
     };
 };
 
-export default connect(mapStateToProps)(Account);
+export default connect(mapStateToProps)(_Account);

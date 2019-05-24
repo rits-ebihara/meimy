@@ -1,4 +1,4 @@
-type AuthType = 'password' | 'o365';
+export type AuthType = 'password' | 'o365';
 export interface IAccountState {
     authType: AuthType;
     eimToken: string[];
