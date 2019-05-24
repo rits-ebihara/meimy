@@ -362,7 +362,7 @@ const expectConvertDoc = {
     ]
 };
 
-describe('convertDocLabel', async () => {
+describe('convertDocLabel', () => {
     let target: LangResourceController;
     beforeEach(() => {
         target = new LangResourceController();
