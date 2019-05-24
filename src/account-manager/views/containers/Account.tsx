@@ -16,7 +16,7 @@ import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
-import { IAccountState } from '../../states/IAccountState';
+import { AuthType, IAccountState } from '../../states/IAccountState';
 
 const config = getConfig();
 
@@ -30,13 +30,13 @@ interface IDiffState {
     shownLoginDialog: boolean;
 }
 
-interface IAccountProps extends IAccountState {
+export interface IAccountProps extends IAccountState {
     accountListState: IAccountListState;
 }
-interface ILocaleState extends IAccountState, IDiffState {
+export interface ILocaleState extends IAccountState, IDiffState {
 }
 
-type localStateType = 'siteName' | 'siteDomain' | 'authType' | 'userId' | 'password';
+type localStateType = 'siteName' | 'siteDomain' | 'authType';
 
 // interface INavParam {
 //     toggleMode: () => void;
@@ -102,14 +102,14 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
                     <Card style={{ paddingBottom: 24 }}>
                         <Item stackedLabel>
                             <Label>サイト名称</Label>
-                            <Input value={state.siteName} editable={state.mode === 'edit'}
+                            <Input key="site_name" value={state.siteName} editable={state.mode === 'edit'}
                                 style={style.textboxStyle}
                                 onChangeText={(text) => { this.onChangeState('siteName', text); }} />
                         </Item>
                         <Text style={errorMessageStyle}>{siteNameErrorMessage}</Text>
                         <Item stackedLabel>
                             <Label>サイトドメイン</Label>
-                            <Input value={state.siteDomain} editable={state.mode === 'edit'}
+                            <Input key="site_domain" value={state.siteDomain} editable={state.mode === 'edit'}
                                 style={style.textboxStyle}
                                 keyboardType="url"
                                 autoCapitalize="none"
@@ -119,6 +119,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
                         <Item style={{ marginTop: 12, marginBottom: 12 }}>
                             <Label>認証方式</Label>
                             <Picker
+                                key="auth-type"
                                 mode="dropdown"
                                 enabled={state.mode === 'edit'}
                                 iosIcon={<Icon name="ios-arrow-down" />}
@@ -164,7 +165,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
             </Button>;
         }
         if (state.loginProcessing) {
-            return <Spinner color={config.colorPalets.$colorPrimary0} />;
+            return <Spinner key="sigin_in_spinner" color={config.colorPalets.$colorPrimary0} />;
         }
         return null;
     }
@@ -224,24 +225,19 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         // }
     }
 
+    private changeInputState: { [key in localStateType]: (value: string) => void } = {
+        siteName: (value: string) => {
+            this.setState({ siteName: value });
+        },
+        siteDomain: (value: string) => {
+            this.setState({ siteDomain: value });
+        },
+        authType: (value: string) => {
+            this.setState({ authType: value as AuthType });
+        },
+    };
     private onChangeState = (key: localStateType, value: string) => {
-        switch (key) {
-            case 'siteName':
-                this.setState({ siteName: value });
-                break;
-            case 'siteDomain':
-                this.setState({ siteDomain: value });
-                break;
-            case 'authType':
-                this.setState({ authType: value as 'password' | 'o365' });
-                break;
-            case 'userId':
-                this.setState({ userId: value });
-                break;
-            case 'password':
-                this.setState({ password: value });
-                break;
-        }
+        this.changeInputState[key](value);
         setTimeout(this.inputCheck, 100);
     }
     private onPressSave = () => {
