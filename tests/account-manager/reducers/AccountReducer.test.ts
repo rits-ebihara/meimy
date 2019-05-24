@@ -2,10 +2,18 @@ import { ISetAccountAction, SET_ACCOUNT_ACTION } from '../../../src/account-mana
 import accountReducer from '../../../src/account-manager/reducers/AccountReducer';
 import { createInitAccountState, IAccountState } from '../../../src/account-manager/states/IAccountState';
 
+const initState = {
+    authType: 'o365',
+    eimToken: [],
+    id: null,
+    lastConnect: null,
+    siteDomain: '',
+    siteName: '',
+};
 describe('', () => {
     test('init', () => {
         const state = accountReducer(undefined, { type: '' });
-        expect(state).toEqual(createInitAccountState());
+        expect(state).toEqual(initState);
     });
     test('SET_ACCOUNT_ACTION', () => {
         const account: IAccountState = {
