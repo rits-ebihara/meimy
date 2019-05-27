@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { getGenericPassword, setGenericPassword } from 'react-native-keychain';
 import { Action, Dispatch } from 'redux';
-import { generate as ShortId } from 'shortid';
+import ShortId from 'shortid';
 
 import { dateParser } from '../../eim-service/EIMServiceAdapter';
 import { getConfig } from '../Config';
