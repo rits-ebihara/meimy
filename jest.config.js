@@ -7,6 +7,7 @@ module.exports = {
         "!./src/index.ts",
         "!./src/account-manager/index.ts",
         "!**/node_modules/**",
+        "!"
     ],
     coverageReporters: [
         "html", "text", "lcov"
@@ -19,7 +20,7 @@ module.exports = {
     globals: {
         "ts-jest": {
             babelConfig: true,
-        }
+        },
     },
     silent: false,
     reporters: [

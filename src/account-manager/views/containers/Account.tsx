@@ -1,5 +1,6 @@
 import Clone from 'clone';
-import { Button, Card, Container, Content, Icon, Input, Item, Label, Picker, Spinner, Text, Toast } from 'native-base';
+import console = require('console');
+import { Button, Card, Container, Content, Icon, Input, Item, Label, Picker, Text, Toast } from 'native-base';
 import React, { Component } from 'react';
 import { Alert, BackHandler, Platform, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
@@ -21,7 +22,6 @@ import { AuthType, IAccountState } from '../../states/IAccountState';
 const config = getConfig();
 
 interface IDiffState {
-    loginProcessing: boolean;
     loginResultMessage: string;
     siteNameError: boolean;
     siteDomainError: boolean;
@@ -73,6 +73,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         BackHandler.addEventListener('hardwareBackPress', this.backPage);
         const { cloneProp, diffState }: { cloneProp: IAccountState; diffState: IDiffState } = this.createState(props);
         this.state = Object.assign(cloneProp, diffState);
+        delete (this.state as any).accountListState;
     }
     public render = () => {
         const { theme, colorPalets } = config;
@@ -158,14 +159,12 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         const buttonStyle: ViewStyle = {
             marginTop: 24,
         };
-        if (state.mode === 'view' && !state.loginProcessing) {
-            return <Button block rounded success style={buttonStyle} disabled={hasError}
+        if (state.mode === 'view') {
+            return <Button key="sign-in-button"
+                block rounded success style={buttonStyle} disabled={hasError}
                 onPress={this.onPressConnect}>
                 <Text>サインイン</Text>
             </Button>;
-        }
-        if (state.loginProcessing) {
-            return <Spinner key="sigin_in_spinner" color={config.colorPalets.$colorPrimary0} />;
         }
         return null;
     }
@@ -199,7 +198,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
                         asyncRemoveAccountAction(
                             me.state.id as string,
                             me.props.dispatch,
-                            () => { me.props.navigation.pop(); });
+                            me.navPop);
                     },
                     style: 'destructive',
                     text: '削除',
@@ -207,13 +206,16 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
             ],
         );
     }
+    private navPop = () => {
+        this.props.navigation.pop();
+    }
     private onPressConnect = async () => {
         // トークンがあればそれを検証
         const client = new EIMServiceAdapter(this.state.siteDomain);
         if (this.state.eimToken.length !== 0) {
             const tokenResult = await client.validateToken(this.state.eimToken);
             if (tokenResult) {
-                this.successConnect(this.state.eimToken);
+                await this.successConnect(this.state.eimToken);
                 return;
             }
         }
@@ -240,7 +242,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         this.changeInputState[key](value);
         setTimeout(this.inputCheck, 100);
     }
-    private onPressSave = () => {
+    private onPressSave = async () => {
         if (!this.inputCheck()) {
             return;
         }
@@ -253,11 +255,9 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         account.password = undefined;
         account.userId = undefined;
         // データを保存
-        asyncSaveAccountAction(account, this.props.dispatch)
-            .then(() => {
-                this.setState(account);
-                this.setState({ mode: 'view' });
-            });
+        await asyncSaveAccountAction(account, this.props.dispatch);
+        this.setState(account);
+        this.setState({ mode: 'view' });
     }
     private inputCheck = (state?: ILocaleState) => {
         const targetState = state || this.state;
@@ -297,15 +297,15 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
     }
 
     private async successConnect(tokens: string[]) {
+        console.log('successConnect');
         Toast.show({ text: '認証に成功しました。', type: 'success' });
         // トークンを保存する
         const account = Clone(this.state) as IAccountState;
         account.eimToken = tokens;
-        asyncSaveAccountAction(account, this.props.dispatch)
-            .then(() => {
-                this.setState(account);
-                this.setState({ mode: 'view' });
-            });
+        await asyncSaveAccountAction(account, this.props.dispatch);
+        this.setState(account);
+        this.setState({ mode: 'view' });
+
         // 遷移先を決定する
         await navigateController.navigateForLink(
             this.props.state.accountListState,
@@ -316,31 +316,9 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
             }, this.props.dispatch, this.props.navigation);
     }
 
-    // private backAccountList(token: string) {
-    //     if (!this.props.state.linkState || this.props.state.linkState.mobileAppKey) { return; }
-
-    // const url = URLParse('eimmobile://' + this.props.state.transferApp);
-    // url.set('query', {
-    //     alias: this.state.siteName,
-    //     domain: this.state.siteDomain,
-    //     token,
-    // });
-    // const urlStr = url.toString();
-    // if (!Linking.canOpenURL(urlStr)) {
-    //     console.warn('リンク先アプリが見つからない');
-    // } else {
-    //     // 転送設定を削除する
-    //     const account = Clone(this.props.state);
-    //     account.transferApp = '';
-    //     this.props.dispatch(createSetAccountAction(account));
-    //     Linking.openURL(urlStr);
-    // }
-    // }
-
     private createState(props: ICombinedNavProps<IAccountState>) {
         const cloneProp = Clone(props.state);
         const diffState: IDiffState = {
-            loginProcessing: false,
             loginResultMessage: '',
             mode: 'view',
             shownEditMenu: false,
@@ -357,8 +335,16 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
 
 const mapStateToProps = (state: IAccountManagerState): IProps<IAccountProps> => {
     return {
-        state: { ...state.account, accountListState: state.accountList },
+        state: {
+            ...state.account,
+            accountListState: state.accountList
+        },
     };
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const __private__ = {
+    mapStateToProps,
+}
 
 export default connect(mapStateToProps)(_Account);
