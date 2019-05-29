@@ -11,7 +11,7 @@ import navigateController from '../../../../src/account-manager/actions/Navigate
 import { IAccountListState } from '../../../../src/account-manager/states/IAccountLisState';
 import { IAccountState } from '../../../../src/account-manager/states/IAccountState';
 import { IAuthState } from '../../../../src/account-manager/states/IAuthStates';
-import { _AccountList } from '../../../../src/account-manager/views/containers/AccountList';
+import { __private__, _AccountList } from '../../../../src/account-manager/views/containers/AccountList';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -145,5 +145,19 @@ describe('transferPage', () => {
         };
         await instance['transferPage'](authState);
         expect(navigateController.navigateForLink).toBeCalled();
+    });
+});
+
+describe('mapStateToProps', () => {
+    test('', () => {
+        const state = {
+            accountList: getAccountList(),
+            prop1: 'a',
+            prop2: 'b',
+        };
+        const result = __private__.mapStateToProps(state as any);
+        expect(result).toStrictEqual({
+            state: state.accountList,
+        });
     });
 });
