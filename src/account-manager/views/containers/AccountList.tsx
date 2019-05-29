@@ -1,5 +1,6 @@
 import { Body, Container, Content, Icon, List, ListItem, Right, Text } from 'native-base';
 import React, { Component } from 'react';
+import { NavigationScreenOptions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { FloatingButton } from '../../../components/FloatingButton/FloatingButton';
@@ -15,16 +16,15 @@ import { createInitAccountState, IAccountState } from '../../states/IAccountStat
 import { IAuthState } from '../../states/IAuthStates';
 
 const config = getConfig();
-class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
-    public static navigationOptions = () => {
-        return {
-            headerStyle: {
-                backgroundColor: config.colorPalets.$colorPrimary3,
-            },
-            headerTintColor: config.colorPalets.$invertColor,
-            headerTitle: 'EIMサイト一覧',
-        };
-    }
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+export class _AccountList extends Component<ICombinedNavProps<IAccountListState>> {
+    public static navigationOptions: NavigationScreenOptions = {
+        headerStyle: {
+            backgroundColor: config.colorPalets.$colorPrimary3,
+        },
+        headerTintColor: config.colorPalets.$invertColor,
+        headerTitle: 'EIMサイト一覧',
+    };
     public render = () => {
         // console.log(this.props.state.accounts);
         const { state } = this.props;
@@ -49,15 +49,15 @@ class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
                     </List>
                 </Content>
                 <FloatingButton
+                    key="add_button"
                     primaryButtonColor={theme.btnPrimaryBg}
                     onPress={this.onPressAddButton} />
             </Container>
         );
     }
-    public componentDidMount = () => {
-        asyncLoadAccountListAfterShow(this.props.dispatch).then(() => {
-            this.transferPage(this.props.state.authState);
-        });
+    public componentDidMount = async () => {
+        await asyncLoadAccountListAfterShow(this.props.dispatch);
+        await this.transferPage(this.props.state.authState);
     }
     private onPressListItem = (account: IAccountState) => {
         this.props.dispatch(createSetAccountAction(account));
@@ -68,7 +68,7 @@ class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
         this.props.navigation.push(RoutePageNames.accountPageName);
     }
 
-    private transferPage(authState: IAuthState) {
+    private transferPage = async (authState: IAuthState) => {
         // ドメインが指定された場合、トークンがあればそれをセットする
         const account = this.props.state.accounts
             .find((a) => a.siteDomain === authState.siteDomain);
@@ -78,7 +78,11 @@ class AccountList extends Component<ICombinedNavProps<IAccountListState>> {
         }
         // this.props.navigation.navigate(accountListPageName);
         navigateController.clear();
-        navigateController.navigateForLink(this.props.state, authState, this.props.dispatch, this.props.navigation);
+        await navigateController.navigateForLink(
+            this.props.state,
+            authState,
+            this.props.dispatch,
+            this.props.navigation);
     }
 }
 
@@ -88,7 +92,11 @@ const mapStateToProps = (state: IAccountManagerState): IProps<IAccountListState>
     };
 };
 
-export default connect(mapStateToProps)(AccountList);
+export const __private__ = {
+    mapStateToProps,
+};
+
+export default connect(mapStateToProps)(_AccountList);
 
 // eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimmobile://accountmanager/?app=decision-flow\&domain=app-dev43.ope.azure.ricoh-eim.com"

@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init blank list 1`] = `
+<Styled(Container)>
+  <Styled(Content)>
+    <Styled(List) />
+  </Styled(Content)>
+  <FloatingButton
+    iconColor="white"
+    iconName="add"
+    iconType="Ionicons"
+    key="add_button"
+    label=""
+    marginHorizontal={32}
+    marginVertical={32}
+    onPress={[Function]}
+    position="bottom-right"
+    primaryButtonColor="#000099"
+    primaryButtonSize={56}
+    secondaryButtonSize={48}
+  />
+</Styled(Container)>
+`;
+
+exports[`init exist list 1`] = `
+<Styled(Container)>
+  <Styled(Content)>
+    <Styled(List)>
+      <Styled(ListItem)
+        button={true}
+        key="a001"
+        noIndent={true}
+        onPress={[Function]}
+      >
+        <Styled(Body)>
+          <Styled(Text)>
+            site-name
+          </Styled(Text)>
+          <Styled(Text)
+            note={true}
+          >
+            site-domain
+          </Styled(Text)>
+        </Styled(Body)>
+        <Styled(Right)>
+          <Styled(Icon)
+            name="arrow-forward"
+          />
+        </Styled(Right)>
+      </Styled(ListItem)>
+      <Styled(ListItem)
+        button={true}
+        key="a002"
+        noIndent={true}
+        onPress={[Function]}
+      >
+        <Styled(Body)>
+          <Styled(Text)>
+            site-name2
+          </Styled(Text)>
+          <Styled(Text)
+            note={true}
+          >
+            site-domain2
+          </Styled(Text)>
+        </Styled(Body)>
+        <Styled(Right)>
+          <Styled(Icon)
+            name="arrow-forward"
+          />
+        </Styled(Right)>
+      </Styled(ListItem)>
+    </Styled(List)>
+  </Styled(Content)>
+  <FloatingButton
+    iconColor="white"
+    iconName="add"
+    iconType="Ionicons"
+    key="add_button"
+    label=""
+    marginHorizontal={32}
+    marginVertical={32}
+    onPress={[Function]}
+    position="bottom-right"
+    primaryButtonColor="#000099"
+    primaryButtonSize={56}
+    secondaryButtonSize={48}
+  />
+</Styled(Container)>
+`;
