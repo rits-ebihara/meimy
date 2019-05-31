@@ -10,6 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
+const account_manager_1 = require("../../account-manager");
+const config = account_manager_1.getConfig();
 const directoryTypeKeys = [
     'user',
     'group',
@@ -27,6 +29,10 @@ const containerStyle = {
 };
 const searchBox = {
     flexDirection: 'row',
+};
+const listOrgStyle = {
+    fontSize: 12,
+    color: config.colorPalets.$frontDisabledColor,
 };
 class UserSelectScreen extends react_1.Component {
     constructor(props) {
@@ -50,10 +56,10 @@ class UserSelectScreen extends react_1.Component {
             return this.state.searchResult.map(item => (react_1.default.createElement(native_base_1.ListItem, { key: item.id },
                 react_1.default.createElement(native_base_1.Body, null,
                     react_1.default.createElement(native_base_1.Text, null, item.displayName),
-                    react_1.default.createElement(native_base_1.Text, null, item.orgName)),
+                    react_1.default.createElement(native_base_1.Text, { style: listOrgStyle }, item.orgName)),
                 react_1.default.createElement(native_base_1.Right, null,
                     react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, success: true },
-                        react_1.default.createElement(native_base_1.Icon, { name: "add-circle" }))))));
+                        react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" }))))));
         };
         this.createDirectoryTypePicker = (selectedDirectoryType) => {
             const items = directoryTypeKeys.map(key => (react_1.default.createElement(react_native_1.Picker.Item, { key: key, label: directoryType[key], value: key })));

@@ -1,6 +1,10 @@
 import { Body, Button, Form, Icon, Input, Item, List, ListItem, Right, Text, View } from 'native-base';
 import React, { Component } from 'react';
-import { Modal, Picker, ViewStyle } from 'react-native';
+import { Modal, Picker, TextStyle, ViewStyle } from 'react-native';
+
+import { getConfig } from '../../account-manager';
+
+const config = getConfig();
 
 type directoryTypeName = 'ユーザー' | '組織' | 'グループ';
 
@@ -59,6 +63,11 @@ const containerStyle: ViewStyle = {
 
 const searchBox: ViewStyle = {
     flexDirection: 'row',
+};
+
+const listOrgStyle: TextStyle = {
+    fontSize: 12,
+    color: config.colorPalets.$frontDisabledColor,
 };
 
 export class UserSelectScreen extends Component<IProps, IState> {
@@ -143,11 +152,11 @@ export class UserSelectScreen extends Component<IProps, IState> {
             <ListItem key={item.id}>
                 <Body>
                     <Text>{item.displayName}</Text>
-                    <Text>{item.orgName}</Text>
+                    <Text style={listOrgStyle}>{item.orgName}</Text>
                 </Body>
                 <Right>
                     <Button icon transparent success>
-                        <Icon name="add-circle" />
+                        <Icon name="md-add-circle" />
                     </Button>
                 </Right>
             </ListItem>
