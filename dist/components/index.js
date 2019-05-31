@@ -10,3 +10,4 @@ __export(require("./DrawerView"));
 __export(require("./DocListView"));
 __export(require("./SplashScreen"));
 __export(require("./HTMLViewer"));
+__export(require("./UserSelection/UserSelection"));

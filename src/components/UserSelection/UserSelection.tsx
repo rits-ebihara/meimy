@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ViewStyle } from 'react-native';
 
 import { IUserBadgeProps, UserBadge } from '../UserBadge';
-import { IFilter } from './UserSelectScreen';
+import UserSelectScreen, { IFilter } from './UserSelectScreen';
 
 export interface IUserSelectionProps {
     selectedUsers: IUserBadgeProps[];
@@ -20,14 +20,24 @@ type DefaultProps = {
     [P in keyof IUserSelectionProps]?: IUserSelectionProps[P];
 };
 
+interface IState {
+    showDialog: boolean;
+}
+
 const containerState: ViewStyle = {
     flexDirection: 'row',
 };
 
-export class UserSelection extends Component<IUserSelectionProps> {
+export class UserSelection extends Component<IUserSelectionProps, IState> {
     public static defaultProps: DefaultProps = {
         addable: false,
         multiple: false,
+    }
+    public constructor(props: IUserSelectionProps) {
+        super(props);
+        this.state = {
+            showDialog: false,
+        };
     }
     public render() {
         const { props } = this;
@@ -38,6 +48,11 @@ export class UserSelection extends Component<IUserSelectionProps> {
                 <Button rounded icon success>
                     <Icon name="person-add" />
                 </Button>
+                {
+                    this.state.showDialog ?
+                        <UserSelectScreen filter={props.filter} />
+                        : null
+                }
             </View>
         );
     };
