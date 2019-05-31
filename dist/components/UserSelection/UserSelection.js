@@ -16,6 +16,7 @@ const UserBadge_1 = require("../UserBadge");
 const UserSelectScreen_1 = __importDefault(require("./UserSelectScreen"));
 const containerState = {
     flexDirection: 'row',
+    flexWrap: 'wrap',
 };
 class UserSelection extends react_1.Component {
     constructor(props) {
@@ -24,7 +25,10 @@ class UserSelection extends react_1.Component {
             return this.props.selectedUsers.map(user => {
                 const badgeColor = user.badgeColor || this.props.badgeColor;
                 const textColor = user.textColor || this.props.textColor;
-                const userBadgeStyle = Object.assign({}, this.props.userBadgeStyle || {}, user.style || {});
+                const defaultStyle = {
+                    margin: 4,
+                };
+                const userBadgeStyle = Object.assign({}, defaultStyle, this.props.userBadgeStyle || {}, user.style || {});
                 const props = {
                     badgeColor,
                     textColor,
@@ -44,8 +48,8 @@ class UserSelection extends react_1.Component {
         const style = Object.assign({}, containerState, props.style);
         return (react_1.default.createElement(native_base_1.View, { style: style },
             this.createUserList(),
-            react_1.default.createElement(native_base_1.Button, { rounded: true, icon: true, success: true },
-                react_1.default.createElement(native_base_1.Icon, { name: "person-add" })),
+            react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true },
+                react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })),
             this.state.showDialog ?
                 react_1.default.createElement(UserSelectScreen_1.default, { filter: props.filter })
                 : null));

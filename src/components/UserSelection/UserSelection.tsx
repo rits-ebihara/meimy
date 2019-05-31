@@ -26,6 +26,7 @@ interface IState {
 
 const containerState: ViewStyle = {
     flexDirection: 'row',
+    flexWrap: 'wrap',
 };
 
 export class UserSelection extends Component<IUserSelectionProps, IState> {
@@ -45,8 +46,8 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
         return (
             <View style={style}>
                 {this.createUserList()}
-                <Button rounded icon success>
-                    <Icon name="person-add" />
+                <Button transparent icon success>
+                    <Icon name="md-add-circle" />
                 </Button>
                 {
                     this.state.showDialog ?
@@ -60,7 +61,12 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
         return this.props.selectedUsers.map(user => {
             const badgeColor = user.badgeColor || this.props.badgeColor;
             const textColor = user.textColor || this.props.textColor;
-            const userBadgeStyle = Object.assign({}, this.props.userBadgeStyle || {}, user.style || {});
+            const defaultStyle: ViewStyle = {
+                margin: 4,
+            };
+            const userBadgeStyle = Object.assign(
+                {}, defaultStyle,
+                this.props.userBadgeStyle || {}, user.style || {});
             const props: IUserBadgeProps = {
                 badgeColor,
                 textColor,

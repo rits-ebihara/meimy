@@ -6,6 +6,7 @@ exports[`init  1`] = `
     Object {
       "backgroundColor": "#100",
       "flexDirection": "row",
+      "flexWrap": "wrap",
     }
   }
 >
@@ -17,6 +18,7 @@ exports[`init  1`] = `
       Object {
         "borderColor": "#030",
         "borderWidth": 1,
+        "margin": 4,
       }
     }
     textColor="#ccc"
@@ -31,6 +33,7 @@ exports[`init  1`] = `
       Object {
         "borderColor": "#111",
         "borderWidth": 1,
+        "margin": 4,
       }
     }
     textColor="#099"
@@ -39,11 +42,11 @@ exports[`init  1`] = `
   />
   <Styled(Button)
     icon={true}
-    rounded={true}
     success={true}
+    transparent={true}
   >
     <Styled(Icon)
-      name="person-add"
+      name="md-add-circle"
     />
   </Styled(Button)>
 </Styled(ViewNB)>
