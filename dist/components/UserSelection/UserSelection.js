@@ -50,9 +50,7 @@ class UserSelection extends react_1.Component {
             this.createUserList(),
             react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true },
                 react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })),
-            this.state.showDialog ?
-                react_1.default.createElement(UserSelectScreen_1.default, { filter: props.filter })
-                : null));
+            react_1.default.createElement(UserSelectScreen_1.default, { filter: props.filter })));
     }
     ;
 }

@@ -49,11 +49,7 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
                 <Button transparent icon success>
                     <Icon name="md-add-circle" />
                 </Button>
-                {
-                    this.state.showDialog ?
-                        <UserSelectScreen filter={props.filter} />
-                        : null
-                }
+                <UserSelectScreen filter={props.filter} />
             </View>
         );
     };

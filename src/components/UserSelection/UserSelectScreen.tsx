@@ -1,20 +1,6 @@
-import {
-    Body,
-    Button,
-    Container,
-    Form,
-    Header,
-    Icon,
-    Input,
-    Item,
-    Label,
-    List,
-    ListItem,
-    Right,
-    Text,
-} from 'native-base';
+import { Body, Button, Form, Icon, Input, Item, Label, List, ListItem, Right, Text, View } from 'native-base';
 import React, { Component } from 'react';
-import { Picker, ViewStyle } from 'react-native';
+import { Modal, Picker, ViewStyle } from 'react-native';
 
 type directoryTypeName = 'ユーザー' | '組織' | 'グループ';
 
@@ -99,31 +85,38 @@ export class UserSelectScreen extends Component<IProps, IState> {
     }
     public render() {
         return (
-            <Container style={containerStyle}>
-                <Header>
-                    <Right>
-                        <Button icon transparent>
-                            <Icon name="close" />
-                        </Button>
-                    </Right>
-                </Header>
-                <Body>
-                    <Form style={searchBox}>
-                        <Item fixedLabel>
-                            <Label>検索</Label>
-                            <Input value={this.state.searchWords}
-                                onChangeText={this.changeSearchWords} />
-                        </Item>
-                        <Button icon transparent>
-                            <Icon name="search" />
-                        </Button>
-                        {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
-                    </Form>
-                    <List>
-                        {this.createSearchedUserList()}
-                    </List>
-                </Body>
-            </Container>
+            <Modal transparent animated animationType="fade" visible>
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <View style={containerStyle}>
+                        <View style={{ flexDirection: 'row-reverse' }}>
+                            <Button icon transparent>
+                                <Icon name="close" />
+                            </Button>
+                        </View>
+                        <View>
+                            <Form style={searchBox}>
+                                <Item fixedLabel>
+                                    <Label>検索</Label>
+                                    <Input value={this.state.searchWords}
+                                        onChangeText={this.changeSearchWords} />
+                                </Item>
+                                <Button icon transparent>
+                                    <Icon name="search" />
+                                </Button>
+                                {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
+                            </Form>
+                            <List>
+                                {this.createSearchedUserList()}
+                            </List>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         )
     }
     private changeSearchWords = (value: string) => {

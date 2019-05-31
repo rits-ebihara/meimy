@@ -69,20 +69,26 @@ class UserSelectScreen extends react_1.Component {
         };
     }
     render() {
-        return (react_1.default.createElement(native_base_1.Container, { style: containerStyle },
-            react_1.default.createElement(native_base_1.Header, null,
-                react_1.default.createElement(native_base_1.Right, null,
-                    react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true },
-                        react_1.default.createElement(native_base_1.Icon, { name: "close" })))),
-            react_1.default.createElement(native_base_1.Body, null,
-                react_1.default.createElement(native_base_1.Form, { style: searchBox },
-                    react_1.default.createElement(native_base_1.Item, { fixedLabel: true },
-                        react_1.default.createElement(native_base_1.Label, null, "\u691C\u7D22"),
-                        react_1.default.createElement(native_base_1.Input, { value: this.state.searchWords, onChangeText: this.changeSearchWords })),
-                    react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true },
-                        react_1.default.createElement(native_base_1.Icon, { name: "search" })),
-                    this.createDirectoryTypePicker(this.state.selectedDirectoryType)),
-                react_1.default.createElement(native_base_1.List, null, this.createSearchedUserList()))));
+        return (react_1.default.createElement(react_native_1.Modal, { transparent: true, animated: true, animationType: "fade", visible: true },
+            react_1.default.createElement(native_base_1.View, { style: {
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                } },
+                react_1.default.createElement(native_base_1.View, { style: containerStyle },
+                    react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
+                        react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true },
+                            react_1.default.createElement(native_base_1.Icon, { name: "close" }))),
+                    react_1.default.createElement(native_base_1.View, null,
+                        react_1.default.createElement(native_base_1.Form, { style: searchBox },
+                            react_1.default.createElement(native_base_1.Item, { fixedLabel: true },
+                                react_1.default.createElement(native_base_1.Label, null, "\u691C\u7D22"),
+                                react_1.default.createElement(native_base_1.Input, { value: this.state.searchWords, onChangeText: this.changeSearchWords })),
+                            react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true },
+                                react_1.default.createElement(native_base_1.Icon, { name: "search" })),
+                            this.createDirectoryTypePicker(this.state.selectedDirectoryType)),
+                        react_1.default.createElement(native_base_1.List, null, this.createSearchedUserList()))))));
     }
 }
 UserSelectScreen.defaultProps = {
