@@ -11,7 +11,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const clone_1 = __importDefault(require("clone"));
-const console = require("console");
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
@@ -216,7 +215,6 @@ class _Account extends react_1.Component {
         return { siteNameErrorMessage, siteErrorMessage, hasError };
     }
     async successConnect(tokens) {
-        console.log('successConnect');
         native_base_1.Toast.show({ text: '認証に成功しました。', type: 'success' });
         // トークンを保存する
         const account = clone_1.default(this.state);

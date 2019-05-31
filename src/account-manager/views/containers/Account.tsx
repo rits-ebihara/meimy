@@ -1,5 +1,4 @@
 import Clone from 'clone';
-import console = require('console');
 import { Button, Card, Container, Content, Icon, Input, Item, Label, Picker, Text, Toast } from 'native-base';
 import React, { Component } from 'react';
 import { Alert, BackHandler, Platform, StyleSheet, TextStyle, ViewStyle } from 'react-native';
@@ -297,7 +296,6 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
     }
 
     private async successConnect(tokens: string[]) {
-        console.log('successConnect');
         Toast.show({ text: '認証に成功しました。', type: 'success' });
         // トークンを保存する
         const account = Clone(this.state) as IAccountState;
