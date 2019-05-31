@@ -57,7 +57,7 @@ class UserSelectScreen extends react_1.Component {
         };
         this.createDirectoryTypePicker = (selectedDirectoryType) => {
             const items = directoryTypeKeys.map(key => (react_1.default.createElement(react_native_1.Picker.Item, { key: key, label: directoryType[key], value: key })));
-            return (react_1.default.createElement(react_native_1.Picker, { mode: "dropdown", selectedValue: selectedDirectoryType, onValueChange: this.changeDirectoryType.bind(this, selectedDirectoryType) }, items));
+            return (react_1.default.createElement(react_native_1.Picker, { mode: "dropdown", selectedValue: selectedDirectoryType, onValueChange: this.changeDirectoryType.bind(this) }, items));
         };
         this.changeDirectoryType = (key) => {
             this.setState({
@@ -91,8 +91,7 @@ class UserSelectScreen extends react_1.Component {
                     react_1.default.createElement(native_base_1.View, null,
                         react_1.default.createElement(native_base_1.Form, { style: searchBox },
                             react_1.default.createElement(native_base_1.Item, { fixedLabel: true, style: { flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Label, null, "\u691C\u7D22"),
-                                react_1.default.createElement(native_base_1.Input, { value: this.state.searchWords, onChangeText: this.changeSearchWords })),
+                                react_1.default.createElement(native_base_1.Input, { value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, returnKeyType: "search" })),
                             react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, style: { flexGrow: 0 } },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),

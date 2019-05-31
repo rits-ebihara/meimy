@@ -1,4 +1,4 @@
-import { Body, Button, Form, Icon, Input, Item, Label, List, ListItem, Right, Text, View } from 'native-base';
+import { Body, Button, Form, Icon, Input, Item, List, ListItem, Right, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import { Modal, Picker, ViewStyle } from 'react-native';
 
@@ -102,9 +102,10 @@ export class UserSelectScreen extends Component<IProps, IState> {
                         <View>
                             <Form style={searchBox}>
                                 <Item fixedLabel style={{ flexGrow: 1 }}>
-                                    <Label>検索</Label>
                                     <Input value={this.state.searchWords}
-                                        onChangeText={this.changeSearchWords} />
+                                        placeholder="検索"
+                                        onChangeText={this.changeSearchWords}
+                                        returnKeyType="search" />
                                 </Item>
                                 <Button icon transparent style={{ flexGrow: 0 }}>
                                     <Icon name="search" />
@@ -161,7 +162,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             <Picker
                 mode="dropdown"
                 selectedValue={selectedDirectoryType}
-                onValueChange={this.changeDirectoryType.bind(this, selectedDirectoryType)}>
+                onValueChange={this.changeDirectoryType.bind(this)}>
                 {items}
             </Picker>);
     }
