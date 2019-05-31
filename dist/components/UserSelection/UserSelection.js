@@ -21,6 +21,13 @@ const containerState = {
 class UserSelection extends react_1.Component {
     constructor(props) {
         super(props);
+        this.selectionModal = null;
+        this.addButtonPress = () => {
+            if (!!this.selectionModal) {
+                this.selectionModal.show();
+            }
+            ;
+        };
         this.createUserList = () => {
             return this.props.selectedUsers.map(user => {
                 const badgeColor = user.badgeColor || this.props.badgeColor;
@@ -48,9 +55,9 @@ class UserSelection extends react_1.Component {
         const style = Object.assign({}, containerState, props.style);
         return (react_1.default.createElement(native_base_1.View, { style: style },
             this.createUserList(),
-            react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true },
+            react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true, onPress: this.addButtonPress },
                 react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })),
-            react_1.default.createElement(UserSelectScreen_1.default, { filter: props.filter })));
+            react_1.default.createElement(UserSelectScreen_1.default, { ref: (me) => this.selectionModal = me, filter: props.filter })));
     }
     ;
 }

@@ -21,8 +21,10 @@ interface IState {
 }
 export declare class UserSelection extends Component<IUserSelectionProps, IState> {
     static defaultProps: DefaultProps;
+    private selectionModal;
     constructor(props: IUserSelectionProps);
     render(): JSX.Element;
+    private addButtonPress;
     private createUserList;
 }
 export default UserSelection;

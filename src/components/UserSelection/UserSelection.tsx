@@ -34,6 +34,7 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
         addable: false,
         multiple: false,
     }
+    private selectionModal: UserSelectScreen | null = null;
     public constructor(props: IUserSelectionProps) {
         super(props);
         this.state = {
@@ -46,13 +47,19 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
         return (
             <View style={style}>
                 {this.createUserList()}
-                <Button transparent icon success>
+                <Button transparent icon success
+                    onPress={this.addButtonPress}>
                     <Icon name="md-add-circle" />
                 </Button>
-                <UserSelectScreen filter={props.filter} />
+                <UserSelectScreen
+                    ref={(me) => this.selectionModal = me}
+                    filter={props.filter} />
             </View>
         );
     };
+    private addButtonPress = () => {
+        if (!!this.selectionModal) { this.selectionModal.show(); };
+    }
     private createUserList = () => {
         return this.props.selectedUsers.map(user => {
             const badgeColor = user.badgeColor || this.props.badgeColor;

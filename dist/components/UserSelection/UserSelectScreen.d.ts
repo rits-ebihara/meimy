@@ -7,6 +7,7 @@ export interface IFilter {
 }
 interface IProps {
     filter?: IFilter;
+    shown: boolean;
 }
 declare type DefaultProps = {
     [P in keyof IProps]?: IProps[P];
@@ -27,11 +28,14 @@ interface IState {
         offset: number;
         limit: number;
     };
+    shown: boolean;
 }
 export declare class UserSelectScreen extends Component<IProps, IState> {
     static defaultProps: DefaultProps;
     constructor(props: IProps);
     render(): JSX.Element;
+    show: () => void;
+    private closeButtonPress;
     private changeSearchWords;
     private createSearchedUserList;
     private createDirectoryTypePicker;

@@ -24,6 +24,7 @@ export interface IFilter {
 }
 interface IProps {
     filter?: IFilter;
+    shown: boolean;
 }
 
 type DefaultProps = {
@@ -47,15 +48,13 @@ interface IState {
         offset: number;
         limit: number;
     };
+    shown: boolean;
 }
 
 const containerStyle: ViewStyle = {
-    position: 'absolute',
-    flex: 1,
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    backgroundColor: '#fff',
+    width: '95%',
+    height: '95%',
 };
 
 const searchBox: ViewStyle = {
@@ -81,11 +80,13 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 limit: 30,
                 offset: 0,
             },
+            shown: false,
         };
     }
     public render() {
         return (
-            <Modal transparent animated animationType="fade" visible>
+            <Modal transparent animated
+                animationType="fade" visible={this.state.shown}>
                 <View style={{
                     flex: 1,
                     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -94,21 +95,23 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 }}>
                     <View style={containerStyle}>
                         <View style={{ flexDirection: 'row-reverse' }}>
-                            <Button icon transparent>
+                            <Button icon transparent onPress={this.closeButtonPress}>
                                 <Icon name="close" />
                             </Button>
                         </View>
                         <View>
                             <Form style={searchBox}>
-                                <Item fixedLabel>
+                                <Item fixedLabel style={{ flexGrow: 1 }}>
                                     <Label>検索</Label>
                                     <Input value={this.state.searchWords}
                                         onChangeText={this.changeSearchWords} />
                                 </Item>
-                                <Button icon transparent>
+                                <Button icon transparent style={{ flexGrow: 0 }}>
                                     <Icon name="search" />
                                 </Button>
-                                {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
+                                <View style={{ flexGrow: 1 }}>
+                                    {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
+                                </View>
                             </Form>
                             <List>
                                 {this.createSearchedUserList()}
@@ -118,6 +121,16 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 </View>
             </Modal>
         )
+    }
+    public show = () => {
+        this.setState({
+            shown: true,
+        });
+    }
+    private closeButtonPress = () => {
+        this.setState({
+            shown: false,
+        });
     }
     private changeSearchWords = (value: string) => {
         this.setState({
