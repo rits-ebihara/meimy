@@ -1,17 +1,7 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-interface IProps {
-    userId: string;
-    color?: string;
-    badgeColor?: string;
-    textColor?: string;
-    style?: ViewStyle;
-    type?: 'user' | 'group';
-}
-declare type DefaultProps = {
-    [P in keyof IProps]?: IProps[P];
-};
 interface IState {
+    userId: string;
     userName?: string;
     userFaceUrl?: string;
     userOrg?: string;
@@ -19,14 +9,28 @@ interface IState {
     shownDetailDialog: boolean;
     type: 'user' | 'group';
 }
-export declare class UserBadge extends React.Component<IProps, IState> {
+export interface IUserBadgeProps {
+    userId: string;
+    color?: string;
+    badgeColor?: string;
+    textColor?: string;
+    style?: ViewStyle;
+    type?: 'user' | 'group';
+    onLongPress?: (userId: IState) => void;
+}
+declare type DefaultProps = {
+    [P in keyof IUserBadgeProps]?: IUserBadgeProps[P];
+};
+export declare class UserBadge extends React.Component<IUserBadgeProps, IState> {
     static defaultProps: DefaultProps;
     private $isMounted;
-    constructor(props: IProps);
+    constructor(props: IUserBadgeProps);
     render(): JSX.Element;
     componentDidMount: () => void;
     componentWillUnmount: () => void;
     private onPressUserBadge;
+    private onLongPressUserBadge;
+    private userInfoPanel;
     private serUserInfo;
 }
 export {};

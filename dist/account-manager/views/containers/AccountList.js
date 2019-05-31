@@ -21,7 +21,8 @@ const Config_1 = require("../../Config");
 const RoutePageNames_1 = __importDefault(require("../../RoutePageNames"));
 const IAccountState_1 = require("../../states/IAccountState");
 const config = Config_1.getConfig();
-class AccountList extends react_1.Component {
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+class _AccountList extends react_1.Component {
     constructor() {
         super(...arguments);
         this.render = () => {
@@ -42,12 +43,11 @@ class AccountList extends react_1.Component {
             return (react_1.default.createElement(native_base_1.Container, null,
                 react_1.default.createElement(native_base_1.Content, null,
                     react_1.default.createElement(native_base_1.List, null, listItems)),
-                react_1.default.createElement(FloatingButton_1.FloatingButton, { primaryButtonColor: theme.btnPrimaryBg, onPress: this.onPressAddButton })));
+                react_1.default.createElement(FloatingButton_1.FloatingButton, { key: "add_button", primaryButtonColor: theme.btnPrimaryBg, onPress: this.onPressAddButton })));
         };
-        this.componentDidMount = () => {
-            AccountListActions_1.asyncLoadAccountListAfterShow(this.props.dispatch).then(() => {
-                this.transferPage(this.props.state.authState);
-            });
+        this.componentDidMount = async () => {
+            await AccountListActions_1.asyncLoadAccountListAfterShow(this.props.dispatch);
+            await this.transferPage(this.props.state.authState);
         };
         this.onPressListItem = (account) => {
             this.props.dispatch(AccountActions_1.createSetAccountAction(account));
@@ -57,35 +57,37 @@ class AccountList extends react_1.Component {
             this.props.dispatch(AccountActions_1.createSetAccountAction(IAccountState_1.createInitAccountState()));
             this.props.navigation.push(RoutePageNames_1.default.accountPageName);
         };
-    }
-    transferPage(authState) {
-        // ドメインが指定された場合、トークンがあればそれをセットする
-        const account = this.props.state.accounts
-            .find((a) => a.siteDomain === authState.siteDomain);
-        if (!!account) {
-            authState.tokens = account.eimToken;
-            authState.siteName = account.siteName;
-        }
-        // this.props.navigation.navigate(accountListPageName);
-        NavigateActions_1.default.clear();
-        NavigateActions_1.default.navigateForLink(this.props.state, authState, this.props.dispatch, this.props.navigation);
+        this.transferPage = async (authState) => {
+            // ドメインが指定された場合、トークンがあればそれをセットする
+            const account = this.props.state.accounts
+                .find((a) => a.siteDomain === authState.siteDomain);
+            if (!!account) {
+                authState.tokens = account.eimToken;
+                authState.siteName = account.siteName;
+            }
+            // this.props.navigation.navigate(accountListPageName);
+            NavigateActions_1.default.clear();
+            await NavigateActions_1.default.navigateForLink(this.props.state, authState, this.props.dispatch, this.props.navigation);
+        };
     }
 }
-AccountList.navigationOptions = () => {
-    return {
-        headerStyle: {
-            backgroundColor: config.colorPalets.$colorPrimary3,
-        },
-        headerTintColor: config.colorPalets.$invertColor,
-        headerTitle: 'EIMサイト一覧',
-    };
+_AccountList.navigationOptions = {
+    headerStyle: {
+        backgroundColor: config.colorPalets.$colorPrimary3,
+    },
+    headerTintColor: config.colorPalets.$invertColor,
+    headerTitle: 'EIMサイト一覧',
 };
+exports._AccountList = _AccountList;
 const mapStateToProps = (state) => {
     return {
         state: state.accountList,
     };
 };
-exports.default = react_redux_1.connect(mapStateToProps)(AccountList);
+exports.__private__ = {
+    mapStateToProps,
+};
+exports.default = react_redux_1.connect(mapStateToProps)(_AccountList);
 // eslint-disable-next-line max-len
 // adb shell am start -a android.intent.action.VIEW "eimmobile://accountmanager/?app=decision-flow\&domain=app-dev43.ope.azure.ricoh-eim.com"
 // eslint-disable-next-line max-len

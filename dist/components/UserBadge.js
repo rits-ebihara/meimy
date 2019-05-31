@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const clone_1 = __importDefault(require("clone"));
 const native_base_1 = require("native-base");
 const react_1 = __importDefault(require("react"));
 const react_native_1 = require("react-native");
@@ -48,27 +49,15 @@ class UserBadge extends react_1.default.Component {
                 shownDetailDialog: true,
             });
         };
-        this.state = {
-            shownDetailDialog: false,
-            type: props.type || 'user',
+        this.onLongPressUserBadge = () => {
+            if (!this.props.onLongPress) {
+                return;
+            }
+            const state = clone_1.default(this.state);
+            this.props.onLongPress(state);
         };
-    }
-    render() {
-        const altFace = this.props.type === 'user' ? user_png_1.default : group_png_1.default;
-        const faceImage = this.state.userFaceUrl ?
-            {
-                uri: this.state.userFaceUrl,
-            } : altFace;
-        // const userInfoDialog = (
-        // <TouchableOpacity style={styles.popUpContainer}
-        //     onPress={this.onPressDialogScreen}>
-        // </TouchableOpacity>
-        // );
-        return (react_1.default.createElement(native_base_1.View, { style: this.props.style },
-            react_1.default.createElement(native_base_1.Button, { rounded: true, small: true, color: this.props.badgeColor, onPress: this.onPressUserBadge },
-                react_1.default.createElement(native_base_1.Thumbnail, { source: faceImage, small: true, circular: true }),
-                react_1.default.createElement(native_base_1.Text, null, this.state.userName)),
-            react_1.default.createElement(react_native_1.Modal, { visible: this.state.shownDetailDialog, animationType: "slide", transparent: true, onRequestClose: () => { this.setState({ shownDetailDialog: false }); } },
+        this.userInfoPanel = (faceImage) => {
+            return react_1.default.createElement(react_native_1.Modal, { visible: this.state.shownDetailDialog, animationType: "slide", transparent: true, onRequestClose: () => { this.setState({ shownDetailDialog: false }); } },
                 react_1.default.createElement(native_base_1.Card, { style: { marginTop: 50 } },
                     react_1.default.createElement(native_base_1.CardItem, null,
                         react_1.default.createElement(native_base_1.Body, { style: { flex: 1, flexDirection: 'row' } },
@@ -82,7 +71,25 @@ class UserBadge extends react_1.default.Component {
                         react_1.default.createElement(native_base_1.Text, null),
                         react_1.default.createElement(native_base_1.Right, null,
                             react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: () => { this.setState({ shownDetailDialog: false }); } },
-                                react_1.default.createElement(native_base_1.Text, { style: { color: this.props.textColor } }, "\u9589\u3058\u308B"))))))));
+                                react_1.default.createElement(native_base_1.Text, { style: { color: this.props.textColor } }, "\u9589\u3058\u308B"))))));
+        };
+        this.state = {
+            userId: props.userId,
+            shownDetailDialog: false,
+            type: props.type || 'user',
+        };
+    }
+    render() {
+        const altFace = this.props.type === 'user' ? user_png_1.default : group_png_1.default;
+        const faceImage = this.state.userFaceUrl ?
+            {
+                uri: this.state.userFaceUrl,
+            } : altFace;
+        return (react_1.default.createElement(native_base_1.View, { style: this.props.style },
+            react_1.default.createElement(native_base_1.Button, { rounded: true, small: true, color: this.props.badgeColor, onLongPress: this.onLongPressUserBadge, onPress: this.onPressUserBadge },
+                react_1.default.createElement(native_base_1.Thumbnail, { source: faceImage, small: true, circular: true }),
+                react_1.default.createElement(native_base_1.Text, null, this.state.userName)),
+            this.userInfoPanel(faceImage)));
     }
     serUserInfo(userProps) {
         this.setState({

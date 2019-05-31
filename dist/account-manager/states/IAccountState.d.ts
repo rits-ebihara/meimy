@@ -1,4 +1,4 @@
-declare type AuthType = 'password' | 'o365';
+export declare type AuthType = 'password' | 'o365';
 export interface IAccountState {
     authType: AuthType;
     eimToken: string[];
@@ -10,4 +10,3 @@ export interface IAccountState {
     password?: string;
 }
 export declare const createInitAccountState: () => IAccountState;
-export {};

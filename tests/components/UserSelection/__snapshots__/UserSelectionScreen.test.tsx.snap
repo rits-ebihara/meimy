@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init default 1`] = `
+<Styled(Container)
+  style={
+    Object {
+      "bottom": 0,
+      "flex": 1,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <Styled(Header)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="close"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(Header)>
+  <Styled(Body)>
+    <Styled(Form)
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Styled(Item)
+        fixedLabel={true}
+      >
+        <Styled(Label)>
+          検索
+        </Styled(Label)>
+        <Styled(Input)
+          onChangeText={[Function]}
+          value=""
+        />
+      </Styled(Item)>
+      <Styled(Button)
+        icon={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="search"
+        />
+      </Styled(Button)>
+      <Picker
+        mode="dropdown"
+        onValueChange={[Function]}
+        selectedValue="user"
+      >
+        <PickerItem
+          key="user"
+          label="ユーザー"
+          value="user"
+        />
+        <PickerItem
+          key="group"
+          label="グループ"
+          value="group"
+        />
+        <PickerItem
+          key="organization"
+          label="組織"
+          value="organization"
+        />
+      </Picker>
+    </Styled(Form)>
+    <Styled(List) />
+  </Styled(Body)>
+</Styled(Container)>
+`;

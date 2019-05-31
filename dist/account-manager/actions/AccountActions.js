@@ -1,13 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_1 = require("react-native");
 const react_native_keychain_1 = require("react-native-keychain");
-const shortid_1 = require("shortid");
+const shortid_1 = __importDefault(require("shortid"));
 const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 const Config_1 = require("../Config");
 const IAccountLisState_1 = require("../states/IAccountLisState");
 const AccountListActions_1 = require("./AccountListActions");
-exports.SET_ACCOUNT_ACTION = shortid_1.generate();
+exports.SET_ACCOUNT_ACTION = shortid_1.default();
 exports.createSetAccountAction = (account) => {
     return {
         account,
@@ -52,7 +55,7 @@ exports.asyncSaveAccountAction = async (account, dispatch) => {
     // ステートを更新して、一覧に戻ったときに画面の表示が新しくなっているようにする
     await AccountListActions_1.asyncLoadAccountListAfterShow(dispatch);
 };
-exports.REMOVE_ACCOUNT_ACTION = shortid_1.generate();
+exports.REMOVE_ACCOUNT_ACTION = shortid_1.default();
 exports.asyncRemoveAccountAction = async (targetId, dispatch, onSuccess) => {
     const save = async () => {
         try {

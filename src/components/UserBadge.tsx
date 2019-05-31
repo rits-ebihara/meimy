@@ -1,6 +1,7 @@
+import clone from 'clone';
 import { Body, Button, Card, CardItem, Left, Right, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Modal, ViewStyle } from 'react-native';
+import { ImageSourcePropType, Modal, ViewStyle } from 'react-native';
 
 import { getEimAccount } from '../account-manager/EimAccount';
 import { IGroupDoc, IGroupProperties, IUserDoc, IUserProperties } from '../eim-service/EIMDocInterface';
@@ -8,20 +9,8 @@ import { IParsedResponse } from '../eim-service/IResponse';
 import groupFace from '../resources/group.png';
 import dummyFace from '../resources/user.png';
 
-interface IProps {
-    userId: string;
-    color?: string;
-    badgeColor?: string;
-    textColor?: string;
-    style?: ViewStyle;
-    type?: 'user' | 'group';
-}
-
-type DefaultProps = {
-    [P in keyof IProps]?: IProps[P];
-};
-
 interface IState {
+    userId: string;
     userName?: string;
     userFaceUrl?: string;
     userOrg?: string;
@@ -29,17 +18,29 @@ interface IState {
     shownDetailDialog: boolean;
     type: 'user' | 'group';
 }
-
-export class UserBadge extends React.Component<IProps, IState> {
+export interface IUserBadgeProps {
+    userId: string;
+    color?: string;
+    badgeColor?: string;
+    textColor?: string;
+    style?: ViewStyle;
+    type?: 'user' | 'group';
+    onLongPress?: (userId: IState) => void;
+}
+type DefaultProps = {
+    [P in keyof IUserBadgeProps]?: IUserBadgeProps[P];
+};
+export class UserBadge extends React.Component<IUserBadgeProps, IState> {
     public static defaultProps: DefaultProps = {
         badgeColor: '#999',
         color: '#fff',
         type: 'user',
     };
     private $isMounted = false;
-    public constructor(props: IProps) {
+    public constructor(props: IUserBadgeProps) {
         super(props);
         this.state = {
+            userId: props.userId,
             shownDetailDialog: false,
             type: props.type || 'user',
         };
@@ -50,45 +51,16 @@ export class UserBadge extends React.Component<IProps, IState> {
             {
                 uri: this.state.userFaceUrl,
             } : altFace;
-        // const userInfoDialog = (
-        // <TouchableOpacity style={styles.popUpContainer}
-        //     onPress={this.onPressDialogScreen}>
-        // </TouchableOpacity>
-        // );
         return (
             <View style={this.props.style} >
                 <Button rounded small color={this.props.badgeColor}
+                    onLongPress={this.onLongPressUserBadge}
                     onPress={this.onPressUserBadge}>
                     <Thumbnail source={faceImage} small circular />
                     <Text>{this.state.userName}</Text>
                 </Button>
                 {/* {this.state.shownDetailDialog ? userInfoDialog : null} */}
-                <Modal visible={this.state.shownDetailDialog}
-                    animationType="slide" transparent
-                    onRequestClose={() => { this.setState({ shownDetailDialog: false }); }}>
-                    <Card style={{ marginTop: 50 }}>
-                        <CardItem>
-                            <Body style={{ flex: 1, flexDirection: 'row' }}>
-                                <Thumbnail source={faceImage} large square style={{ flexShrink: 0, flexGrow: 0 }} />
-                                <View style={{ marginLeft: 4, flexShrink: 1, flexGrow: 1 }}>
-                                    <Text>{this.state.userName}</Text>
-                                    <Text>{this.state.userOrg}</Text>
-                                    <Text>{this.state.userEMail}</Text>
-                                </View>
-                            </Body>
-                        </CardItem>
-                        <CardItem footer>
-                            <Left></Left>
-                            <Text></Text>
-                            <Right>
-                                <Button transparent
-                                    onPress={() => { this.setState({ shownDetailDialog: false }); }}>
-                                    <Text style={{ color: this.props.textColor }}>閉じる</Text>
-                                </Button>
-                            </Right>
-                        </CardItem>
-                    </Card>
-                </Modal>
+                {this.userInfoPanel(faceImage)}
             </View >
         );
     }
@@ -126,7 +98,40 @@ export class UserBadge extends React.Component<IProps, IState> {
             shownDetailDialog: true,
         });
     }
+    private onLongPressUserBadge = () => {
+        if (!this.props.onLongPress) { return; }
+        const state = clone(this.state);
+        this.props.onLongPress(state);
+    }
 
+    private userInfoPanel = (faceImage: ImageSourcePropType) => {
+        return <Modal visible={this.state.shownDetailDialog}
+            animationType="slide" transparent
+            onRequestClose={() => { this.setState({ shownDetailDialog: false }); }}>
+            <Card style={{ marginTop: 50 }}>
+                <CardItem>
+                    <Body style={{ flex: 1, flexDirection: 'row' }}>
+                        <Thumbnail source={faceImage} large square style={{ flexShrink: 0, flexGrow: 0 }} />
+                        <View style={{ marginLeft: 4, flexShrink: 1, flexGrow: 1 }}>
+                            <Text>{this.state.userName}</Text>
+                            <Text>{this.state.userOrg}</Text>
+                            <Text>{this.state.userEMail}</Text>
+                        </View>
+                    </Body>
+                </CardItem>
+                <CardItem footer>
+                    <Left></Left>
+                    <Text></Text>
+                    <Right>
+                        <Button transparent
+                            onPress={() => { this.setState({ shownDetailDialog: false }); }}>
+                            <Text style={{ color: this.props.textColor }}>閉じる</Text>
+                        </Button>
+                    </Right>
+                </CardItem>
+            </Card>
+        </Modal>;
+    }
     private serUserInfo(userProps: IUserProperties) {
         this.setState({
             userEMail: userProps.mailAddress,

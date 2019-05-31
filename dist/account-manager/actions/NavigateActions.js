@@ -14,7 +14,6 @@ const IAccountState_1 = require("../states/IAccountState");
 const AccountActions_1 = require("./AccountActions");
 const AccountListActions_1 = require("./AccountListActions");
 const EimAppListActions_1 = require("./EimAppListActions");
-const config = Config_1.getConfig();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class NavigateController {
     constructor() {
@@ -149,7 +148,8 @@ class NavigateController {
                 }
             });
         };
-        this._openAccountManager = (dispatch, navigation, link, hash, appKey, domain) => {
+        this._openAccountManager = async (dispatch, navigation, link, hash, appKey, domain) => {
+            const config = Config_1.getConfig();
             const authState = {
                 appKeyPrefix: config.appKeyPrefix,
             };
@@ -171,7 +171,7 @@ class NavigateController {
                 authState.link = linkUrl.href;
             }
             accountManagerUrl.set('query', query);
-            react_native_1.Linking.canOpenURL(accountManagerUrl.href).then((result) => {
+            await react_native_1.Linking.canOpenURL(accountManagerUrl.href).then((result) => {
                 if (result) {
                     react_native_1.Linking.openURL(accountManagerUrl.href);
                 }

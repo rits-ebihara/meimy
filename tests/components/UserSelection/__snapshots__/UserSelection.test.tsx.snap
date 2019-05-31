@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init  1`] = `
+<Styled(ViewNB)
+  style={
+    Object {
+      "backgroundColor": "#100",
+      "flexDirection": "row",
+    }
+  }
+>
+  <UserBadge
+    badgeColor="#333"
+    color="#fff"
+    key="a0001"
+    style={
+      Object {
+        "borderColor": "#030",
+        "borderWidth": 1,
+      }
+    }
+    textColor="#ccc"
+    type="user"
+    userId="a0001"
+  />
+  <UserBadge
+    badgeColor="#900"
+    color="#fff"
+    key="a0002"
+    style={
+      Object {
+        "borderColor": "#111",
+        "borderWidth": 1,
+      }
+    }
+    textColor="#099"
+    type="group"
+    userId="a0002"
+  />
+  <Styled(Button)
+    icon={true}
+    rounded={true}
+    success={true}
+  >
+    <Styled(Icon)
+      name="person-add"
+    />
+  </Styled(Button)>
+</Styled(ViewNB)>
+`;
