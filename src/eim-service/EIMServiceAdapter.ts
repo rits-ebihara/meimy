@@ -4,7 +4,7 @@ import UrlParse from 'url-parse';
 
 import { ClientError } from './ClientError';
 import { IDoc, IGroupDoc, IUserDoc } from './EIMDocInterface';
-import { IDocListForView } from './IDocListForView';
+import { IDocListForView, IDocListRowColForView } from './IDocListForView';
 import { IDocListSearchOption } from './IDocListSearchOption';
 import { ILangResources } from './ILangResources';
 import { IParsedResponse, IResponse } from './IResponse';
@@ -212,4 +212,11 @@ export class EIMServiceAdapter {
         url.set('query', queryParams);
         return url.href;
     }
+}
+
+export const getDocListValue = <T = any>
+(columnValues: IDocListRowColForView<T>[], propName: keyof T) => {
+    const column = columnValues.find(c => c.propertyName === propName);
+    if (!column) { return undefined; }
+    return column.value;
 }
