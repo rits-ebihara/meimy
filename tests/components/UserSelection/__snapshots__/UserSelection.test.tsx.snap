@@ -56,7 +56,6 @@ exports[`init minimal 1`] = `
     }
     key="user-select-screen"
     onSelect={[Function]}
-    shown={false}
   />
 </Styled(ViewNB)>
 `;
@@ -108,7 +107,6 @@ exports[`init user badge styled 1`] = `
     }
     key="user-select-screen"
     onSelect={[Function]}
-    shown={false}
   />
 </Styled(ViewNB)>
 `;
