@@ -243,14 +243,15 @@ class UserSelectScreen extends react_1.Component {
                             react_1.default.createElement(native_base_1.Button, { key: "search-button", icon: true, transparent: true, style: { flexGrow: 0 }, onPress: this.pressSearchButton },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
-                        react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
-                        // 更に表示 ボタン
-                        (this.state.processing) ?
-                            react_1.default.createElement(native_base_1.Spinner, null) :
-                            (0 < this.state.searchResult.length) ?
-                                react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
-                                    react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
-                                null)))));
+                        react_1.default.createElement(native_base_1.Content, null,
+                            react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
+                            // 更に表示 ボタン
+                            (this.state.processing) ?
+                                react_1.default.createElement(native_base_1.Spinner, null) :
+                                (0 < this.state.searchResult.length) ?
+                                    react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
+                                        react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
+                                    null))))));
     }
 }
 UserSelectScreen.defaultProps = {
