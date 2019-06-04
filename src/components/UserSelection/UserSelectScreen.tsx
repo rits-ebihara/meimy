@@ -1,4 +1,19 @@
-import { Body, Button, Form, Icon, Input, Item, List, ListItem, Right, Spinner, Text, Toast, View } from 'native-base';
+import {
+    Body,
+    Button,
+    Content,
+    Form,
+    Icon,
+    Input,
+    Item,
+    List,
+    ListItem,
+    Right,
+    Spinner,
+    Text,
+    Toast,
+    View,
+} from 'native-base';
 import React, { Component } from 'react';
 import { Modal, Picker, TextStyle, ViewStyle } from 'react-native';
 
@@ -137,20 +152,22 @@ export class UserSelectScreen extends Component<IProps, IState> {
                                     {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
                                 </View>
                             </Form>
-                            <List key="result-list">
-                                {this.createSearchedUserList()}
-                            </List>
-                            {
-                                // 更に表示 ボタン
-                                (this.state.processing) ?
-                                    <Spinner /> :
-                                    (0 < this.state.searchResult.length) ?
-                                        <Button key="more-search-button" full
-                                            onPress={this.pressMoreSearch}>
-                                            <Text>さらに表示</Text>
-                                        </Button> :
-                                        null
-                            }
+                            <Content>
+                                <List key="result-list">
+                                    {this.createSearchedUserList()}
+                                </List>
+                                {
+                                    // 更に表示 ボタン
+                                    (this.state.processing) ?
+                                        <Spinner /> :
+                                        (0 < this.state.searchResult.length) ?
+                                            <Button key="more-search-button" full
+                                                onPress={this.pressMoreSearch}>
+                                                <Text>さらに表示</Text>
+                                            </Button> :
+                                            null
+                                }
+                            </Content>
                         </View>
                     </View>
                 </View>

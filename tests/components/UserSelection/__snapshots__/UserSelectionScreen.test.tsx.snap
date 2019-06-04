@@ -115,9 +115,11 @@ exports[`init default 1`] = `
             </Picker>
           </Styled(ViewNB)>
         </Styled(Form)>
-        <Styled(List)
-          key="result-list"
-        />
+        <Styled(Content)>
+          <Styled(List)
+            key="result-list"
+          />
+        </Styled(Content)>
       </Styled(ViewNB)>
     </Styled(ViewNB)>
   </Styled(ViewNB)>
@@ -239,81 +241,83 @@ exports[`init set list data 1`] = `
             </Picker>
           </Styled(ViewNB)>
         </Styled(Form)>
-        <Styled(List)
-          key="result-list"
-        >
-          <Styled(ListItem)
-            key="a001"
+        <Styled(Content)>
+          <Styled(List)
+            key="result-list"
           >
-            <Styled(Body)>
-              <Styled(Text)>
-                理光 一郎
-              </Styled(Text)>
-              <Styled(Text)
-                style={
-                  Object {
-                    "color": "#999",
-                    "fontSize": 12,
+            <Styled(ListItem)
+              key="a001"
+            >
+              <Styled(Body)>
+                <Styled(Text)>
+                  理光 一郎
+                </Styled(Text)>
+                <Styled(Text)
+                  style={
+                    Object {
+                      "color": "#999",
+                      "fontSize": 12,
+                    }
                   }
-                }
-              >
-                EIM APP DEV
-              </Styled(Text)>
-            </Styled(Body)>
-            <Styled(Right)>
-              <Styled(Button)
-                icon={true}
-                onPress={[Function]}
-                success={true}
-                transparent={true}
-              >
-                <Styled(Icon)
-                  name="md-add-circle"
-                />
-              </Styled(Button)>
-            </Styled(Right)>
-          </Styled(ListItem)>
-          <Styled(ListItem)
-            key="a002"
+                >
+                  EIM APP DEV
+                </Styled(Text)>
+              </Styled(Body)>
+              <Styled(Right)>
+                <Styled(Button)
+                  icon={true}
+                  onPress={[Function]}
+                  success={true}
+                  transparent={true}
+                >
+                  <Styled(Icon)
+                    name="md-add-circle"
+                  />
+                </Styled(Button)>
+              </Styled(Right)>
+            </Styled(ListItem)>
+            <Styled(ListItem)
+              key="a002"
+            >
+              <Styled(Body)>
+                <Styled(Text)>
+                  理光 二郎
+                </Styled(Text)>
+                <Styled(Text)
+                  style={
+                    Object {
+                      "color": "#999",
+                      "fontSize": 12,
+                    }
+                  }
+                >
+                  EIM APP DEV
+                </Styled(Text)>
+              </Styled(Body)>
+              <Styled(Right)>
+                <Styled(Button)
+                  icon={true}
+                  onPress={[Function]}
+                  success={true}
+                  transparent={true}
+                >
+                  <Styled(Icon)
+                    name="md-add-circle"
+                  />
+                </Styled(Button)>
+              </Styled(Right)>
+            </Styled(ListItem)>
+          </Styled(List)>
+          <Styled(Button)
+            full={true}
+            key="more-search-button"
+            onPress={[Function]}
           >
-            <Styled(Body)>
-              <Styled(Text)>
-                理光 二郎
-              </Styled(Text)>
-              <Styled(Text)
-                style={
-                  Object {
-                    "color": "#999",
-                    "fontSize": 12,
-                  }
-                }
-              >
-                EIM APP DEV
-              </Styled(Text)>
-            </Styled(Body)>
-            <Styled(Right)>
-              <Styled(Button)
-                icon={true}
-                onPress={[Function]}
-                success={true}
-                transparent={true}
-              >
-                <Styled(Icon)
-                  name="md-add-circle"
-                />
-              </Styled(Button)>
-            </Styled(Right)>
-          </Styled(ListItem)>
-        </Styled(List)>
-        <Styled(Button)
-          full={true}
-          key="more-search-button"
-          onPress={[Function]}
-        >
-          <Styled(Text)>
-            さらに表示
-          </Styled(Text)>
-        </Styled(Button)>
+            <Styled(Text)>
+              さらに表示
+            </Styled(Text)>
+          </Styled(Button)>
+        </Styled(Content)>
       </Styled(ViewNB)>
     </Styled(ViewNB)>
   </Styled(ViewNB)>
