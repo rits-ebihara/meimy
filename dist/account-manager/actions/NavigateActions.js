@@ -14,7 +14,6 @@ const IAccountState_1 = require("../states/IAccountState");
 const AccountActions_1 = require("./AccountActions");
 const AccountListActions_1 = require("./AccountListActions");
 const EimAppListActions_1 = require("./EimAppListActions");
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 class NavigateController {
     constructor() {
         this.linkStates = {};

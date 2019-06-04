@@ -10,8 +10,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
-const account_manager_1 = require("../../account-manager");
-const config = account_manager_1.getConfig();
+const Config_1 = require("../../account-manager/Config");
+const EimAccount_1 = require("../../account-manager/EimAccount");
+const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
+const config = Config_1.getConfig();
 const directoryTypeKeys = [
     'user',
     'group',
@@ -37,6 +39,8 @@ const listOrgStyle = {
 class UserSelectScreen extends react_1.Component {
     constructor(props) {
         super(props);
+        this.searchedDirType = 'user';
+        this.searchedWord = '';
         this.show = () => {
             this.setState({
                 shown: true,
@@ -53,22 +57,157 @@ class UserSelectScreen extends react_1.Component {
             });
         };
         this.createSearchedUserList = () => {
-            return this.state.searchResult.map(item => (react_1.default.createElement(native_base_1.ListItem, { key: item.id },
+            return this.state.searchResult.map(item => (react_1.default.createElement(native_base_1.ListItem, { key: item.docId },
                 react_1.default.createElement(native_base_1.Body, null,
                     react_1.default.createElement(native_base_1.Text, null, item.displayName),
                     react_1.default.createElement(native_base_1.Text, { style: listOrgStyle }, item.orgName)),
                 react_1.default.createElement(native_base_1.Right, null,
-                    react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, success: true },
+                    react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, success: true, onPress: this.pressResultRow.bind(this, item.docId) },
                         react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" }))))));
+        };
+        this.pressResultRow = (docId) => {
+            this.props.onSelect(docId, this.searchedDirType);
         };
         this.createDirectoryTypePicker = (selectedDirectoryType) => {
             const items = directoryTypeKeys.map(key => (react_1.default.createElement(react_native_1.Picker.Item, { key: key, label: directoryType[key], value: key })));
-            return (react_1.default.createElement(react_native_1.Picker, { mode: "dropdown", selectedValue: selectedDirectoryType, onValueChange: this.changeDirectoryType.bind(this) }, items));
+            return (react_1.default.createElement(react_native_1.Picker, { key: "dir-picker", mode: "dropdown", selectedValue: selectedDirectoryType, onValueChange: this.changeDirectoryType.bind(this) }, items));
         };
         this.changeDirectoryType = (key) => {
             this.setState({
                 selectedDirectoryType: key,
             });
+        };
+        this.pressMoreSearch = () => {
+            this.setState({
+                processing: true,
+            });
+            this.startSearch[this.state.selectedDirectoryType]();
+        };
+        this.pressSearchButton = () => {
+            this.searchedWord = this.state.searchWords;
+            this.setState({
+                searchResult: [],
+                searchCondition: {
+                    limit: this.state.searchCondition.limit,
+                    offset: 0,
+                },
+                processing: true,
+            });
+            this.startSearch[this.state.selectedDirectoryType]();
+        };
+        this.startSearch = {
+            group: () => {
+                const search = this.createSearchCondition([{
+                        ignoreCaseSense: false,
+                        operator: 'equal',
+                        propertyName: 'properties.groupType',
+                        type: 'string',
+                        value: 'group',
+                    }]);
+                const condition = {
+                    ...this.state.searchCondition,
+                    search,
+                };
+                return this.commonSearch('groupdoclist', this.createGroupRowData, condition);
+            },
+            organization: () => {
+                const search = this.createSearchCondition();
+                const condition = {
+                    ...this.state.searchCondition,
+                    search,
+                };
+                return this.commonSearch('organizationdoclist', this.createOrganizationRowData, condition);
+            },
+            user: () => {
+                const search = this.createSearchCondition([
+                    '(',
+                    {
+                        propertyName: 'properties.userType',
+                        type: 'string',
+                        operator: 'equal',
+                        value: 'user',
+                        ignoreCaseSense: false
+                    },
+                    'or',
+                    {
+                        propertyName: 'properties.userType',
+                        type: 'string',
+                        operator: 'equal',
+                        value: null,
+                        ignoreCaseSense: false
+                    },
+                    ')',
+                ]);
+                const condition = {
+                    ...this.state.searchCondition,
+                    search,
+                };
+                return this.commonSearch('userdoclist', this.createUserRowData, condition);
+            }
+        };
+        this.createSearchCondition = (searches) => {
+            const argConditons = !searches ? [] : ['(', ...searches, ')', 'and'];
+            const fulltext = {
+                ignoreCaseSense: true,
+                propertyName: 'fulltextsearch_list',
+                type: 'string',
+                operator: 'fulltextsearch_sentence',
+                value: this.searchedWord,
+            };
+            return [...argConditons, fulltext];
+        };
+        this.commonSearch = async (listName, createRow, condition) => {
+            this.searchedDirType = this.state.selectedDirectoryType;
+            const account = EimAccount_1.getEimAccount();
+            const sa = account.getServiceAdapter();
+            try {
+                const result = await sa.getDocListForView(account.eimTokens, 'addressbook', listName, {
+                    ...condition,
+                });
+                const addList = result.docList.map(createRow);
+                const newList = this.state.searchResult.concat(addList);
+                condition.offset += result.docList.length;
+                this.setState({
+                    searchResult: newList,
+                    searchCondition: condition,
+                });
+            }
+            catch (_a) {
+                native_base_1.Toast.show({
+                    text: 'ネットワーク エラー',
+                    type: 'danger',
+                });
+            }
+        };
+        this.createUserRowData = (item) => {
+            const { columnValues } = item;
+            return {
+                corpName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.companyName') || '',
+                displayName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.displayName') || '',
+                faceImageId: '',
+                docId: item.documentId,
+                orgName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.organizationName') || '',
+            };
+        };
+        this.createGroupRowData = (item) => {
+            const { columnValues } = item;
+            return {
+                corpName: '',
+                displayName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.fullLabel') || '',
+                faceImageId: '',
+                docId: item.documentId,
+                orgName: '',
+            };
+        };
+        this.createOrganizationRowData = (item) => {
+            const { columnValues } = item;
+            return {
+                corpName: '',
+                displayName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.fullLabel') || '',
+                faceImageId: '',
+                docId: item.documentId,
+                orgName: '',
+            };
         };
         this.state = {
             searchResult: [],
@@ -80,6 +219,7 @@ class UserSelectScreen extends react_1.Component {
                 offset: 0,
             },
             shown: false,
+            processing: false,
         };
     }
     render() {
@@ -92,16 +232,23 @@ class UserSelectScreen extends react_1.Component {
                 } },
                 react_1.default.createElement(native_base_1.View, { style: containerStyle },
                     react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
-                        react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, onPress: this.closeButtonPress },
+                        react_1.default.createElement(native_base_1.Button, { key: "close-button", icon: true, transparent: true, onPress: this.closeButtonPress },
                             react_1.default.createElement(native_base_1.Icon, { name: "close" }))),
                     react_1.default.createElement(native_base_1.View, null,
                         react_1.default.createElement(native_base_1.Form, { style: searchBox },
                             react_1.default.createElement(native_base_1.Item, { fixedLabel: true, style: { flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Input, { value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, returnKeyType: "search" })),
-                            react_1.default.createElement(native_base_1.Button, { icon: true, transparent: true, style: { flexGrow: 0 } },
+                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, returnKeyType: "search" })),
+                            react_1.default.createElement(native_base_1.Button, { key: "search-button", icon: true, transparent: true, style: { flexGrow: 0 }, onPress: this.pressSearchButton },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
-                        react_1.default.createElement(native_base_1.List, null, this.createSearchedUserList()))))));
+                        react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
+                        // 更に表示 ボタン
+                        (this.state.processing) ?
+                            react_1.default.createElement(native_base_1.Spinner, null) :
+                            (0 < this.state.searchResult.length) ?
+                                react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
+                                    react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
+                                null)))));
     }
 }
 UserSelectScreen.defaultProps = {

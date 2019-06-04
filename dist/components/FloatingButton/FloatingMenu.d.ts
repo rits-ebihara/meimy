@@ -3,7 +3,7 @@ export interface IFloatingMenuProps {
     buttonColor?: string;
     direction?: 'left' | 'right';
     iconName?: string;
-    iconType?: "Entypo" | "EvilIcons" | "Feather" | "FontAwesome" | "Foundation" | "Ionicons" | "MaterialCommunityIcons" | "MaterialIcons" | "Octicons" | "SimpleLineIcons" | "Zocial";
+    iconType?: 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial';
     iconSize?: number;
     label?: string;
     onPress: () => void;

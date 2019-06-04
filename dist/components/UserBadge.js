@@ -54,7 +54,7 @@ class UserBadge extends react_1.default.Component {
                 return;
             }
             const state = clone_1.default(this.state);
-            this.props.onLongPress(state);
+            this.props.onLongPress(state.userId);
         };
         this.userInfoPanel = (faceImage) => {
             return react_1.default.createElement(react_native_1.Modal, { visible: this.state.shownDetailDialog, animationType: "slide", transparent: true, onRequestClose: () => { this.setState({ shownDetailDialog: false }); } },
@@ -114,8 +114,9 @@ class UserBadge extends react_1.default.Component {
     }
 }
 UserBadge.defaultProps = {
-    badgeColor: '#999',
-    color: '#fff',
+    badgeColor: '#666',
+    textColor: '#fff',
     type: 'user',
+    onLongPress: (_userId) => { },
 };
 exports.UserBadge = UserBadge;

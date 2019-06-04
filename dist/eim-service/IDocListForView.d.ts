@@ -1,6 +1,7 @@
+export declare type ColValueType = string | number | boolean | Date;
 export interface IDocListRowColForView<T> {
     propertyName: keyof T;
-    value: string | number | boolean | Date;
+    value: ColValueType;
 }
 export interface IDocListRowForView<T> {
     appId: string;

@@ -115,7 +115,7 @@ class EIMServiceAdapter {
             }
         };
         this.getLoginUser = async (tokens) => {
-            const response = await this.get(`/services/v1/users`, tokens);
+            const response = await this.get('/services/v1/users', tokens);
             if (response.statusCode === 200) {
                 return JSON.parse(response.body, exports.dateParser);
             }
@@ -167,3 +167,10 @@ class EIMServiceAdapter {
     }
 }
 exports.EIMServiceAdapter = EIMServiceAdapter;
+exports.getDocListValue = (columnValues, propName) => {
+    const column = columnValues.find(c => c.propertyName === propName);
+    if (!column) {
+        return undefined;
+    }
+    return column.value;
+};

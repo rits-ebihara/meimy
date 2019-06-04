@@ -1,5 +1,5 @@
 import { IDoc, IUserDoc } from './EIMDocInterface';
-import { IDocListForView } from './IDocListForView';
+import { IDocListForView, IDocListRowColForView } from './IDocListForView';
 import { IDocListSearchOption } from './IDocListSearchOption';
 import { ILangResources } from './ILangResources';
 import { IParsedResponse, IResponse } from './IResponse';
@@ -34,3 +34,4 @@ export declare class EIMServiceAdapter {
     private createResponse;
     private createUrl;
 }
+export declare const getDocListValue: <T = any>(columnValues: IDocListRowColForView<T>[], propName: keyof T) => string | number | boolean | Date | undefined;

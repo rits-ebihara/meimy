@@ -1,5 +1,6 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
+export declare type DirectoryTypeKey = 'user' | 'group' | 'organization';
 interface IState {
     userId: string;
     userName?: string;
@@ -7,22 +8,20 @@ interface IState {
     userOrg?: string;
     userEMail?: string;
     shownDetailDialog: boolean;
-    type: 'user' | 'group';
+    type: DirectoryTypeKey;
 }
-export interface IUserBadgeProps {
-    userId: string;
-    color?: string;
-    badgeColor?: string;
-    textColor?: string;
+export interface IUserBadgeOptionalProps {
+    badgeColor: string;
+    textColor: string;
     style?: ViewStyle;
-    type?: 'user' | 'group';
-    onLongPress?: (userId: IState) => void;
+    type: DirectoryTypeKey;
+    onLongPress: (userId: string) => void;
 }
-declare type DefaultProps = {
-    [P in keyof IUserBadgeProps]?: IUserBadgeProps[P];
-};
+export interface IUserBadgeProps extends Partial<IUserBadgeOptionalProps> {
+    userId: string;
+}
 export declare class UserBadge extends React.Component<IUserBadgeProps, IState> {
-    static defaultProps: DefaultProps;
+    static defaultProps: IUserBadgeOptionalProps;
     private $isMounted;
     constructor(props: IUserBadgeProps);
     render(): JSX.Element;

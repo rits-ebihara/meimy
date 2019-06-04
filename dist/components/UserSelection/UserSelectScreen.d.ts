@@ -1,44 +1,56 @@
 import { Component } from 'react';
-declare type directoryTypeKey = 'user' | 'group' | 'organization';
+import { DirectoryTypeKey } from '../UserBadge';
 export interface IFilter {
     users: boolean;
     groups: boolean;
     organizations: boolean;
 }
-interface IProps {
-    filter?: IFilter;
-    shown: boolean;
+interface IOptionalProps {
+    filter: IFilter;
 }
-declare type DefaultProps = {
-    [P in keyof IProps]?: IProps[P];
-};
-interface ISearchedUser {
-    id: string;
+interface IProps extends Partial<IOptionalProps> {
+    shown: boolean;
+    onSelect: (docId: string, type: DirectoryTypeKey) => void;
+}
+interface ISearchedListItem {
+    docId: string;
     displayName: string;
     corpName: string;
     orgName: string;
     faceImageId: string;
 }
 interface IState {
-    selectedDirectoryType: directoryTypeKey;
+    selectedDirectoryType: DirectoryTypeKey;
     openFilterSetting: boolean;
-    searchResult: ISearchedUser[];
+    searchResult: ISearchedListItem[];
     searchWords: string;
     searchCondition: {
         offset: number;
         limit: number;
     };
     shown: boolean;
+    processing: boolean;
 }
 export declare class UserSelectScreen extends Component<IProps, IState> {
-    static defaultProps: DefaultProps;
+    static defaultProps: IOptionalProps;
+    private searchedDirType;
+    private searchedWord;
     constructor(props: IProps);
     render(): JSX.Element;
     show: () => void;
     private closeButtonPress;
     private changeSearchWords;
     private createSearchedUserList;
+    private pressResultRow;
     private createDirectoryTypePicker;
     private changeDirectoryType;
+    private pressMoreSearch;
+    private pressSearchButton;
+    private startSearch;
+    private createSearchCondition;
+    private commonSearch;
+    private createUserRowData;
+    private createGroupRowData;
+    private createOrganizationRowData;
 }
 export default UserSelectScreen;

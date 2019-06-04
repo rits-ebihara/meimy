@@ -22,6 +22,16 @@ class UserSelection extends react_1.Component {
     constructor(props) {
         super(props);
         this.selectionModal = null;
+        this.addList = (userDocId, type) => {
+            const userList = [...this.props.selectedUsers, {
+                    type,
+                    userDocId,
+                }];
+            this.onChange(userList);
+        };
+        this.onChange = (userList) => {
+            this.props.onChange(userList);
+        };
         this.addButtonPress = () => {
             if (!!this.selectionModal) {
                 this.selectionModal.show();
@@ -30,21 +40,32 @@ class UserSelection extends react_1.Component {
         };
         this.createUserList = () => {
             return this.props.selectedUsers.map(user => {
-                const badgeColor = user.badgeColor || this.props.badgeColor;
-                const textColor = user.textColor || this.props.textColor;
                 const defaultStyle = {
                     margin: 4,
                 };
-                const userBadgeStyle = Object.assign({}, defaultStyle, this.props.userBadgeStyle || {}, user.style || {});
+                const userProps = this.props.userBadgeProp;
+                if (!!userProps.style) {
+                    userProps.style = Object.assign({}, defaultStyle, userProps.style);
+                }
+                else {
+                    userProps.style = defaultStyle;
+                }
                 const props = {
-                    badgeColor,
-                    textColor,
-                    style: userBadgeStyle,
-                    userId: user.userId,
-                    type: user.type,
+                    ...userProps,
+                    userId: user.userDocId,
+                    onLongPress: this.onDelete,
                 };
                 return react_1.default.createElement(UserBadge_1.UserBadge, Object.assign({ key: props.userId }, props));
             });
+        };
+        this.onDelete = (userDocId) => {
+            const { selectedUsers } = this.props;
+            const index = selectedUsers.findIndex(a => a.userDocId === userDocId);
+            if (index === -1) {
+                return;
+            }
+            selectedUsers.splice(index, 1);
+            this.onChange([...selectedUsers]);
         };
         this.state = {
             showDialog: false,
@@ -55,15 +76,17 @@ class UserSelection extends react_1.Component {
         const style = Object.assign({}, containerState, props.style);
         return (react_1.default.createElement(native_base_1.View, { style: style },
             this.createUserList(),
-            react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true, onPress: this.addButtonPress },
-                react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })),
-            react_1.default.createElement(UserSelectScreen_1.default, { ref: (me) => this.selectionModal = me, filter: props.filter })));
+            this.props.showAddButton ?
+                react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true, key: "add-button", onPress: this.addButtonPress },
+                    react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })) : null,
+            react_1.default.createElement(UserSelectScreen_1.default, { key: "user-select-screen", ref: (me) => this.selectionModal = me, filter: props.filter, shown: this.state.showDialog, onSelect: this.addList })));
     }
     ;
 }
 UserSelection.defaultProps = {
     addable: false,
     multiple: false,
+    userBadgeProp: {},
 };
 exports.UserSelection = UserSelection;
 exports.default = UserSelection;
