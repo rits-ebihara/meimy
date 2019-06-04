@@ -9,6 +9,8 @@ import { IParsedResponse } from '../eim-service/IResponse';
 import groupFace from '../resources/group.png';
 import dummyFace from '../resources/user.png';
 
+export type DirectoryTypeKey = 'user' | 'group' | 'organization';
+
 interface IState {
     userId: string;
     userName?: string;
@@ -16,25 +18,24 @@ interface IState {
     userOrg?: string;
     userEMail?: string;
     shownDetailDialog: boolean;
-    type: 'user' | 'group';
+    type: DirectoryTypeKey;
 }
-export interface IUserBadgeProps {
-    userId: string;
-    color?: string;
-    badgeColor?: string;
-    textColor?: string;
+export interface IUserBadgeOptionalProps {
+    badgeColor: string;
+    textColor: string;
     style?: ViewStyle;
-    type?: 'user' | 'group';
-    onLongPress?: (userId: IState) => void;
+    type: DirectoryTypeKey;
+    onLongPress: (userId: string) => void;
 }
-type DefaultProps = {
-    [P in keyof IUserBadgeProps]?: IUserBadgeProps[P];
-};
+export interface IUserBadgeProps extends Partial<IUserBadgeOptionalProps> {
+    userId: string;
+}
 export class UserBadge extends React.Component<IUserBadgeProps, IState> {
-    public static defaultProps: DefaultProps = {
-        badgeColor: '#999',
-        color: '#fff',
+    public static defaultProps: IUserBadgeOptionalProps = {
+        badgeColor: '#666',
+        textColor: '#fff',
         type: 'user',
+        onLongPress: (_userId: string) => { },
     };
     private $isMounted = false;
     public constructor(props: IUserBadgeProps) {
@@ -101,7 +102,7 @@ export class UserBadge extends React.Component<IUserBadgeProps, IState> {
     private onLongPressUserBadge = () => {
         if (!this.props.onLongPress) { return; }
         const state = clone(this.state);
-        this.props.onLongPress(state);
+        this.props.onLongPress(state.userId);
     }
 
     private userInfoPanel = (faceImage: ImageSourcePropType) => {

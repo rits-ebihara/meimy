@@ -2,23 +2,25 @@ import { Button, Icon, View } from 'native-base';
 import React, { Component } from 'react';
 import { ViewStyle } from 'react-native';
 
-import { IUserBadgeProps, UserBadge } from '../UserBadge';
+import { DirectoryTypeKey, IUserBadgeOptionalProps, IUserBadgeProps, UserBadge } from '../UserBadge';
 import UserSelectScreen, { IFilter } from './UserSelectScreen';
 
-export interface IUserSelectionProps {
-    selectedUsers: IUserBadgeProps[];
-    badgeColor?: string;
-    textColor?: string;
-    userBadgeStyle?: ViewStyle;
-    multiple?: boolean;
-    addable?: boolean;
+interface IOptionalProps {
+    addable: boolean;
     filter?: IFilter;
+    multiple: boolean;
     style?: ViewStyle;
-    onChange?: (userIds: string[]) => void;
+    userBadgeProp: { [key in keyof IUserBadgeOptionalProps]?: IUserBadgeOptionalProps[key] };
 }
-type DefaultProps = {
-    [P in keyof IUserSelectionProps]?: IUserSelectionProps[P];
-};
+export interface IUserListItem {
+    type: DirectoryTypeKey;
+    userDocId: string;
+}
+export interface IUserSelectionProps extends Partial<IOptionalProps> {
+    onChange: (userIds: IUserListItem[]) => void;
+    selectedUsers: IUserListItem[];
+    showAddButton: boolean;
+}
 
 interface IState {
     showDialog: boolean;
@@ -30,9 +32,10 @@ const containerState: ViewStyle = {
 };
 
 export class UserSelection extends Component<IUserSelectionProps, IState> {
-    public static defaultProps: DefaultProps = {
+    public static defaultProps: IOptionalProps = {
         addable: false,
         multiple: false,
+        userBadgeProp: {},
     }
     private selectionModal: UserSelectScreen | null = null;
     public constructor(props: IUserSelectionProps) {
@@ -47,38 +50,61 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
         return (
             <View style={style}>
                 {this.createUserList()}
-                <Button transparent icon success
-                    onPress={this.addButtonPress}>
-                    <Icon name="md-add-circle" />
-                </Button>
+                {
+                    this.props.showAddButton ?
+                        <Button transparent icon success
+                            key="add-button"
+                            onPress={this.addButtonPress}>
+                            <Icon name="md-add-circle" />
+                        </Button> : null
+                }
                 <UserSelectScreen
+                    key="user-select-screen"
                     ref={(me) => this.selectionModal = me}
-                    filter={props.filter} />
+                    filter={props.filter}
+                    shown={this.state.showDialog}
+                    onSelect={this.addList} />
             </View>
         );
     };
+    private addList = (userDocId: string, type: DirectoryTypeKey) => {
+        const userList: IUserListItem[] = [...this.props.selectedUsers, {
+            type,
+            userDocId,
+        }];
+        this.onChange(userList);
+    }
+    private onChange = (userList: IUserListItem[]) => {
+        this.props.onChange(userList);
+    }
     private addButtonPress = () => {
         if (!!this.selectionModal) { this.selectionModal.show(); };
     }
     private createUserList = () => {
         return this.props.selectedUsers.map(user => {
-            const badgeColor = user.badgeColor || this.props.badgeColor;
-            const textColor = user.textColor || this.props.textColor;
             const defaultStyle: ViewStyle = {
                 margin: 4,
             };
-            const userBadgeStyle = Object.assign(
-                {}, defaultStyle,
-                this.props.userBadgeStyle || {}, user.style || {});
+            const userProps = (this.props as IOptionalProps).userBadgeProp;
+            if (!!userProps.style) {
+                userProps.style = Object.assign({}, defaultStyle, userProps.style);
+            } else {
+                userProps.style = defaultStyle;
+            }
             const props: IUserBadgeProps = {
-                badgeColor,
-                textColor,
-                style: userBadgeStyle,
-                userId: user.userId,
-                type: user.type,
+                ...userProps,
+                userId: user.userDocId,
+                onLongPress: this.onDelete,
             };
             return <UserBadge key={props.userId} {...props} />
         });
+    }
+    private onDelete = (userDocId: string) => {
+        const { selectedUsers } = this.props;
+        const index = selectedUsers.findIndex(a => a.userDocId === userDocId);
+        if (index === -1) { return; }
+        selectedUsers.splice(index, 1);
+        this.onChange([...selectedUsers]);
     }
 }
 

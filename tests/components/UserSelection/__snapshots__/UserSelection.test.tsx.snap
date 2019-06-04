@@ -1,47 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`init  1`] = `
+exports[`init minimal 1`] = `
 <Styled(ViewNB)
   style={
     Object {
-      "backgroundColor": "#100",
       "flexDirection": "row",
       "flexWrap": "wrap",
     }
   }
 >
   <UserBadge
-    badgeColor="#333"
-    color="#fff"
+    badgeColor="#666"
     key="a0001"
+    onLongPress={[Function]}
     style={
       Object {
-        "borderColor": "#030",
-        "borderWidth": 1,
         "margin": 4,
       }
     }
-    textColor="#ccc"
+    textColor="#fff"
     type="user"
     userId="a0001"
   />
   <UserBadge
-    badgeColor="#900"
-    color="#fff"
+    badgeColor="#666"
     key="a0002"
+    onLongPress={[Function]}
     style={
       Object {
-        "borderColor": "#111",
-        "borderWidth": 1,
         "margin": 4,
       }
     }
-    textColor="#099"
-    type="group"
+    textColor="#fff"
+    type="user"
     userId="a0002"
   />
   <Styled(Button)
     icon={true}
+    key="add-button"
+    onPress={[Function]}
     success={true}
     transparent={true}
   >
@@ -49,5 +46,69 @@ exports[`init  1`] = `
       name="md-add-circle"
     />
   </Styled(Button)>
+  <UserSelectScreen
+    filter={
+      Object {
+        "groups": true,
+        "organizations": true,
+        "users": true,
+      }
+    }
+    key="user-select-screen"
+    onSelect={[Function]}
+    shown={false}
+  />
+</Styled(ViewNB)>
+`;
+
+exports[`init user badge styled 1`] = `
+<Styled(ViewNB)
+  style={
+    Object {
+      "flexDirection": "row",
+      "flexWrap": "wrap",
+    }
+  }
+>
+  <UserBadge
+    badgeColor="#900"
+    key="a0001"
+    onLongPress={[Function]}
+    style={
+      Object {
+        "borderColor": "#090",
+        "margin": 4,
+      }
+    }
+    textColor="#ccc"
+    type="organization"
+    userId="a0001"
+  />
+  <UserBadge
+    badgeColor="#900"
+    key="a0002"
+    onLongPress={[Function]}
+    style={
+      Object {
+        "borderColor": "#090",
+        "margin": 4,
+      }
+    }
+    textColor="#ccc"
+    type="organization"
+    userId="a0002"
+  />
+  <UserSelectScreen
+    filter={
+      Object {
+        "groups": true,
+        "organizations": true,
+        "users": true,
+      }
+    }
+    key="user-select-screen"
+    onSelect={[Function]}
+    shown={false}
+  />
 </Styled(ViewNB)>
 `;

@@ -1,80 +1,882 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`init default 1`] = `
-<Styled(Container)
-  style={
-    Object {
-      "bottom": 0,
-      "flex": 1,
-      "left": 0,
-      "position": "absolute",
-      "right": 0,
-      "top": 0,
-    }
-  }
+<Component
+  animated={true}
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
 >
-  <Styled(Header)>
-    <Styled(Right)>
-      <Styled(Button)
-        icon={true}
-        transparent={true}
-      >
-        <Styled(Icon)
-          name="close"
-        />
-      </Styled(Button)>
-    </Styled(Right)>
-  </Styled(Header)>
-  <Styled(Body)>
-    <Styled(Form)
+  <Styled(ViewNB)
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Styled(ViewNB)
       style={
         Object {
-          "flexDirection": "row",
+          "backgroundColor": "#fff",
+          "height": "95%",
+          "width": "95%",
         }
       }
     >
-      <Styled(Item)
-        fixedLabel={true}
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flexDirection": "row-reverse",
+          }
+        }
       >
-        <Styled(Label)>
-          検索
-        </Styled(Label)>
-        <Styled(Input)
-          onChangeText={[Function]}
-          value=""
+        <Styled(Button)
+          icon={true}
+          key="close-button"
+          onPress={[Function]}
+          transparent={true}
+        >
+          <Styled(Icon)
+            name="close"
+          />
+        </Styled(Button)>
+      </Styled(ViewNB)>
+      <Styled(ViewNB)>
+        <Styled(Form)
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Styled(Item)
+            fixedLabel={true}
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Styled(Input)
+              key="search-word-input"
+              onChangeText={[Function]}
+              placeholder="検索"
+              returnKeyType="search"
+              value=""
+            />
+          </Styled(Item)>
+          <Styled(Button)
+            icon={true}
+            key="search-button"
+            onPress={[Function]}
+            style={
+              Object {
+                "flexGrow": 0,
+              }
+            }
+            transparent={true}
+          >
+            <Styled(Icon)
+              name="search"
+            />
+          </Styled(Button)>
+          <Styled(ViewNB)
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Picker
+              key="dir-picker"
+              mode="dropdown"
+              onValueChange={[Function]}
+              selectedValue="user"
+            >
+              <PickerItem
+                key="user"
+                label="ユーザー"
+                value="user"
+              />
+              <PickerItem
+                key="group"
+                label="グループ"
+                value="group"
+              />
+              <PickerItem
+                key="organization"
+                label="組織"
+                value="organization"
+              />
+            </Picker>
+          </Styled(ViewNB)>
+        </Styled(Form)>
+        <Styled(List)
+          key="result-list"
         />
-      </Styled(Item)>
+      </Styled(ViewNB)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+</Component>
+`;
+
+exports[`init set list data 1`] = `
+<Component
+  animated={true}
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "height": "95%",
+          "width": "95%",
+        }
+      }
+    >
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flexDirection": "row-reverse",
+          }
+        }
+      >
+        <Styled(Button)
+          icon={true}
+          key="close-button"
+          onPress={[Function]}
+          transparent={true}
+        >
+          <Styled(Icon)
+            name="close"
+          />
+        </Styled(Button)>
+      </Styled(ViewNB)>
+      <Styled(ViewNB)>
+        <Styled(Form)
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Styled(Item)
+            fixedLabel={true}
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Styled(Input)
+              key="search-word-input"
+              onChangeText={[Function]}
+              placeholder="検索"
+              returnKeyType="search"
+              value=""
+            />
+          </Styled(Item)>
+          <Styled(Button)
+            icon={true}
+            key="search-button"
+            onPress={[Function]}
+            style={
+              Object {
+                "flexGrow": 0,
+              }
+            }
+            transparent={true}
+          >
+            <Styled(Icon)
+              name="search"
+            />
+          </Styled(Button)>
+          <Styled(ViewNB)
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Picker
+              key="dir-picker"
+              mode="dropdown"
+              onValueChange={[Function]}
+              selectedValue="user"
+            >
+              <PickerItem
+                key="user"
+                label="ユーザー"
+                value="user"
+              />
+              <PickerItem
+                key="group"
+                label="グループ"
+                value="group"
+              />
+              <PickerItem
+                key="organization"
+                label="組織"
+                value="organization"
+              />
+            </Picker>
+          </Styled(ViewNB)>
+        </Styled(Form)>
+        <Styled(List)
+          key="result-list"
+        >
+          <Styled(ListItem)
+            key="a001"
+          >
+            <Styled(Body)>
+              <Styled(Text)>
+                理光 一郎
+              </Styled(Text)>
+              <Styled(Text)
+                style={
+                  Object {
+                    "color": "#999",
+                    "fontSize": 12,
+                  }
+                }
+              >
+                EIM APP DEV
+              </Styled(Text)>
+            </Styled(Body)>
+            <Styled(Right)>
+              <Styled(Button)
+                icon={true}
+                onPress={[Function]}
+                success={true}
+                transparent={true}
+              >
+                <Styled(Icon)
+                  name="md-add-circle"
+                />
+              </Styled(Button)>
+            </Styled(Right)>
+          </Styled(ListItem)>
+          <Styled(ListItem)
+            key="a002"
+          >
+            <Styled(Body)>
+              <Styled(Text)>
+                理光 二郎
+              </Styled(Text)>
+              <Styled(Text)
+                style={
+                  Object {
+                    "color": "#999",
+                    "fontSize": 12,
+                  }
+                }
+              >
+                EIM APP DEV
+              </Styled(Text)>
+            </Styled(Body)>
+            <Styled(Right)>
+              <Styled(Button)
+                icon={true}
+                onPress={[Function]}
+                success={true}
+                transparent={true}
+              >
+                <Styled(Icon)
+                  name="md-add-circle"
+                />
+              </Styled(Button)>
+            </Styled(Right)>
+          </Styled(ListItem)>
+        </Styled(List)>
+        <Styled(Button)
+          full={true}
+          key="more-search-button"
+          onPress={[Function]}
+        >
+          <Styled(Text)>
+            さらに表示
+          </Styled(Text)>
+        </Styled(Button)>
+      </Styled(ViewNB)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+</Component>
+`;
+
+exports[`search search group complete 1`] = `
+<Styled(List)
+  key="result-list"
+/>
+`;
+
+exports[`search search group complete 2`] = `
+<Styled(List)
+  key="result-list"
+>
+  <Styled(ListItem)
+    key="$GuestManagers"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        ゲストユーザー管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
       <Styled(Button)
         icon={true}
+        onPress={[Function]}
+        success={true}
         transparent={true}
       >
         <Styled(Icon)
-          name="search"
+          name="md-add-circle"
         />
       </Styled(Button)>
-      <Picker
-        mode="dropdown"
-        onValueChange={[Function]}
-        selectedValue="user"
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="$Administrators"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        サイト管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
       >
-        <PickerItem
-          key="user"
-          label="ユーザー"
-          value="user"
+        <Styled(Icon)
+          name="md-add-circle"
         />
-        <PickerItem
-          key="group"
-          label="グループ"
-          value="group"
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="AdministratorMembers"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
         />
-        <PickerItem
-          key="organization"
-          label="組織"
-          value="organization"
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="$GuestManagers"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        ゲストユーザー管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
         />
-      </Picker>
-    </Styled(Form)>
-    <Styled(List) />
-  </Styled(Body)>
-</Styled(Container)>
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="$Administrators"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        サイト管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="AdministratorMembers"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        管理者グループ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+</Styled(List)>
+`;
+
+exports[`search search organization complete 1`] = `
+<Styled(List)
+  key="result-list"
+/>
+`;
+
+exports[`search search organization complete 2`] = `
+<Styled(List)
+  key="result-list"
+>
+  <Styled(ListItem)
+    key="0abebb0204264abb9d0f0e91be2901e5"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        RITS BS事
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="7bf3fbe443de4b96b91f49bd0e2305c6"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        RITS
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="738cd3da8c12479290d2ce44afca931f"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        TEST組織
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="0abebb0204264abb9d0f0e91be2901e5"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        RITS BS事
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="7bf3fbe443de4b96b91f49bd0e2305c6"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        RITS
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="738cd3da8c12479290d2ce44afca931f"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        TEST組織
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+</Styled(List)>
+`;
+
+exports[`search search user complete 1`] = `
+<Styled(List)
+  key="result-list"
+/>
+`;
+
+exports[`search search user complete 2`] = `
+<Styled(List)
+  key="result-list"
+>
+  <Styled(ListItem)
+    key="59217dfcd1314bd8bf82bfa25ecc5a44"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        SiteAdmin-DJtj5N3u9VsJ SiteAdmin-DJtj5N3u9VsJ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="2258e1c20ef64fc1ba7353659518f4f6"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        admin root
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="48dae60102c54fa984c1f1b1dcb24a94"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        fsoft anhvd1
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="59217dfcd1314bd8bf82bfa25ecc5a44"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        SiteAdmin-DJtj5N3u9VsJ SiteAdmin-DJtj5N3u9VsJ
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="2258e1c20ef64fc1ba7353659518f4f6"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        admin root
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="48dae60102c54fa984c1f1b1dcb24a94"
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        fsoft anhvd1
+      </Styled(Text)>
+      <Styled(Text)
+        style={
+          Object {
+            "color": "#999",
+            "fontSize": 12,
+          }
+        }
+      />
+    </Styled(Body)>
+    <Styled(Right)>
+      <Styled(Button)
+        icon={true}
+        onPress={[Function]}
+        success={true}
+        transparent={true}
+      >
+        <Styled(Icon)
+          name="md-add-circle"
+        />
+      </Styled(Button)>
+    </Styled(Right)>
+  </Styled(ListItem)>
+</Styled(List)>
 `;

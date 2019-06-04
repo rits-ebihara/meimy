@@ -3,40 +3,112 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
-import { IUserBadgeProps } from '../../../src';
-import UserSelection from '../../../src/components/UserSelection/UserSelection';
+import UserSelection, { IUserListItem } from '../../../src/components/UserSelection/UserSelection';
 
 Enzyme.configure({
     adapter: new EnzymeAdapter(),
 });
 
-const getUsers = (): IUserBadgeProps[] => {
+const getUsers = (): IUserListItem[] => {
     return [
         {
-            badgeColor: '#333',
-            textColor: '#ccc',
             type: 'user',
-            userId: 'a0001',
-            style: {
-                borderColor: '#030',
-            }
+            userDocId: 'a0001',
         },
         {
             type: 'group',
-            userId: 'a0002',
+            userDocId: 'a0002',
         },
     ];
 };
 
 describe('init', () => {
-    test('', () => {
+    test('minimal', () => {
         const users = getUsers();
         const target = Enzyme.shallow(
             <UserSelection selectedUsers={users}
-                badgeColor='#900' textColor="#099"
-                style={{ backgroundColor: '#100' }}
-                userBadgeStyle={{ borderColor: '#111', borderWidth: 1 }}
+                showAddButton
+                onChange={jest.fn()}
             />);
         expect(toJson(target)).toMatchSnapshot();
+    });
+    test('user badge styled', () => {
+        const users = getUsers();
+        const target = Enzyme.shallow(
+            <UserSelection
+                userBadgeProp={{
+                    badgeColor: '#900',
+                    textColor: '#ccc',
+                    onLongPress: () => { },
+                    style: {
+                        borderColor: '#090',
+                    },
+                    type: 'organization',
+                }}
+                selectedUsers={users}
+                showAddButton={false}
+                onChange={jest.fn()}
+            />);
+        expect(toJson(target)).toMatchSnapshot();
+    });
+});
+
+describe('event', () => {
+    test('add user', () => {
+        const users = getUsers();
+        const fn = jest.fn();
+        const target = Enzyme.shallow<UserSelection>(
+            <UserSelection selectedUsers={users}
+                showAddButton
+                onChange={fn}
+            />);
+        const instance = target.instance();
+        instance['addList']('add-user-id', 'user');
+        expect(fn).toBeCalledWith([...users, {
+            type: 'user', userDocId: 'add-user-id'
+        }]);
+    });
+    test('remove user', () => {
+        const users = getUsers();
+        const fn = jest.fn();
+        const target = Enzyme.shallow<UserSelection>(
+            <UserSelection selectedUsers={users}
+                showAddButton
+                onChange={fn}
+            />);
+        const instance = target.instance();
+        instance['onDelete']('a0001');
+        expect(fn).toBeCalledWith([{
+            type: 'group',
+            userDocId: 'a0002',
+        }]);
+    });
+    test('remove user - no exist user', () => {
+        const users = getUsers();
+        const fn = jest.fn();
+        const target = Enzyme.shallow<UserSelection>(
+            <UserSelection selectedUsers={users}
+                showAddButton
+                onChange={fn}
+            />);
+        const instance = target.instance();
+        instance['onDelete']('a009');
+        expect(fn).not.toBeCalled();
+    });
+    test('press add user button', () => {
+        const users = getUsers();
+        const fn = jest.fn();
+        const target = Enzyme.shallow<UserSelection>(
+            <UserSelection selectedUsers={users}
+                showAddButton
+                onChange={fn}
+            />);
+        const instance = target.instance();
+        instance['addButtonPress'];
+        const comp = target.findWhere(a => a.key() === 'user-select-screen');
+        (comp.getElement() as any).ref({ show: jest.fn() })
+        const button = target.findWhere(a => a.key() === 'add-button');
+        button.simulate('press');
+        expect((instance['selectionModal'] as any).show).toBeCalled();
     });
 });

@@ -1,5 +1,4 @@
-
-interface IUserList {
+export interface IUserList {
     'properties.description'?: string;
     'properties.loginUserName'?: string;
     'properties.displayName'?: string;
@@ -54,4 +53,15 @@ interface IUserList {
     'properties.worklocKey'?: string;
     'properties.worklocName'?: string;
     'properties.userType'?: string;
+}
+
+export interface IOrganizationList {
+    'properties.fullLabel'?: string;
+    'properties.label'?: string;
+}
+
+export interface IGroupList {
+    'properties.fullLabel'?: string;
+    'properties.label'?: string;
+    'properties.groupType'?: string;
 }
