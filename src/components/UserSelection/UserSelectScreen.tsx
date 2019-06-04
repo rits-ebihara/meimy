@@ -39,7 +39,6 @@ interface IOptionalProps {
 }
 
 interface IProps extends Partial<IOptionalProps> {
-    shown: boolean;
     onSelect: (docId: string, type: DirectoryTypeKey) => void;
 }
 
@@ -54,7 +53,6 @@ interface ISearchedListItem {
 
 interface IState {
     selectedDirectoryType: DirectoryTypeKey;
-    openFilterSetting: boolean;
     searchResult: ISearchedListItem[];
     searchWords: string;
     searchCondition: {
@@ -90,20 +88,20 @@ export class UserSelectScreen extends Component<IProps, IState> {
     }
     private searchedDirType: DirectoryTypeKey = 'user';
     private searchedWord: string = '';
+    private getInitState = (): IState => ({
+        searchResult: [],
+        selectedDirectoryType: 'user',
+        searchWords: '',
+        searchCondition: {
+            limit: 30,
+            offset: 0,
+        },
+        shown: false,
+        processing: false,
+    });
     public constructor(props: IProps) {
         super(props);
-        this.state = {
-            searchResult: [],
-            selectedDirectoryType: 'user',
-            openFilterSetting: false,
-            searchWords: '',
-            searchCondition: {
-                limit: 30,
-                offset: 0,
-            },
-            shown: false,
-            processing: false,
-        };
+        this.state = this.getInitState();
     }
     public render() {
         return (
@@ -160,9 +158,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
         )
     }
     public show = () => {
-        this.setState({
-            shown: true,
-        });
+        this.setState(this.getInitState());
     }
     private closeButtonPress = () => {
         this.setState({
@@ -192,6 +188,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
     }
     private pressResultRow = (docId: string) => {
         this.props.onSelect(docId, this.searchedDirType);
+        this.closeButtonPress();
     }
     private createDirectoryTypePicker = (selectedDirectoryType: DirectoryTypeKey) => {
         const items: JSX.Element[] =
@@ -315,6 +312,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             this.setState({
                 searchResult: newList,
                 searchCondition: condition,
+                processing: false,
             });
         } catch {
             Toast.show({

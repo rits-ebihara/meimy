@@ -1093,11 +1093,11 @@ const listData = [{
 
 describe('init', () => {
     test('default', () => {
-        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
     test('set list data', () => {
-        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
             searchResult: listData,
         });
@@ -1107,7 +1107,7 @@ describe('init', () => {
 
 describe('button event', () => {
     test('on press search button', () => {
-        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
             searchCondition: {
                 offset: 90,
@@ -1164,7 +1164,7 @@ describe('button event', () => {
     });
 
     test('on press more search button', () => {
-        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
             searchCondition: {
                 offset: 90,
@@ -1222,21 +1222,42 @@ describe('button event', () => {
 
 describe('event', () => {
     test('show', () => {
-        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
+        wrapper.setState({
+            searchResult: listData,
+            selectedDirectoryType: 'group',
+            searchWords: 'hoge',
+            searchCondition: {
+                limit: 30,
+                offset: 100,
+            },
+            shown: false,
+            processing: true,
+        });
         const instance = wrapper.instance();
         instance.show();
         const state = wrapper.state();
-        expect(state.shown).toBeTruthy();
+        expect(state).toEqual({
+            searchResult: [],
+            selectedDirectoryType: 'user',
+            searchWords: '',
+            searchCondition: {
+                limit: 30,
+                offset: 0,
+            },
+            shown: false,
+            processing: false,
+        });
     });
     test('press close button', () => {
-        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
         const closeButton = wrapper.findWhere(a => a.key() === 'close-button');
         closeButton.simulate('press');
         const state = wrapper.state();
         expect(state.shown).toBeFalsy();
     });
     test('change search word', () => {
-        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
         const inputText = wrapper.findWhere(a => a.key() === 'search-word-input');
         inputText.simulate('changeText', 'hoge');
         const state = wrapper.state();
@@ -1245,16 +1266,19 @@ describe('event', () => {
     test('press searched list item', () => {
         const fn = jest.fn();
         const wrapper = Enzyme.shallow<UserSelectScreen>(
-            <UserSelectScreen onSelect={fn} shown={false} />);
+            <UserSelectScreen onSelect={fn} />);
+        wrapper.setState({ shown: true });
         const instance = wrapper.instance();
         instance['searchedDirType'] = 'user';
         instance['pressResultRow']('doc-id');
+        const state = wrapper.state();
         expect(fn).toBeCalledWith('doc-id', 'user');
+        expect(state.shown).toBeFalsy();
     });
     test('change directory type', () => {
         const fn = jest.fn();
         const wrapper = Enzyme.shallow<UserSelectScreen>(
-            <UserSelectScreen onSelect={fn} shown={true} />);
+            <UserSelectScreen onSelect={fn} />);
         const dirPicker = wrapper.findWhere(a => a.key() === 'dir-picker');
         dirPicker.simulate('valueChange', 'group');
         const state = wrapper.state();
@@ -1265,7 +1289,7 @@ describe('event', () => {
 describe('search', () => {
     let wrapper: Enzyme.ShallowWrapper<UserSelectScreen>;
     beforeEach(() => {
-        wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} shown={false} />);
+        wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
     });
     test('search user on exception', async () => {
         const fn = jest.fn(async () => {
@@ -1300,6 +1324,7 @@ describe('search', () => {
         } as any));
         let resultList = wrapper.findWhere(a => a.key() === 'result-list');
         expect(toJson(resultList)).toMatchSnapshot();
+        wrapper.setState({ processing: true });
         const instance = wrapper.instance() as UserSelectScreen;
         instance['searchedWord'] = 'test-word';
         await instance['startSearch']['user']();
@@ -1357,12 +1382,14 @@ describe('search', () => {
         expect(fn).toBeCalledWith(['token'], 'addressbook', 'userdoclist',
             { limit: 30, offset: 0, search: expectSearch });
         expect(Toast.show).not.toBeCalled();
+        expect(state.processing).toBeFalsy();
         expect(state.searchResult).toEqual(expectResult);
         expect(state.searchCondition.offset).toEqual(3);
         await instance['startSearch']['user']();
         state = wrapper.state() as any;
         expect(state.searchResult).toEqual([...expectResult, ...expectResult]);
         expect(state.searchCondition.offset).toEqual(6);
+        expect(state.processing);
         wrapper.update();
         resultList = wrapper.findWhere(a => a.key() === 'result-list');
         expect(toJson(resultList)).toMatchSnapshot();

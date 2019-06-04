@@ -20,10 +20,7 @@ export interface IUserSelectionProps extends Partial<IOptionalProps> {
     selectedUsers: IUserListItem[];
     showAddButton: boolean;
 }
-interface IState {
-    showDialog: boolean;
-}
-export declare class UserSelection extends Component<IUserSelectionProps, IState> {
+export declare class UserSelection extends Component<IUserSelectionProps> {
     static defaultProps: IOptionalProps;
     private selectionModal;
     constructor(props: IUserSelectionProps);

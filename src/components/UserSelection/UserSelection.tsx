@@ -22,16 +22,12 @@ export interface IUserSelectionProps extends Partial<IOptionalProps> {
     showAddButton: boolean;
 }
 
-interface IState {
-    showDialog: boolean;
-}
-
 const containerState: ViewStyle = {
     flexDirection: 'row',
     flexWrap: 'wrap',
 };
 
-export class UserSelection extends Component<IUserSelectionProps, IState> {
+export class UserSelection extends Component<IUserSelectionProps> {
     public static defaultProps: IOptionalProps = {
         addable: false,
         multiple: false,
@@ -40,9 +36,6 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
     private selectionModal: UserSelectScreen | null = null;
     public constructor(props: IUserSelectionProps) {
         super(props);
-        this.state = {
-            showDialog: false,
-        };
     }
     public render() {
         const { props } = this;
@@ -62,7 +55,6 @@ export class UserSelection extends Component<IUserSelectionProps, IState> {
                     key="user-select-screen"
                     ref={(me) => this.selectionModal = me}
                     filter={props.filter}
-                    shown={this.state.showDialog}
                     onSelect={this.addList} />
             </View>
         );

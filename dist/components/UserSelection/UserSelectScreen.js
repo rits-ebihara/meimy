@@ -41,10 +41,19 @@ class UserSelectScreen extends react_1.Component {
         super(props);
         this.searchedDirType = 'user';
         this.searchedWord = '';
+        this.getInitState = () => ({
+            searchResult: [],
+            selectedDirectoryType: 'user',
+            searchWords: '',
+            searchCondition: {
+                limit: 30,
+                offset: 0,
+            },
+            shown: false,
+            processing: false,
+        });
         this.show = () => {
-            this.setState({
-                shown: true,
-            });
+            this.setState(this.getInitState());
         };
         this.closeButtonPress = () => {
             this.setState({
@@ -67,6 +76,7 @@ class UserSelectScreen extends react_1.Component {
         };
         this.pressResultRow = (docId) => {
             this.props.onSelect(docId, this.searchedDirType);
+            this.closeButtonPress();
         };
         this.createDirectoryTypePicker = (selectedDirectoryType) => {
             const items = directoryTypeKeys.map(key => (react_1.default.createElement(react_native_1.Picker.Item, { key: key, label: directoryType[key], value: key })));
@@ -170,6 +180,7 @@ class UserSelectScreen extends react_1.Component {
                 this.setState({
                     searchResult: newList,
                     searchCondition: condition,
+                    processing: false,
                 });
             }
             catch (_a) {
@@ -209,18 +220,7 @@ class UserSelectScreen extends react_1.Component {
                 orgName: '',
             };
         };
-        this.state = {
-            searchResult: [],
-            selectedDirectoryType: 'user',
-            openFilterSetting: false,
-            searchWords: '',
-            searchCondition: {
-                limit: 30,
-                offset: 0,
-            },
-            shown: false,
-            processing: false,
-        };
+        this.state = this.getInitState();
     }
     render() {
         return (react_1.default.createElement(react_native_1.Modal, { transparent: true, animated: true, animationType: "fade", visible: this.state.shown },

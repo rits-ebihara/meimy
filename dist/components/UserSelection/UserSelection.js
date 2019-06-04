@@ -67,9 +67,6 @@ class UserSelection extends react_1.Component {
             selectedUsers.splice(index, 1);
             this.onChange([...selectedUsers]);
         };
-        this.state = {
-            showDialog: false,
-        };
     }
     render() {
         const { props } = this;
@@ -79,7 +76,7 @@ class UserSelection extends react_1.Component {
             this.props.showAddButton ?
                 react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true, key: "add-button", onPress: this.addButtonPress },
                     react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })) : null,
-            react_1.default.createElement(UserSelectScreen_1.default, { key: "user-select-screen", ref: (me) => this.selectionModal = me, filter: props.filter, shown: this.state.showDialog, onSelect: this.addList })));
+            react_1.default.createElement(UserSelectScreen_1.default, { key: "user-select-screen", ref: (me) => this.selectionModal = me, filter: props.filter, onSelect: this.addList })));
     }
     ;
 }

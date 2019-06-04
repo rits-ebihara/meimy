@@ -9,7 +9,6 @@ interface IOptionalProps {
     filter: IFilter;
 }
 interface IProps extends Partial<IOptionalProps> {
-    shown: boolean;
     onSelect: (docId: string, type: DirectoryTypeKey) => void;
 }
 interface ISearchedListItem {
@@ -21,7 +20,6 @@ interface ISearchedListItem {
 }
 interface IState {
     selectedDirectoryType: DirectoryTypeKey;
-    openFilterSetting: boolean;
     searchResult: ISearchedListItem[];
     searchWords: string;
     searchCondition: {
@@ -35,6 +33,7 @@ export declare class UserSelectScreen extends Component<IProps, IState> {
     static defaultProps: IOptionalProps;
     private searchedDirType;
     private searchedWord;
+    private getInitState;
     constructor(props: IProps);
     render(): JSX.Element;
     show: () => void;
