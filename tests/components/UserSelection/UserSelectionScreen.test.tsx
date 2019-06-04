@@ -1245,7 +1245,7 @@ describe('event', () => {
                 limit: 30,
                 offset: 0,
             },
-            shown: false,
+            shown: true,
             processing: false,
         });
     });

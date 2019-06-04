@@ -158,7 +158,9 @@ export class UserSelectScreen extends Component<IProps, IState> {
         )
     }
     public show = () => {
-        this.setState(this.getInitState());
+        const s = this.getInitState();
+        s.shown = true;
+        this.setState(s);
     }
     private closeButtonPress = () => {
         this.setState({

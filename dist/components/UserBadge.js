@@ -115,7 +115,7 @@ class UserBadge extends react_1.default.Component {
 }
 UserBadge.defaultProps = {
     badgeColor: '#666',
-    textColor: '#fff',
+    textColor: '#000',
     type: 'user',
     onLongPress: (_userId) => { },
 };

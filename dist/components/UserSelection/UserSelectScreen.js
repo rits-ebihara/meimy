@@ -53,7 +53,9 @@ class UserSelectScreen extends react_1.Component {
             processing: false,
         });
         this.show = () => {
-            this.setState(this.getInitState());
+            const s = this.getInitState();
+            s.shown = true;
+            this.setState(s);
         };
         this.closeButtonPress = () => {
             this.setState({

@@ -33,7 +33,7 @@ export interface IUserBadgeProps extends Partial<IUserBadgeOptionalProps> {
 export class UserBadge extends React.Component<IUserBadgeProps, IState> {
     public static defaultProps: IUserBadgeOptionalProps = {
         badgeColor: '#666',
-        textColor: '#fff',
+        textColor: '#000',
         type: 'user',
         onLongPress: (_userId: string) => { },
     };
