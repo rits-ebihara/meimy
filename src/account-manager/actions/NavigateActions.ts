@@ -17,10 +17,8 @@ import { createSetAuthState } from './AccountListActions';
 import { createSetAppListAction } from './EimAppListActions';
 import INavigateController from './INavigateController';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class NavigateController implements INavigateController {
     public parentMainPage?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public parentNavParams?: { [key: string]: any };
     private linkStates: IAuthState = {};
     private transferAccountPage = (

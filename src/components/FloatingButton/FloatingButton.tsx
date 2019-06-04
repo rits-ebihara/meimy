@@ -8,8 +8,8 @@ type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 interface IProps {
     iconColor?: string;
     iconName?: string;
-    iconType?: "Entypo" | "EvilIcons" | "Feather" | "FontAwesome" | "Foundation"
-    | "Ionicons" | "MaterialCommunityIcons" | "MaterialIcons" | "Octicons" | "SimpleLineIcons" | "Zocial";
+    iconType?: 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'Foundation'
+    | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial';
     label?: string;
     marginHorizontal?: number;
     marginVertical?: number;

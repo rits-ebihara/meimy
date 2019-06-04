@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 declare module 'react-native-render-html' {
-    import { ComponentType, ReactNode } from "react"
-    import { StyleProp, Text, View, GestureResponderEvent, RecursiveArray, Falsy } from "react-native"
+    import { ComponentType, ReactNode } from 'react'
+    import { StyleProp, Text, View, GestureResponderEvent, RecursiveArray, Falsy } from 'react-native'
     namespace HTML {
         type HTMLNode = any
         type NonRegisteredStylesProp<T> = T | Falsy | RecursiveArray<T | Falsy>

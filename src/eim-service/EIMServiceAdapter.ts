@@ -156,7 +156,7 @@ export class EIMServiceAdapter {
         }
     }
     public getLoginUser = async (tokens: string[]) => {
-        const response = await this.get(`/services/v1/users`, tokens);
+        const response = await this.get('/services/v1/users', tokens);
         if (response.statusCode === 200) {
             return JSON.parse(response.body, dateParser) as IUserDoc;
         } else {
