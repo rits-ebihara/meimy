@@ -3,7 +3,7 @@ import { ViewStyle } from 'react-native';
 import { DirectoryTypeKey, IUserBadgeOptionalProps } from '../UserBadge';
 import { IFilter } from './UserSelectScreen';
 interface IOptionalProps {
-    addable: boolean;
+    editable: boolean;
     filter?: IFilter;
     multiple: boolean;
     style?: ViewStyle;
@@ -18,7 +18,6 @@ export interface IUserListItem {
 export interface IUserSelectionProps extends Partial<IOptionalProps> {
     onChange: (userIds: IUserListItem[]) => void;
     selectedUsers: IUserListItem[];
-    showAddButton: boolean;
 }
 export declare class UserSelection extends Component<IUserSelectionProps> {
     static defaultProps: IOptionalProps;

@@ -6,7 +6,7 @@ import { DirectoryTypeKey, IUserBadgeOptionalProps, IUserBadgeProps, UserBadge }
 import UserSelectScreen, { IFilter } from './UserSelectScreen';
 
 interface IOptionalProps {
-    addable: boolean;
+    editable: boolean;
     filter?: IFilter;
     multiple: boolean;
     style?: ViewStyle;
@@ -19,7 +19,6 @@ export interface IUserListItem {
 export interface IUserSelectionProps extends Partial<IOptionalProps> {
     onChange: (userIds: IUserListItem[]) => void;
     selectedUsers: IUserListItem[];
-    showAddButton: boolean;
 }
 
 const containerState: ViewStyle = {
@@ -29,7 +28,7 @@ const containerState: ViewStyle = {
 
 export class UserSelection extends Component<IUserSelectionProps> {
     public static defaultProps: IOptionalProps = {
-        addable: false,
+        editable: false,
         multiple: false,
         userBadgeProp: {},
     }
@@ -44,7 +43,7 @@ export class UserSelection extends Component<IUserSelectionProps> {
             <View style={style}>
                 {this.createUserList()}
                 {
-                    this.props.showAddButton ?
+                    this.props.editable ?
                         <Button transparent icon success
                             key="add-button"
                             onPress={this.addButtonPress}>
@@ -110,6 +109,7 @@ export class UserSelection extends Component<IUserSelectionProps> {
 
     }
     private onDelete = (userDocId: string) => {
+        if (!this.props.editable) { return; }
         const { selectedUsers } = this.props;
         const index = selectedUsers.findIndex(a => a.userDocId === userDocId);
         if (index === -1) { return; }

@@ -76,6 +76,9 @@ class UserSelection extends react_1.Component {
             });
         };
         this.onDelete = (userDocId) => {
+            if (!this.props.editable) {
+                return;
+            }
             const { selectedUsers } = this.props;
             const index = selectedUsers.findIndex(a => a.userDocId === userDocId);
             if (index === -1) {
@@ -90,7 +93,7 @@ class UserSelection extends react_1.Component {
         const style = Object.assign({}, containerState, props.style);
         return (react_1.default.createElement(native_base_1.View, { style: style },
             this.createUserList(),
-            this.props.showAddButton ?
+            this.props.editable ?
                 react_1.default.createElement(native_base_1.Button, { transparent: true, icon: true, success: true, key: "add-button", onPress: this.addButtonPress },
                     react_1.default.createElement(native_base_1.Icon, { name: "md-add-circle" })) : null,
             react_1.default.createElement(UserSelectScreen_1.default, { key: "user-select-screen", ref: (me) => this.selectionModal = me, filter: props.filter, onSelect: this.addList })));
@@ -98,7 +101,7 @@ class UserSelection extends react_1.Component {
     ;
 }
 UserSelection.defaultProps = {
-    addable: false,
+    editable: false,
     multiple: false,
     userBadgeProp: {},
 };

@@ -27,7 +27,7 @@ describe('init', () => {
         const users = getUsers();
         const target = Enzyme.shallow(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={jest.fn()}
             />);
         expect(toJson(target)).toMatchSnapshot();
@@ -36,7 +36,7 @@ describe('init', () => {
         const users = getUsers();
         const target = Enzyme.shallow(
             <UserSelection selectedUsers={users}
-                showAddButton
+                editable
                 onChange={jest.fn()}
             />);
         expect(toJson(target)).toMatchSnapshot();
@@ -56,7 +56,7 @@ describe('init', () => {
                 }}
                 multiple
                 selectedUsers={users}
-                showAddButton={false}
+                editable={false}
                 onChange={jest.fn()}
             />);
         expect(toJson(target)).toMatchSnapshot();
@@ -69,7 +69,7 @@ describe('event', () => {
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={fn}
             />);
         const instance = target.instance();
@@ -83,7 +83,7 @@ describe('event', () => {
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton
+                editable
                 onChange={fn}
             />);
         const instance = target.instance();
@@ -97,7 +97,7 @@ describe('event', () => {
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={fn}
             />);
         const instance = target.instance();
@@ -110,7 +110,7 @@ describe('event', () => {
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={fn}
             />);
         const instance = target.instance();
@@ -120,12 +120,24 @@ describe('event', () => {
             userDocId: 'a0002',
         }]);
     });
+    test('remove user - no editable', () => {
+        const users = getUsers();
+        const fn = jest.fn();
+        const target = Enzyme.shallow<UserSelection>(
+            <UserSelection selectedUsers={users}
+                multiple
+                onChange={fn}
+            />);
+        const instance = target.instance();
+        instance['onDelete']('a0001');
+        expect(fn).not.toBeCalled();
+    });
     test('remove user - no exist user', () => {
         const users = getUsers();
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={fn}
             />);
         const instance = target.instance();
@@ -137,7 +149,7 @@ describe('event', () => {
         const fn = jest.fn();
         const target = Enzyme.shallow<UserSelection>(
             <UserSelection selectedUsers={users}
-                showAddButton multiple
+                editable multiple
                 onChange={fn}
             />);
         const instance = target.instance();
