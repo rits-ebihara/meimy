@@ -1119,6 +1119,24 @@ describe('button event', () => {
             searchResult: listData,
             showNoResultMessage: true,
         });
+        const searchButton = wrapper.findWhere(a => a.key() === 'search-button');
+        const instance = wrapper.instance() as UserSelectScreen;
+        instance['searchCondition'] = {
+            offset: 90,
+            limit: 30,
+        };
+        instance['commonSearch'] = jest.fn();
+        wrapper.update();
+        searchButton.simulate('press');
+        expect(instance['commonSearch']).not.toBeCalled();
+    });
+    test('on press search button', () => {
+        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
+        wrapper.setState({
+            searchResult: listData,
+            showNoResultMessage: true,
+            searchWords: 'test',
+        });
         const expectSearch = {
             'limit': 30,
             'offset': 0,
@@ -1148,7 +1166,7 @@ describe('button event', () => {
                         'operator': 'fulltextsearch_sentence',
                         'propertyName': 'fulltextsearch_list',
                         'type': 'string',
-                        'value': ''
+                        'value': 'test'
                     }
                 ],
         };

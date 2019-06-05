@@ -37,6 +37,10 @@ const listOrgStyle = {
     fontSize: 12,
     color: config.colorPalets.$frontDisabledColor,
 };
+const warnMessageStyle = {
+    color: '#999',
+    textAlign: 'center',
+};
 class UserSelectScreen extends react_1.Component {
     constructor(props) {
         super(props);
@@ -105,7 +109,10 @@ class UserSelectScreen extends react_1.Component {
             this.startSearch[this.state.selectedDirectoryType]();
         };
         this.pressSearchButton = () => {
-            this.searchedWord = this.state.searchWords;
+            if (this.state.searchWords.trim() === '') {
+                return;
+            }
+            this.searchedWord = this.state.searchWords.trim();
             this.searchCondition.offset = 0;
             this.setState({
                 canContinue: false,
@@ -249,13 +256,13 @@ class UserSelectScreen extends react_1.Component {
                     react_1.default.createElement(native_base_1.View, { style: { flex: 1 } },
                         react_1.default.createElement(native_base_1.Form, { style: searchBox },
                             react_1.default.createElement(native_base_1.Item, { fixedLabel: true, style: { flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, onSubmitEditing: this.pressSearchButton, returnKeyType: "search" })),
+                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22\u30EF\u30FC\u30C9\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", onChangeText: this.changeSearchWords, onSubmitEditing: this.pressSearchButton, returnKeyType: "search" })),
                             react_1.default.createElement(native_base_1.Button, { key: "search-button", icon: true, transparent: true, style: { flexGrow: 0 }, onPress: this.pressSearchButton },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
                         react_1.default.createElement(native_base_1.Content, { style: { flexGrow: 1 } },
                             this.state.showNoResultMessage ?
-                                react_1.default.createElement(native_base_1.Text, { style: { color: '#999' } }, "\u8A72\u5F53\u3059\u308B\u3082\u306E\u304C\u3042\u308A\u307E\u305B\u3093\u3002")
+                                react_1.default.createElement(native_base_1.Text, { style: warnMessageStyle }, "\u8A72\u5F53\u3059\u308B\u3082\u306E\u304C\u3042\u308A\u307E\u305B\u3093\u3002")
                                 : null,
                             react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
                             this.createContinueButton()))))));

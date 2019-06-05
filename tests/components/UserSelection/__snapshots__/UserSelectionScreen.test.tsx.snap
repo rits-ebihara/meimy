@@ -72,7 +72,7 @@ exports[`init default 1`] = `
               key="search-word-input"
               onChangeText={[Function]}
               onSubmitEditing={[Function]}
-              placeholder="検索"
+              placeholder="検索ワードを入力してください"
               returnKeyType="search"
               value=""
             />
@@ -212,7 +212,7 @@ exports[`init no result 1`] = `
               key="search-word-input"
               onChangeText={[Function]}
               onSubmitEditing={[Function]}
-              placeholder="検索"
+              placeholder="検索ワードを入力してください"
               returnKeyType="search"
               value=""
             />
@@ -274,6 +274,7 @@ exports[`init no result 1`] = `
             style={
               Object {
                 "color": "#999",
+                "textAlign": "center",
               }
             }
           >
@@ -361,7 +362,7 @@ exports[`init set list data 1`] = `
               key="search-word-input"
               onChangeText={[Function]}
               onSubmitEditing={[Function]}
-              placeholder="検索"
+              placeholder="検索ワードを入力してください"
               returnKeyType="search"
               value=""
             />
