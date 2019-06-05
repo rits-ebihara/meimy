@@ -1,6 +1,7 @@
 # EIM モバイルアプリ ツールキット
 
-[![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)
+[![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy?ref=badge_shield)
+
 
 ## これはなに？
 
@@ -34,3 +35,7 @@ yarn react-native link
 ## 使い方
 
 くわしくは、[meimy-starter](https://github.com/rits-ebihara/meimy-starter) を御覧ください。
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy?ref=badge_large)
