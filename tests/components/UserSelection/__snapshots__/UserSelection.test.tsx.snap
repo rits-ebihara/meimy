@@ -1,5 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`init minimal - no multiple 1`] = `
+<Styled(ViewNB)
+  style={
+    Object {
+      "flexDirection": "row",
+      "flexWrap": "wrap",
+    }
+  }
+>
+  <UserBadge
+    badgeColor="#666"
+    key="a0001"
+    onLongPress={[Function]}
+    style={
+      Object {
+        "margin": 4,
+      }
+    }
+    textColor="#000"
+    type="user"
+    userId="a0001"
+  />
+  <Styled(Button)
+    icon={true}
+    key="add-button"
+    onPress={[Function]}
+    success={true}
+    transparent={true}
+  >
+    <Styled(Icon)
+      name="md-add-circle"
+    />
+  </Styled(Button)>
+  <UserSelectScreen
+    filter={
+      Object {
+        "groups": true,
+        "organizations": true,
+        "users": true,
+      }
+    }
+    key="user-select-screen"
+    onSelect={[Function]}
+  />
+</Styled(ViewNB)>
+`;
+
 exports[`init minimal 1`] = `
 <Styled(ViewNB)
   style={

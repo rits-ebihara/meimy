@@ -60,10 +60,19 @@ export class UserSelection extends Component<IUserSelectionProps> {
         );
     };
     private addList = (userDocId: string, type: DirectoryTypeKey) => {
-        const userList: IUserListItem[] = [...this.props.selectedUsers, {
+        const existUser = this.props.selectedUsers.find(u => u.userDocId === userDocId);
+        if (existUser && this.props.multiple) {
+            return;
+        }
+        const newItem = {
             type,
             userDocId,
-        }];
+        };
+        const userList: IUserListItem[] =
+            (this.props.multiple) ?
+                [...this.props.selectedUsers, newItem] :
+                [newItem];
+        // すでに有れば無視
         this.onChange(userList);
     }
     private onChange = (userList: IUserListItem[]) => {
@@ -73,7 +82,15 @@ export class UserSelection extends Component<IUserSelectionProps> {
         if (!!this.selectionModal) { this.selectionModal.show(); };
     }
     private createUserList = () => {
-        return this.props.selectedUsers.map(user => {
+        const { props } = this;
+        if (props.multiple) {
+            return this.createUserListForArray(props.selectedUsers);
+        } else {
+            return this.createUserListForArray(props.selectedUsers.slice(0, 1));
+        }
+    }
+    private createUserListForArray = (users: IUserListItem[]) => {
+        return users.map(user => {
             const defaultStyle: ViewStyle = {
                 margin: 4,
             };
@@ -90,6 +107,7 @@ export class UserSelection extends Component<IUserSelectionProps> {
             };
             return <UserBadge key={props.userId} {...props} />
         });
+
     }
     private onDelete = (userDocId: string) => {
         const { selectedUsers } = this.props;

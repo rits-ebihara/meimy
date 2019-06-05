@@ -1096,6 +1096,27 @@ describe('init', () => {
         const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
+    test('only user', () => {
+        const filter = { users: true, groups: false, organizations: false };
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} filter={filter} />);
+        const state = wrapper.state();
+        expect(state.selectedDirectoryType).toEqual('user');
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+    test('only group', () => {
+        const filter = { users: false, groups: true, organizations: false };
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} filter={filter} />);
+        const state = wrapper.state();
+        expect(state.selectedDirectoryType).toEqual('group');
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+    test('user and group', () => {
+        const filter = { users: true, groups: false, organizations: true };
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} filter={filter} />);
+        const state = wrapper.state();
+        expect(state.selectedDirectoryType).toEqual('user');
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
     test('set list data', () => {
         const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({

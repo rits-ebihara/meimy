@@ -290,6 +290,240 @@ exports[`init no result 1`] = `
 </Component>
 `;
 
+exports[`init only group 1`] = `
+<Component
+  animated={true}
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "height": "95%",
+          "width": "95%",
+        }
+      }
+    >
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flexDirection": "row-reverse",
+          }
+        }
+      >
+        <Styled(Button)
+          icon={true}
+          key="close-button"
+          onPress={[Function]}
+          transparent={true}
+        >
+          <Styled(Icon)
+            name="close"
+          />
+        </Styled(Button)>
+      </Styled(ViewNB)>
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <Styled(Form)
+          style={
+            Object {
+              "flexDirection": "row",
+              "flexGrow": 0,
+            }
+          }
+        >
+          <Styled(Item)
+            fixedLabel={true}
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Styled(Input)
+              key="search-word-input"
+              onChangeText={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="検索ワードを入力してください"
+              returnKeyType="search"
+              value=""
+            />
+          </Styled(Item)>
+          <Styled(Button)
+            icon={true}
+            key="search-button"
+            onPress={[Function]}
+            style={
+              Object {
+                "flexGrow": 0,
+              }
+            }
+            transparent={true}
+          >
+            <Styled(Icon)
+              name="search"
+            />
+          </Styled(Button)>
+          <Styled(ViewNB)
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          />
+        </Styled(Form)>
+        <Styled(Content)
+          style={
+            Object {
+              "flexGrow": 1,
+            }
+          }
+        >
+          <Styled(List)
+            key="result-list"
+          />
+        </Styled(Content)>
+      </Styled(ViewNB)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+</Component>
+`;
+
+exports[`init only user 1`] = `
+<Component
+  animated={true}
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "height": "95%",
+          "width": "95%",
+        }
+      }
+    >
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flexDirection": "row-reverse",
+          }
+        }
+      >
+        <Styled(Button)
+          icon={true}
+          key="close-button"
+          onPress={[Function]}
+          transparent={true}
+        >
+          <Styled(Icon)
+            name="close"
+          />
+        </Styled(Button)>
+      </Styled(ViewNB)>
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <Styled(Form)
+          style={
+            Object {
+              "flexDirection": "row",
+              "flexGrow": 0,
+            }
+          }
+        >
+          <Styled(Item)
+            fixedLabel={true}
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Styled(Input)
+              key="search-word-input"
+              onChangeText={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="検索ワードを入力してください"
+              returnKeyType="search"
+              value=""
+            />
+          </Styled(Item)>
+          <Styled(Button)
+            icon={true}
+            key="search-button"
+            onPress={[Function]}
+            style={
+              Object {
+                "flexGrow": 0,
+              }
+            }
+            transparent={true}
+          >
+            <Styled(Icon)
+              name="search"
+            />
+          </Styled(Button)>
+          <Styled(ViewNB)
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          />
+        </Styled(Form)>
+        <Styled(Content)
+          style={
+            Object {
+              "flexGrow": 1,
+            }
+          }
+        >
+          <Styled(List)
+            key="result-list"
+          />
+        </Styled(Content)>
+      </Styled(ViewNB)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+</Component>
+`;
+
 exports[`init set list data 1`] = `
 <Component
   animated={true}
@@ -486,6 +720,141 @@ exports[`init set list data 1`] = `
               </Styled(Right)>
             </Styled(ListItem)>
           </Styled(List)>
+        </Styled(Content)>
+      </Styled(ViewNB)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+</Component>
+`;
+
+exports[`init user and group 1`] = `
+<Component
+  animated={true}
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "height": "95%",
+          "width": "95%",
+        }
+      }
+    >
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flexDirection": "row-reverse",
+          }
+        }
+      >
+        <Styled(Button)
+          icon={true}
+          key="close-button"
+          onPress={[Function]}
+          transparent={true}
+        >
+          <Styled(Icon)
+            name="close"
+          />
+        </Styled(Button)>
+      </Styled(ViewNB)>
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <Styled(Form)
+          style={
+            Object {
+              "flexDirection": "row",
+              "flexGrow": 0,
+            }
+          }
+        >
+          <Styled(Item)
+            fixedLabel={true}
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Styled(Input)
+              key="search-word-input"
+              onChangeText={[Function]}
+              onSubmitEditing={[Function]}
+              placeholder="検索ワードを入力してください"
+              returnKeyType="search"
+              value=""
+            />
+          </Styled(Item)>
+          <Styled(Button)
+            icon={true}
+            key="search-button"
+            onPress={[Function]}
+            style={
+              Object {
+                "flexGrow": 0,
+              }
+            }
+            transparent={true}
+          >
+            <Styled(Icon)
+              name="search"
+            />
+          </Styled(Button)>
+          <Styled(ViewNB)
+            style={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+          >
+            <Picker
+              key="dir-picker"
+              mode="dropdown"
+              onValueChange={[Function]}
+              selectedValue="user"
+            >
+              <PickerItem
+                key="user"
+                label="ユーザー"
+                value="user"
+              />
+              <PickerItem
+                key="organization"
+                label="組織"
+                value="organization"
+              />
+            </Picker>
+          </Styled(ViewNB)>
+        </Styled(Form)>
+        <Styled(Content)
+          style={
+            Object {
+              "flexGrow": 1,
+            }
+          }
+        >
+          <Styled(List)
+            key="result-list"
+          />
         </Styled(Content)>
       </Styled(ViewNB)>
     </Styled(ViewNB)>

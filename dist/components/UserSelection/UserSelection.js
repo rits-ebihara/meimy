@@ -23,10 +23,15 @@ class UserSelection extends react_1.Component {
         super(props);
         this.selectionModal = null;
         this.addList = (userDocId, type) => {
+            const existUser = this.props.selectedUsers.find(u => u.userDocId === userDocId);
+            if (existUser) {
+                return;
+            }
             const userList = [...this.props.selectedUsers, {
                     type,
                     userDocId,
                 }];
+            // すでに有れば無視
             this.onChange(userList);
         };
         this.onChange = (userList) => {

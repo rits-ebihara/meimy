@@ -31,12 +31,6 @@ type DocListName = 'userdoclist' | 'groupdoclist' | 'organizationdoclist';
 
 type directoryTypeName = 'ユーザー' | '組織' | 'グループ';
 
-const directoryTypeKeys: DirectoryTypeKey[] = [
-    'user',
-    'group',
-    'organization',
-];
-
 const directoryType: { [key in DirectoryTypeKey]: directoryTypeName } = {
     user: 'ユーザー',
     group: 'グループ',
@@ -110,18 +104,32 @@ export class UserSelectScreen extends Component<IProps, IState> {
         offset: number;
         limit: number;
     } = { offset: 0, limit: 30 };
-    private getInitState = (): IState => ({
+    private getInitState = (props: IProps): IState => ({
         canContinue: false,
         searchResult: [],
-        selectedDirectoryType: 'user',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        selectedDirectoryType: this.initSelectedDirType(props.filter!),
         searchWords: '',
         shown: false,
         showNoResultMessage: false,
         processing: false,
     });
+    private initSelectedDirType = (filter: IFilter): DirectoryTypeKey => {
+        let ret: DirectoryTypeKey = 'user';
+        if (filter.groups) {
+            ret = 'group'
+        }
+        if (filter.organizations) {
+            ret = 'organization'
+        }
+        if (filter.users) {
+            ret = 'user'
+        }
+        return ret;
+    }
     public constructor(props: IProps) {
         super(props);
-        this.state = this.getInitState();
+        this.state = this.getInitState(props);
     }
     public render() {
         return (
@@ -173,10 +181,10 @@ export class UserSelectScreen extends Component<IProps, IState> {
                     </View>
                 </View>
             </Modal>
-        )
+        );
     }
     public show = () => {
-        const s = this.getInitState();
+        const s = this.getInitState(this.props);
         s.shown = true;
         this.searchCondition.offset = 0;
         this.setState(s);
@@ -222,10 +230,28 @@ export class UserSelectScreen extends Component<IProps, IState> {
         this.closeButtonPress();
     }
     private createDirectoryTypePicker = (selectedDirectoryType: DirectoryTypeKey) => {
-        const items: JSX.Element[] =
-            directoryTypeKeys.map(key => (
-                <Picker.Item key={key} label={directoryType[key]} value={key} />
-            ));
+        const items: JSX.Element[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const filter = this.props.filter!;
+        // ユーザー
+        if (filter.users) {
+            items.push(
+                <Picker.Item key={'user'} label={directoryType['user']} value={'user'} />
+            );
+        }
+        if (filter.groups) {
+            items.push(
+                <Picker.Item key={'group'} label={directoryType['group']} value={'group'} />
+            );
+        }
+        if (filter.organizations) {
+            items.push(
+                <Picker.Item key={'organization'} label={directoryType['organization']} value={'organization'} />
+            );
+        }
+        if (items.length < 2) {
+            return null;
+        }
         return (
             <Picker
                 key="dir-picker"
