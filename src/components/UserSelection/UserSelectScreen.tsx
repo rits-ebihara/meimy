@@ -92,6 +92,10 @@ const listOrgStyle: TextStyle = {
     color: config.colorPalets.$frontDisabledColor,
 };
 
+const warnMessageStyle: TextStyle = {
+    color: '#999',
+    textAlign: 'center',
+};
 export class UserSelectScreen extends Component<IProps, IState> {
     public static defaultProps: IOptionalProps = {
         filter: {
@@ -140,7 +144,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
                             <Form style={searchBox}>
                                 <Item fixedLabel style={{ flexGrow: 1 }}>
                                     <Input key="search-word-input" value={this.state.searchWords}
-                                        placeholder="検索"
+                                        placeholder="検索ワードを入力してください"
                                         onChangeText={this.changeSearchWords}
                                         onSubmitEditing={this.pressSearchButton}
                                         returnKeyType="search" />
@@ -156,7 +160,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
                             </Form>
                             <Content style={{ flexGrow: 1 }}>
                                 {this.state.showNoResultMessage ?
-                                    <Text style={{ color: '#999' }}>該当するものがありません。</Text>
+                                    <Text style={warnMessageStyle}>該当するものがありません。</Text>
                                     : null
                                 }
                                 <List key="result-list">
@@ -244,7 +248,8 @@ export class UserSelectScreen extends Component<IProps, IState> {
         this.startSearch[this.state.selectedDirectoryType]();
     }
     private pressSearchButton = () => {
-        this.searchedWord = this.state.searchWords;
+        if (this.state.searchWords.trim() === '') { return; }
+        this.searchedWord = this.state.searchWords.trim();
         this.searchCondition.offset = 0;
         this.setState({
             canContinue: false,
