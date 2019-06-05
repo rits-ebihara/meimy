@@ -1,5 +1,7 @@
 # EIM モバイルアプリ ツールキット
 
+[![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)
+
 ## これはなに？
 
 リコーITソリューションズ が提供する PaaS サービス 'EIM' のモバイルアプリケーションを、効率よく作成するためのツールキットです。
@@ -17,4 +19,18 @@
 * [react-navigation](https://github.com/react-navigation/react-navigation)
 * [native-base](https://github.com/GeekyAnts/NativeBase)
 * [react-native-cookies](https://github.com/joeferraro/react-native-cookies)
-* []
+* [react-native-fs](https://github.com/itinance/react-native-fs)
+* [react-native-gesture-handler](https://github.com/kmagiera/react-native-gesture-handler)
+* [react-native-keychain](https://github.com/oblador/react-native-keychain)
+* [react-native-webview](https://github.com/react-native-community/react-native-webview)
+* [react-navigation-redux-helpers](https://github.com/react-navigation/redux-helpers)
+
+また、下記コマンドで Android/iOS に依存関係リンクしてください。
+
+```
+yarn react-native link
+```
+
+## 使い方
+
+くわしくは、[meimy-starter](https://github.com/rits-ebihara/meimy-starter) を御覧ください。
