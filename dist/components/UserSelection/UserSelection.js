@@ -24,13 +24,16 @@ class UserSelection extends react_1.Component {
         this.selectionModal = null;
         this.addList = (userDocId, type) => {
             const existUser = this.props.selectedUsers.find(u => u.userDocId === userDocId);
-            if (existUser) {
+            if (existUser && this.props.multiple) {
                 return;
             }
-            const userList = [...this.props.selectedUsers, {
-                    type,
-                    userDocId,
-                }];
+            const newItem = {
+                type,
+                userDocId,
+            };
+            const userList = (this.props.multiple) ?
+                [...this.props.selectedUsers, newItem] :
+                [newItem];
             // すでに有れば無視
             this.onChange(userList);
         };
@@ -44,7 +47,16 @@ class UserSelection extends react_1.Component {
             ;
         };
         this.createUserList = () => {
-            return this.props.selectedUsers.map(user => {
+            const { props } = this;
+            if (props.multiple) {
+                return this.createUserListForArray(props.selectedUsers);
+            }
+            else {
+                return this.createUserListForArray(props.selectedUsers.slice(0, 1));
+            }
+        };
+        this.createUserListForArray = (users) => {
+            return users.map(user => {
                 const defaultStyle = {
                     margin: 4,
                 };

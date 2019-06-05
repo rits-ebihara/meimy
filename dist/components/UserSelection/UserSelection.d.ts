@@ -29,6 +29,7 @@ export declare class UserSelection extends Component<IUserSelectionProps> {
     private onChange;
     private addButtonPress;
     private createUserList;
+    private createUserListForArray;
     private onDelete;
 }
 export default UserSelection;

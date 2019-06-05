@@ -33,6 +33,7 @@ export declare class UserSelectScreen extends Component<IProps, IState> {
     private searchedWord;
     private searchCondition;
     private getInitState;
+    private initSelectedDirType;
     constructor(props: IProps);
     render(): JSX.Element;
     show: () => void;

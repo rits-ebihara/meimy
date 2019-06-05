@@ -14,11 +14,6 @@ const Config_1 = require("../../account-manager/Config");
 const EimAccount_1 = require("../../account-manager/EimAccount");
 const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 const config = Config_1.getConfig();
-const directoryTypeKeys = [
-    'user',
-    'group',
-    'organization',
-];
 const directoryType = {
     user: 'ユーザー',
     group: 'グループ',
@@ -47,17 +42,31 @@ class UserSelectScreen extends react_1.Component {
         this.searchedDirType = 'user';
         this.searchedWord = '';
         this.searchCondition = { offset: 0, limit: 30 };
-        this.getInitState = () => ({
+        this.getInitState = (props) => ({
             canContinue: false,
             searchResult: [],
-            selectedDirectoryType: 'user',
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            selectedDirectoryType: this.initSelectedDirType(props.filter),
             searchWords: '',
             shown: false,
             showNoResultMessage: false,
             processing: false,
         });
+        this.initSelectedDirType = (filter) => {
+            let ret = 'user';
+            if (filter.groups) {
+                ret = 'group';
+            }
+            if (filter.organizations) {
+                ret = 'organization';
+            }
+            if (filter.users) {
+                ret = 'user';
+            }
+            return ret;
+        };
         this.show = () => {
-            const s = this.getInitState();
+            const s = this.getInitState(this.props);
             s.shown = true;
             this.searchCondition.offset = 0;
             this.setState(s);
@@ -94,7 +103,22 @@ class UserSelectScreen extends react_1.Component {
             this.closeButtonPress();
         };
         this.createDirectoryTypePicker = (selectedDirectoryType) => {
-            const items = directoryTypeKeys.map(key => (react_1.default.createElement(react_native_1.Picker.Item, { key: key, label: directoryType[key], value: key })));
+            const items = [];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const filter = this.props.filter;
+            // ユーザー
+            if (filter.users) {
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'user', label: directoryType['user'], value: 'user' }));
+            }
+            if (filter.groups) {
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'group', label: directoryType['group'], value: 'group' }));
+            }
+            if (filter.organizations) {
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'organization', label: directoryType['organization'], value: 'organization' }));
+            }
+            if (items.length < 2) {
+                return null;
+            }
             return (react_1.default.createElement(react_native_1.Picker, { key: "dir-picker", mode: "dropdown", selectedValue: selectedDirectoryType, onValueChange: this.changeDirectoryType.bind(this) }, items));
         };
         this.changeDirectoryType = (key) => {
@@ -239,7 +263,7 @@ class UserSelectScreen extends react_1.Component {
                 orgName: '',
             };
         };
-        this.state = this.getInitState();
+        this.state = this.getInitState(props);
     }
     render() {
         return (react_1.default.createElement(react_native_1.Modal, { transparent: true, animated: true, animationType: "fade", visible: this.state.shown },
