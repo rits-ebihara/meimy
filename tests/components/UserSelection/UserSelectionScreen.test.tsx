@@ -1102,7 +1102,14 @@ describe('init', () => {
             searchResult: listData,
         });
         expect(toJson(wrapper)).toMatchSnapshot();
-    })
+    });
+    test('no result', () => {
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
+        wrapper.setState({
+            showNoResultMessage: true,
+        });
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 });
 
 describe('button event', () => {
@@ -1110,6 +1117,7 @@ describe('button event', () => {
         const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
             searchResult: listData,
+            showNoResultMessage: true,
         });
         const expectSearch = {
             'limit': 30,
@@ -1160,11 +1168,12 @@ describe('button event', () => {
         const state = wrapper.state() as any;
         expect(state.searchResult).toEqual([]);
         expect(state.processing).toBeTruthy();
+        expect(state.showNoResultMessage).toBeFalsy();
         expect(instance['searchCondition'].offset).toEqual(0);
     });
 
     test('on press more search button', () => {
-        const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
+        const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
             canContinue: true,
             searchResult: listData,
@@ -1246,6 +1255,7 @@ describe('event', () => {
             selectedDirectoryType: 'user',
             searchWords: '',
             shown: true,
+            showNoResultMessage: false,
             processing: false,
         });
         expect(instance['searchCondition']).toEqual({
@@ -1328,7 +1338,7 @@ describe('search', () => {
         } as any));
         let resultList = wrapper.findWhere(a => a.key() === 'result-list');
         expect(toJson(resultList)).toMatchSnapshot();
-        wrapper.setState({ processing: true });
+        wrapper.setState({ processing: true, showNoResultMessage: true, });
         const instance = wrapper.instance() as UserSelectScreen;
         instance['searchedWord'] = 'test-word';
         await instance['startSearch']['user']();
@@ -1388,7 +1398,9 @@ describe('search', () => {
         expect(Toast.show).not.toBeCalled();
         expect(state.processing).toBeFalsy();
         expect(state.searchResult).toEqual(expectResult);
+        expect(state.showNoResultMessage).toBeFalsy()
         expect(instance['searchCondition'].offset).toEqual(3);
+        // 更に表示のシミュレート
         await instance['startSearch']['user']();
         state = wrapper.state() as any;
         expect(state.searchResult).toEqual([...expectResult, ...expectResult]);

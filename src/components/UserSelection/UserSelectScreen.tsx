@@ -72,6 +72,7 @@ interface IState {
     searchResult: ISearchedListItem[];
     searchWords: string;
     shown: boolean;
+    showNoResultMessage: boolean;
     processing: boolean;
 }
 
@@ -111,6 +112,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
         selectedDirectoryType: 'user',
         searchWords: '',
         shown: false,
+        showNoResultMessage: false,
         processing: false,
     });
     public constructor(props: IProps) {
@@ -153,13 +155,15 @@ export class UserSelectScreen extends Component<IProps, IState> {
                                 </View>
                             </Form>
                             <Content style={{ flexGrow: 1 }}>
+                                {this.state.showNoResultMessage ?
+                                    <Text style={{ color: '#999' }}>該当するものがありません。</Text>
+                                    : null
+                                }
                                 <List key="result-list">
                                     {this.createSearchedUserList()}
                                 </List>
-                                {
-                                    // 更に表示 ボタン
-                                    this.createContinueButton()
-                                }
+                                {/* 更に表示ボタン */}
+                                {this.createContinueButton()}
                             </Content>
                         </View>
                     </View>
@@ -246,6 +250,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             canContinue: false,
             searchResult: [],
             processing: true,
+            showNoResultMessage: false,
         });
         this.startSearch[this.state.selectedDirectoryType]();
     }
@@ -330,10 +335,11 @@ export class UserSelectScreen extends Component<IProps, IState> {
             const addList = result.docList.map(createRow);
             const newList = this.state.searchResult.concat(addList);
             const canContinue = newList.length < result.metrics.totalCount;
-            this.searchCondition.offset += result.docList.length
+            this.searchCondition.offset += result.docList.length;
             this.setState({
                 canContinue,
                 searchResult: newList,
+                showNoResultMessage: newList.length === 0,
                 processing: false,
             });
         } catch {

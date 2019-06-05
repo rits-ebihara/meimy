@@ -24,6 +24,7 @@ interface IState {
     searchResult: ISearchedListItem[];
     searchWords: string;
     shown: boolean;
+    showNoResultMessage: boolean;
     processing: boolean;
 }
 export declare class UserSelectScreen extends Component<IProps, IState> {

@@ -49,6 +49,7 @@ class UserSelectScreen extends react_1.Component {
             selectedDirectoryType: 'user',
             searchWords: '',
             shown: false,
+            showNoResultMessage: false,
             processing: false,
         });
         this.show = () => {
@@ -110,6 +111,7 @@ class UserSelectScreen extends react_1.Component {
                 canContinue: false,
                 searchResult: [],
                 processing: true,
+                showNoResultMessage: false,
             });
             this.startSearch[this.state.selectedDirectoryType]();
         };
@@ -189,6 +191,7 @@ class UserSelectScreen extends react_1.Component {
                 this.setState({
                     canContinue,
                     searchResult: newList,
+                    showNoResultMessage: newList.length === 0,
                     processing: false,
                 });
             }
@@ -251,8 +254,10 @@ class UserSelectScreen extends react_1.Component {
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
                         react_1.default.createElement(native_base_1.Content, { style: { flexGrow: 1 } },
+                            this.state.showNoResultMessage ?
+                                react_1.default.createElement(native_base_1.Text, { style: { color: '#999' } }, "\u8A72\u5F53\u3059\u308B\u3082\u306E\u304C\u3042\u308A\u307E\u305B\u3093\u3002")
+                                : null,
                             react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
-                            // 更に表示 ボタン
                             this.createContinueButton()))))));
     }
 }
