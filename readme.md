@@ -3,7 +3,7 @@
 [![cc by-nc-sa 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Build Status](https://travis-ci.org/rits-ebihara/meimy.svg?branch=master)](https://travis-ci.org/rits-ebihara/meimy)
 [![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%252Bgithub.com%252Frits-ebihara%252Fmeimy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy?ref=badge_shield)
+[![FOSSA Status](https://bit.ly/2QPIhLJ)](https://app.fossa.com/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy?ref=badge_shield)
 
 ## これはなに？
 
