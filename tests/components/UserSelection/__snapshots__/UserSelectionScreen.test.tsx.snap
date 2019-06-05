@@ -45,11 +45,18 @@ exports[`init default 1`] = `
           />
         </Styled(Button)>
       </Styled(ViewNB)>
-      <Styled(ViewNB)>
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
         <Styled(Form)
           style={
             Object {
               "flexDirection": "row",
+              "flexGrow": 0,
             }
           }
         >
@@ -64,6 +71,7 @@ exports[`init default 1`] = `
             <Styled(Input)
               key="search-word-input"
               onChangeText={[Function]}
+              onSubmitEditing={[Function]}
               placeholder="検索"
               returnKeyType="search"
               value=""
@@ -115,7 +123,13 @@ exports[`init default 1`] = `
             </Picker>
           </Styled(ViewNB)>
         </Styled(Form)>
-        <Styled(Content)>
+        <Styled(Content)
+          style={
+            Object {
+              "flexGrow": 1,
+            }
+          }
+        >
           <Styled(List)
             key="result-list"
           />
@@ -171,11 +185,18 @@ exports[`init set list data 1`] = `
           />
         </Styled(Button)>
       </Styled(ViewNB)>
-      <Styled(ViewNB)>
+      <Styled(ViewNB)
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
         <Styled(Form)
           style={
             Object {
               "flexDirection": "row",
+              "flexGrow": 0,
             }
           }
         >
@@ -190,6 +211,7 @@ exports[`init set list data 1`] = `
             <Styled(Input)
               key="search-word-input"
               onChangeText={[Function]}
+              onSubmitEditing={[Function]}
               placeholder="検索"
               returnKeyType="search"
               value=""
@@ -241,7 +263,13 @@ exports[`init set list data 1`] = `
             </Picker>
           </Styled(ViewNB)>
         </Styled(Form)>
-        <Styled(Content)>
+        <Styled(Content)
+          style={
+            Object {
+              "flexGrow": 1,
+            }
+          }
+        >
           <Styled(List)
             key="result-list"
           >
@@ -308,15 +336,6 @@ exports[`init set list data 1`] = `
               </Styled(Right)>
             </Styled(ListItem)>
           </Styled(List)>
-          <Styled(Button)
-            full={true}
-            key="more-search-button"
-            onPress={[Function]}
-          >
-            <Styled(Text)>
-              さらに表示
-            </Styled(Text)>
-          </Styled(Button)>
         </Styled(Content)>
       </Styled(ViewNB)>
     </Styled(ViewNB)>
@@ -751,7 +770,9 @@ exports[`search search user complete 2`] = `
             "fontSize": 12,
           }
         }
-      />
+      >
+        TEST組織
+      </Styled(Text)>
     </Styled(Body)>
     <Styled(Right)>
       <Styled(Button)
@@ -838,7 +859,9 @@ exports[`search search user complete 2`] = `
             "fontSize": 12,
           }
         }
-      />
+      >
+        TEST組織
+      </Styled(Text)>
     </Styled(Body)>
     <Styled(Right)>
       <Styled(Button)

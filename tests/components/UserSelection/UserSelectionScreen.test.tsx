@@ -15,7 +15,7 @@ Enzyme.configure({
 //#region user result data
 const userResults = JSON.parse(`{
     "metrics": {
-        "totalCount": 18
+        "totalCount": 6
     },
     "docList": [
         {
@@ -1109,10 +1109,6 @@ describe('button event', () => {
     test('on press search button', () => {
         const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
-            searchCondition: {
-                offset: 90,
-                limit: 30,
-            },
             searchResult: listData,
         });
         const expectSearch = {
@@ -1150,6 +1146,10 @@ describe('button event', () => {
         };
         const searchButton = wrapper.findWhere(a => a.key() === 'search-button');
         const instance = wrapper.instance() as UserSelectScreen;
+        instance['searchCondition'] = {
+            offset: 90,
+            limit: 30,
+        };
         instance['commonSearch'] = jest.fn();
         wrapper.update();
         searchButton.simulate('press');
@@ -1160,16 +1160,13 @@ describe('button event', () => {
         const state = wrapper.state() as any;
         expect(state.searchResult).toEqual([]);
         expect(state.processing).toBeTruthy();
-        expect(state.searchCondition.offset).toEqual(0);
+        expect(instance['searchCondition'].offset).toEqual(0);
     });
 
     test('on press more search button', () => {
         const wrapper = Enzyme.shallow(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
-            searchCondition: {
-                offset: 90,
-                limit: 30,
-            },
+            canContinue: true,
             searchResult: listData,
         });
         const expectSearch = {
@@ -1206,6 +1203,10 @@ describe('button event', () => {
                 ],
         };
         const instance = wrapper.instance() as UserSelectScreen;
+        instance['searchCondition'] = {
+            offset: 90,
+            limit: 30,
+        };
         instance['commonSearch'] = jest.fn();
         wrapper.update();
         const searchButton = wrapper.findWhere(a => a.key() === 'more-search-button');
@@ -1216,7 +1217,7 @@ describe('button event', () => {
         const state = wrapper.state() as any;
         expect(state.searchResult).toEqual(listData);
         expect(state.processing).toBeTruthy();
-        expect(state.searchCondition.offset).toEqual(90);
+        expect(instance['searchCondition'].offset).toEqual(90);
     });
 });
 
@@ -1224,29 +1225,32 @@ describe('event', () => {
     test('show', () => {
         const wrapper = Enzyme.shallow<UserSelectScreen>(<UserSelectScreen onSelect={jest.fn()} />);
         wrapper.setState({
+            canContinue: true,
             searchResult: listData,
             selectedDirectoryType: 'group',
             searchWords: 'hoge',
-            searchCondition: {
-                limit: 30,
-                offset: 100,
-            },
             shown: false,
             processing: true,
         });
         const instance = wrapper.instance();
+        instance['searchCondition'] = {
+            limit: 30,
+            offset: 100,
+        };
+        wrapper.update();
         instance.show();
         const state = wrapper.state();
         expect(state).toEqual({
+            canContinue: false,
             searchResult: [],
             selectedDirectoryType: 'user',
             searchWords: '',
-            searchCondition: {
-                limit: 30,
-                offset: 0,
-            },
             shown: true,
             processing: false,
+        });
+        expect(instance['searchCondition']).toEqual({
+            limit: 30,
+            offset: 0,
         });
     });
     test('press close button', () => {
@@ -1341,7 +1345,7 @@ describe('search', () => {
             displayName: 'admin root',
             faceImageId: '',
             docId: '2258e1c20ef64fc1ba7353659518f4f6',
-            orgName: ''
+            orgName: 'TEST組織'
         },
         {
             corpName: '',
@@ -1384,11 +1388,11 @@ describe('search', () => {
         expect(Toast.show).not.toBeCalled();
         expect(state.processing).toBeFalsy();
         expect(state.searchResult).toEqual(expectResult);
-        expect(state.searchCondition.offset).toEqual(3);
+        expect(instance['searchCondition'].offset).toEqual(3);
         await instance['startSearch']['user']();
         state = wrapper.state() as any;
         expect(state.searchResult).toEqual([...expectResult, ...expectResult]);
-        expect(state.searchCondition.offset).toEqual(6);
+        expect(instance['searchCondition'].offset).toEqual(6);
         expect(state.processing);
         wrapper.update();
         resultList = wrapper.findWhere(a => a.key() === 'result-list');
@@ -1456,11 +1460,11 @@ describe('search', () => {
         expect(fn).toBeCalledWith(['token'], 'addressbook', 'groupdoclist',
             { limit: 30, offset: 0, search: expectSearch });
         expect(state.searchResult).toEqual(expectResult);
-        expect(state.searchCondition.offset).toEqual(3);
+        expect(instance['searchCondition'].offset).toEqual(3);
         await instance['startSearch']['group']();
         state = wrapper.state() as any;
         expect(state.searchResult).toEqual([...expectResult, ...expectResult]);
-        expect(state.searchCondition.offset).toEqual(6);
+        expect(instance['searchCondition'].offset).toEqual(6);
         wrapper.update();
         resultList = wrapper.findWhere(a => a.key() === 'result-list');
         expect(toJson(resultList)).toMatchSnapshot();
@@ -1516,11 +1520,11 @@ describe('search', () => {
         expect(fn).toBeCalledWith(['token'], 'addressbook', 'organizationdoclist',
             { limit: 30, offset: 0, search: expectSearch });
         expect(state.searchResult).toEqual(expectResult);
-        expect(state.searchCondition.offset).toEqual(3);
+        expect(instance['searchCondition'].offset).toEqual(3);
         await instance['startSearch']['organization']();
         state = wrapper.state() as any;
         expect(state.searchResult).toEqual([...expectResult, ...expectResult]);
-        expect(state.searchCondition.offset).toEqual(6);
+        expect(instance['searchCondition'].offset).toEqual(6);
         wrapper.update();
         resultList = wrapper.findWhere(a => a.key() === 'result-list');
         expect(toJson(resultList)).toMatchSnapshot();

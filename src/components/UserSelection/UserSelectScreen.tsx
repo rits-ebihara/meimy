@@ -67,13 +67,10 @@ interface ISearchedListItem {
 }
 
 interface IState {
+    canContinue: boolean;
     selectedDirectoryType: DirectoryTypeKey;
     searchResult: ISearchedListItem[];
     searchWords: string;
-    searchCondition: {
-        offset: number;
-        limit: number;
-    };
     shown: boolean;
     processing: boolean;
 }
@@ -86,6 +83,7 @@ const containerStyle: ViewStyle = {
 
 const searchBox: ViewStyle = {
     flexDirection: 'row',
+    flexGrow: 0,
 };
 
 const listOrgStyle: TextStyle = {
@@ -103,14 +101,15 @@ export class UserSelectScreen extends Component<IProps, IState> {
     }
     private searchedDirType: DirectoryTypeKey = 'user';
     private searchedWord: string = '';
+    private searchCondition: {
+        offset: number;
+        limit: number;
+    } = { offset: 0, limit: 30 };
     private getInitState = (): IState => ({
+        canContinue: false,
         searchResult: [],
         selectedDirectoryType: 'user',
         searchWords: '',
-        searchCondition: {
-            limit: 30,
-            offset: 0,
-        },
         shown: false,
         processing: false,
     });
@@ -135,12 +134,13 @@ export class UserSelectScreen extends Component<IProps, IState> {
                                 <Icon name="close" />
                             </Button>
                         </View>
-                        <View>
+                        <View style={{ flex: 1 }}>
                             <Form style={searchBox}>
                                 <Item fixedLabel style={{ flexGrow: 1 }}>
                                     <Input key="search-word-input" value={this.state.searchWords}
                                         placeholder="検索"
                                         onChangeText={this.changeSearchWords}
+                                        onSubmitEditing={this.pressSearchButton}
                                         returnKeyType="search" />
                                 </Item>
                                 <Button key="search-button"
@@ -152,20 +152,13 @@ export class UserSelectScreen extends Component<IProps, IState> {
                                     {this.createDirectoryTypePicker(this.state.selectedDirectoryType)}
                                 </View>
                             </Form>
-                            <Content>
+                            <Content style={{ flexGrow: 1 }}>
                                 <List key="result-list">
                                     {this.createSearchedUserList()}
                                 </List>
                                 {
                                     // 更に表示 ボタン
-                                    (this.state.processing) ?
-                                        <Spinner /> :
-                                        (0 < this.state.searchResult.length) ?
-                                            <Button key="more-search-button" full
-                                                onPress={this.pressMoreSearch}>
-                                                <Text>さらに表示</Text>
-                                            </Button> :
-                                            null
+                                    this.createContinueButton()
                                 }
                             </Content>
                         </View>
@@ -177,7 +170,18 @@ export class UserSelectScreen extends Component<IProps, IState> {
     public show = () => {
         const s = this.getInitState();
         s.shown = true;
+        this.searchCondition.offset = 0;
         this.setState(s);
+    }
+    private createContinueButton = () => {
+        return (this.state.processing) ?
+            <Spinner /> :
+            (0 < this.state.searchResult.length && this.state.canContinue) ?
+                <Button key="more-search-button" full
+                    onPress={this.pressMoreSearch}>
+                    <Text>さらに表示</Text>
+                </Button> :
+                null
     }
     private closeButtonPress = () => {
         this.setState({
@@ -237,12 +241,10 @@ export class UserSelectScreen extends Component<IProps, IState> {
     }
     private pressSearchButton = () => {
         this.searchedWord = this.state.searchWords;
+        this.searchCondition.offset = 0;
         this.setState({
+            canContinue: false,
             searchResult: [],
-            searchCondition: {
-                limit: this.state.searchCondition.limit,
-                offset: 0,
-            },
             processing: true,
         });
         this.startSearch[this.state.selectedDirectoryType]();
@@ -257,7 +259,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 value: 'group',
             }]);
             const condition: IDocListSearchOption<IGroupList> = {
-                ...this.state.searchCondition,
+                ...this.searchCondition,
                 search,
             };
             return this.commonSearch('groupdoclist',
@@ -266,7 +268,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
         organization: () => {
             const search = this.createSearchCondition<IGroupList>();
             const condition: IDocListSearchOption<IGroupList> = {
-                ...this.state.searchCondition,
+                ...this.searchCondition,
                 search,
             };
             return this.commonSearch('organizationdoclist',
@@ -292,7 +294,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 },
                 ')',]);
             const condition: IDocListSearchOption<IUserList> = {
-                ...this.state.searchCondition,
+                ...this.searchCondition,
                 search,
             };
             return this.commonSearch('userdoclist',
@@ -327,10 +329,11 @@ export class UserSelectScreen extends Component<IProps, IState> {
                 });
             const addList = result.docList.map(createRow);
             const newList = this.state.searchResult.concat(addList);
-            condition.offset += result.docList.length;
+            const canContinue = newList.length < result.metrics.totalCount;
+            this.searchCondition.offset += result.docList.length
             this.setState({
+                canContinue,
                 searchResult: newList,
-                searchCondition: condition,
                 processing: false,
             });
         } catch {
@@ -347,7 +350,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             displayName: (getDocListValue<IUserList>(columnValues, 'properties.displayName') as string) || '',
             faceImageId: '',
             docId: item.documentId,
-            orgName: (getDocListValue<IUserList>(columnValues, 'properties.organizationName') as string) || '',
+            orgName: (getDocListValue<IUserList>(columnValues, 'properties.fullLabel') as string) || '',
         };
     }
     private createGroupRowData = (item: IDocListRowForView<IGroupList>): ISearchedListItem => {

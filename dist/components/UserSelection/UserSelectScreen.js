@@ -31,6 +31,7 @@ const containerStyle = {
 };
 const searchBox = {
     flexDirection: 'row',
+    flexGrow: 0,
 };
 const listOrgStyle = {
     fontSize: 12,
@@ -41,21 +42,28 @@ class UserSelectScreen extends react_1.Component {
         super(props);
         this.searchedDirType = 'user';
         this.searchedWord = '';
+        this.searchCondition = { offset: 0, limit: 30 };
         this.getInitState = () => ({
+            canContinue: false,
             searchResult: [],
             selectedDirectoryType: 'user',
             searchWords: '',
-            searchCondition: {
-                limit: 30,
-                offset: 0,
-            },
             shown: false,
             processing: false,
         });
         this.show = () => {
             const s = this.getInitState();
             s.shown = true;
+            this.searchCondition.offset = 0;
             this.setState(s);
+        };
+        this.createContinueButton = () => {
+            return (this.state.processing) ?
+                react_1.default.createElement(native_base_1.Spinner, null) :
+                (0 < this.state.searchResult.length && this.state.canContinue) ?
+                    react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
+                        react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
+                    null;
         };
         this.closeButtonPress = () => {
             this.setState({
@@ -97,12 +105,10 @@ class UserSelectScreen extends react_1.Component {
         };
         this.pressSearchButton = () => {
             this.searchedWord = this.state.searchWords;
+            this.searchCondition.offset = 0;
             this.setState({
+                canContinue: false,
                 searchResult: [],
-                searchCondition: {
-                    limit: this.state.searchCondition.limit,
-                    offset: 0,
-                },
                 processing: true,
             });
             this.startSearch[this.state.selectedDirectoryType]();
@@ -117,7 +123,7 @@ class UserSelectScreen extends react_1.Component {
                         value: 'group',
                     }]);
                 const condition = {
-                    ...this.state.searchCondition,
+                    ...this.searchCondition,
                     search,
                 };
                 return this.commonSearch('groupdoclist', this.createGroupRowData, condition);
@@ -125,7 +131,7 @@ class UserSelectScreen extends react_1.Component {
             organization: () => {
                 const search = this.createSearchCondition();
                 const condition = {
-                    ...this.state.searchCondition,
+                    ...this.searchCondition,
                     search,
                 };
                 return this.commonSearch('organizationdoclist', this.createOrganizationRowData, condition);
@@ -151,7 +157,7 @@ class UserSelectScreen extends react_1.Component {
                     ')',
                 ]);
                 const condition = {
-                    ...this.state.searchCondition,
+                    ...this.searchCondition,
                     search,
                 };
                 return this.commonSearch('userdoclist', this.createUserRowData, condition);
@@ -178,10 +184,11 @@ class UserSelectScreen extends react_1.Component {
                 });
                 const addList = result.docList.map(createRow);
                 const newList = this.state.searchResult.concat(addList);
-                condition.offset += result.docList.length;
+                const canContinue = newList.length < result.metrics.totalCount;
+                this.searchCondition.offset += result.docList.length;
                 this.setState({
+                    canContinue,
                     searchResult: newList,
-                    searchCondition: condition,
                     processing: false,
                 });
             }
@@ -199,7 +206,7 @@ class UserSelectScreen extends react_1.Component {
                 displayName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.displayName') || '',
                 faceImageId: '',
                 docId: item.documentId,
-                orgName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.organizationName') || '',
+                orgName: EIMServiceAdapter_1.getDocListValue(columnValues, 'properties.fullLabel') || '',
             };
         };
         this.createGroupRowData = (item) => {
@@ -236,22 +243,17 @@ class UserSelectScreen extends react_1.Component {
                     react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
                         react_1.default.createElement(native_base_1.Button, { key: "close-button", icon: true, transparent: true, onPress: this.closeButtonPress },
                             react_1.default.createElement(native_base_1.Icon, { name: "close" }))),
-                    react_1.default.createElement(native_base_1.View, null,
+                    react_1.default.createElement(native_base_1.View, { style: { flex: 1 } },
                         react_1.default.createElement(native_base_1.Form, { style: searchBox },
                             react_1.default.createElement(native_base_1.Item, { fixedLabel: true, style: { flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, returnKeyType: "search" })),
+                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22", onChangeText: this.changeSearchWords, onSubmitEditing: this.pressSearchButton, returnKeyType: "search" })),
                             react_1.default.createElement(native_base_1.Button, { key: "search-button", icon: true, transparent: true, style: { flexGrow: 0 }, onPress: this.pressSearchButton },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
-                        react_1.default.createElement(native_base_1.Content, null,
+                        react_1.default.createElement(native_base_1.Content, { style: { flexGrow: 1 } },
                             react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
                             // 更に表示 ボタン
-                            (this.state.processing) ?
-                                react_1.default.createElement(native_base_1.Spinner, null) :
-                                (0 < this.state.searchResult.length) ?
-                                    react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
-                                        react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
-                                    null))))));
+                            this.createContinueButton()))))));
     }
 }
 UserSelectScreen.defaultProps = {

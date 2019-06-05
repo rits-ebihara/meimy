@@ -19,13 +19,10 @@ interface ISearchedListItem {
     faceImageId: string;
 }
 interface IState {
+    canContinue: boolean;
     selectedDirectoryType: DirectoryTypeKey;
     searchResult: ISearchedListItem[];
     searchWords: string;
-    searchCondition: {
-        offset: number;
-        limit: number;
-    };
     shown: boolean;
     processing: boolean;
 }
@@ -33,10 +30,12 @@ export declare class UserSelectScreen extends Component<IProps, IState> {
     static defaultProps: IOptionalProps;
     private searchedDirType;
     private searchedWord;
+    private searchCondition;
     private getInitState;
     constructor(props: IProps);
     render(): JSX.Element;
     show: () => void;
+    private createContinueButton;
     private closeButtonPress;
     private changeSearchWords;
     private createSearchedUserList;
