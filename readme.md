@@ -1,5 +1,6 @@
 # EIM モバイルアプリ ツールキット
 
+[![Build Status](https://travis-ci.org/rits-ebihara/meimy.svg?branch=master)](https://travis-ci.org/rits-ebihara/meimy)
 [![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)
 
 ## これはなに？
