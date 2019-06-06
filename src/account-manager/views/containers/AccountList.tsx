@@ -18,13 +18,14 @@ import { IAuthState } from '../../states/IAuthStates';
 const config = getConfig();
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export class _AccountList extends Component<ICombinedNavProps<IAccountListState>> {
-    public static navigationOptions: NavigationScreenOptions = {
+    // 関数にしないと、config が反映されない状態で起動する
+    public static navigationOptions = (): NavigationScreenOptions => ({
         headerStyle: {
             backgroundColor: config.colorPalets.$colorPrimary3,
         },
         headerTintColor: config.colorPalets.$invertColor,
         headerTitle: 'EIMサイト一覧',
-    };
+    });
     public render = () => {
         // console.log(this.props.state.accounts);
         const { state } = this.props;
