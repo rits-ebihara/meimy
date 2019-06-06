@@ -161,3 +161,16 @@ describe('mapStateToProps', () => {
         });
     });
 });
+
+describe('navigationOptions', () => {
+    test('', () => {
+        const options = _AccountList.navigationOptions();
+        expect(options).toEqual({
+            headerStyle: {
+                backgroundColor: '#162756',
+            },
+            headerTintColor: '#fff',
+            headerTitle: 'EIMサイト一覧',
+        });
+    })
+});
