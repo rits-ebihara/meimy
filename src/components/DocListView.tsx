@@ -17,6 +17,7 @@ interface IProps<T> {
     searchCondition?: SearchCondition<T>[];
     sortCondition?: IDocListSort<T>[];
     theme: { brandPrimary: string; textColor: string };
+    hide?: boolean;
     onFinishLoad?: () => void;
 }
 
@@ -44,7 +45,8 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
             onRefresh={this.reload}
         />;
         return (
-            <Content refreshControl={refreshControl}>
+            <Content refreshControl={refreshControl}
+                style={{ display: !!this.props.hide ? 'none' : 'flex' }}>
                 <List>
                     {list ?
                         list :
