@@ -13,6 +13,7 @@ interface IProps<T> {
         brandPrimary: string;
         textColor: string;
     };
+    hide?: boolean;
     onFinishLoad?: () => void;
 }
 interface ILocalState<T> {

@@ -25,7 +25,7 @@ class DocListView extends react_1.Component {
             const list = this.createRowElement(docListData);
             const moreButton = this.createMoreButton();
             const refreshControl = react_1.default.createElement(react_native_1.RefreshControl, { refreshing: this.state.onSearch, onRefresh: this.reload });
-            return (react_1.default.createElement(native_base_1.Content, { refreshControl: refreshControl },
+            return (react_1.default.createElement(native_base_1.Content, { refreshControl: refreshControl, style: { display: !!this.props.hide ? 'none' : 'flex' } },
                 react_1.default.createElement(native_base_1.List, null, list ?
                     list :
                     react_1.default.createElement(native_base_1.Spinner, { color: this.props.theme.brandPrimary })),
