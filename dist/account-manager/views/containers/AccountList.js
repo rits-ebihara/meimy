@@ -71,13 +71,14 @@ class _AccountList extends react_1.Component {
         };
     }
 }
-_AccountList.navigationOptions = {
+// 関数にしないと、config が反映されない状態で起動する
+_AccountList.navigationOptions = () => ({
     headerStyle: {
         backgroundColor: config.colorPalets.$colorPrimary3,
     },
     headerTintColor: config.colorPalets.$invertColor,
     headerTitle: 'EIMサイト一覧',
-};
+});
 exports._AccountList = _AccountList;
 const mapStateToProps = (state) => {
     return {

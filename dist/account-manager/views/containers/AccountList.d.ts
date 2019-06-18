@@ -4,7 +4,7 @@ import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
 export declare class _AccountList extends Component<ICombinedNavProps<IAccountListState>> {
-    static navigationOptions: NavigationScreenOptions;
+    static navigationOptions: () => NavigationScreenOptions;
     render: () => JSX.Element;
     componentDidMount: () => Promise<void>;
     private onPressListItem;
