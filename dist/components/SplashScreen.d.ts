@@ -9,6 +9,7 @@ export interface ISplashState {
 export declare abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
     render(): JSX.Element;
     componentDidMount: () => void;
+    private checkConnectOnResume;
     private linkInitialURL;
     private urlEvent;
     private didComeFromAccountManager;
