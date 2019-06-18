@@ -25,6 +25,25 @@ class SplashScreen extends react_1.Component {
         this.componentDidMount = () => {
             react_native_1.Linking.getInitialURL().then(this.linkInitialURL);
             react_native_1.Linking.addEventListener('url', this.urlEvent);
+            this.checkConnectOnResume();
+        };
+        this.checkConnectOnResume = () => {
+            const eimAccount = account_manager_1.getEimAccount();
+            react_native_1.AppState.addEventListener('change', async (state) => {
+                if (state === 'active') {
+                    const token = eimAccount.eimTokens;
+                    if (token.length !== 0) {
+                        const result = await eimAccount.getServiceAdapter().validateToken(token);
+                        if (!result) {
+                            eimAccount.eimTokens = [];
+                            native_base_1.Toast.show({
+                                text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                            });
+                            NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
+                        }
+                    }
+                }
+            });
         };
         this.linkInitialURL = async (url) => {
             // ディープリンクから起動された場合

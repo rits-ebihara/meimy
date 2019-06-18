@@ -1,6 +1,6 @@
-import { Container, Text, View } from 'native-base';
+import { Container, Text, Toast, View } from 'native-base';
 import React, { Component } from 'react';
-import { Linking, TextStyle, ViewStyle } from 'react-native';
+import { AppState, Linking, TextStyle, ViewStyle } from 'react-native';
 import DevInfo from 'react-native-device-info';
 import UrlParse from 'url-parse';
 
@@ -49,6 +49,25 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
     public componentDidMount = () => {
         Linking.getInitialURL().then(this.linkInitialURL);
         Linking.addEventListener('url', this.urlEvent);
+        this.checkConnectOnResume();
+    }
+    private checkConnectOnResume = () => {
+        const eimAccount = getEimAccount();
+        AppState.addEventListener('change', async (state) => {
+            if (state === 'active') {
+                const token = eimAccount.eimTokens;
+                if (token.length !== 0) {
+                    const result = await eimAccount.getServiceAdapter().validateToken(token);
+                    if (!result) {
+                        eimAccount.eimTokens = [];
+                        Toast.show({
+                            text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                        });
+                        navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
+                    }
+                }
+            }
+        });
     }
     private linkInitialURL = async (url: string | null) => {
         // ディープリンクから起動された場合

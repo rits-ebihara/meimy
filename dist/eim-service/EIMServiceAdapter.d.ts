@@ -1,4 +1,4 @@
-import { IDoc, IUserDoc } from './EIMDocInterface';
+import { IDoc, IGroupDoc, IUserDoc } from './EIMDocInterface';
 import { IDocListForView, IDocListRowColForView } from './IDocListForView';
 import { IDocListSearchOption } from './IDocListSearchOption';
 import { ILangResources } from './ILangResources';
@@ -26,7 +26,7 @@ export declare class EIMServiceAdapter {
     getDocListForView: <T = any>(tokens: string[], appKey: string, docListKey: string, options?: IDocListSearchOption<T> | undefined) => Promise<IDocListForView<T>>;
     getDocumentById: <T>(tokens: string[], docId: string) => Promise<IParsedResponse<IDoc<T>>>;
     getUserDocById: (tokens: string[], userId: string) => Promise<IParsedResponse<IUserDoc>>;
-    getGroupDocById: (tokens: string[], groupId: string) => Promise<{}>;
+    getGroupDocById: (tokens: string[], groupId: string) => Promise<IParsedResponse<IGroupDoc>>;
     getAttachmentFile: (tokens: string[], fileId: string) => Promise<IResponseDownloadFile>;
     getLoginUser: (tokens: string[]) => Promise<IUserDoc | null>;
     executeScript: (tokens: string[], appId: string, fileName: string, data: object, async?: boolean) => Promise<IResponse>;

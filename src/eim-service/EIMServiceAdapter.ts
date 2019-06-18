@@ -131,7 +131,7 @@ export class EIMServiceAdapter {
     public getGroupDocById = (
         tokens: string[],
         groupId: string) => {
-        return new Promise((resolve, reject) => {
+        return new Promise<IParsedResponse<IGroupDoc>>((resolve, reject) => {
             this.get(
                 `/services/v1/groups/${groupId}`,
                 tokens,
