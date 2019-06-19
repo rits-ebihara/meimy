@@ -1,6 +1,6 @@
 {
     "name": "meimy",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "dist/index.js",
     "license": "CC BY-NC-SA",
     "scripts": {
