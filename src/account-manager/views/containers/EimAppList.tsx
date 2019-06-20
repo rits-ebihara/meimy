@@ -11,6 +11,7 @@ import { IAccountManagerState } from '../../IAccountManagerState';
 import IEimAppList from '../../states/IEimAppListState';
 
 const config = getConfig();
+
 class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
     public static navigationOptions = () => {
         return {
@@ -23,10 +24,7 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
     }
     public constructor(props: ICombinedNavProps<IEimAppList>) {
         super(props);
-        BackHandler.addEventListener('hardwareBackPress', () => {
-            this.props.navigation.pop();
-            return true;
-        });
+        BackHandler.addEventListener('hardwareBackPress', this.onPressBackButton);
     }
     public render = () => {
         const appListBox = this.props.state.appList.map((app) => {
@@ -46,16 +44,23 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
         );
     }
     public componentDidMount = () => {
-        createLoadAppListAction(this.props.dispatch, NavigateActions, () => {
-            Toast.show({
-                text: 'ネットワークエラーが発生しました。',
-                type: 'warning',
-            });
-            this.props.dispatch(createSetAppListAction([]));
-        });
+        createLoadAppListAction(this.props.dispatch, NavigateActions, this.onNetworkError);
     }
     public onPressItem = (appKey: string) => {
         NavigateActions.openApp({ appKey }, this.props.navigation);
+    }
+
+    private onNetworkError = () => {
+        Toast.show({
+            text: 'ネットワークエラーが発生しました。',
+            type: 'warning',
+        });
+        this.props.dispatch(createSetAppListAction([]));
+    }
+
+    private onPressBackButton = () => {
+        this.props.navigation.pop();
+        return true;
     }
 }
 
@@ -63,6 +68,11 @@ const mapStateToProps = (state: IAccountManagerState): IProps<IEimAppList> => {
     return {
         state: state.appList,
     };
+};
+
+export const __private__ = {
+    EimAppList: EimAppList,
+    mapStateToProps,
 };
 
 export default connect(mapStateToProps)(EimAppList);
