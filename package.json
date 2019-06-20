@@ -2,7 +2,7 @@
     "name": "meimy",
     "version": "1.0.2",
     "main": "dist/index.js",
-    "license": "CC BY-NC-SA",
+    "license": "GPL v3.0",
     "scripts": {
         "tscheck": "eslint ./src/**/*.ts{x,} --fix && tsc --noEmit -p tsconfig.build.json",
         "build": "node --experimental-modules build.mjs",
