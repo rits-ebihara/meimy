@@ -25,7 +25,7 @@ export class NavigateController implements INavigateController {
         accountListState: IAccountListState,
         dispatch: Dispatch,
         navigation: NavigationScreenProp<any>,
-        replace: boolean = false,
+        replace: boolean,
         siteDomain: string,
     ) => {
         const accountList = accountListState.accounts;
