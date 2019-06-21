@@ -49,7 +49,7 @@ export class NavigateController implements INavigateController {
         navigation: NavigationScreenProp<any>,
         accountListState: IAccountListState,
         dispatch: Dispatch,
-        replace: boolean = false
+        replace: boolean,
     ): Promise<boolean> => {
         // トークンがある
         const sa = new EIMServiceAdapter(siteDomain);
