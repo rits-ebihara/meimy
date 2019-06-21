@@ -4,7 +4,6 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import { mocked } from 'ts-jest/utils';
 
-import { ICombinedNavProps } from '../../../../src';
 import { SET_ACCOUNT_ACTION } from '../../../../src/account-manager/actions/AccountActions';
 import { asyncLoadAccountListAfterShow } from '../../../../src/account-manager/actions/AccountListActions';
 import navigateController from '../../../../src/account-manager/actions/NavigateActions';
@@ -12,6 +11,7 @@ import { IAccountListState } from '../../../../src/account-manager/states/IAccou
 import { IAccountState } from '../../../../src/account-manager/states/IAccountState';
 import { IAuthState } from '../../../../src/account-manager/states/IAuthStates';
 import { __private__, _AccountList } from '../../../../src/account-manager/views/containers/AccountList';
+import { ICombinedNavProps } from '../../../../src/redux-helper/redux-helper';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
