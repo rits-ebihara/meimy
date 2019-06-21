@@ -30,7 +30,6 @@
         "@types/url-parse": "^1.4.3",
         "@typescript-eslint/eslint-plugin": "^1.9.0",
         "@typescript-eslint/parser": "^1.9.0",
-        "babel-jest": "^24.8.0",
         "coveralls": "^3.0.3",
         "enzyme-adapter-react-16": "^1.13.1",
         "enzyme-to-json": "^3.3.5",

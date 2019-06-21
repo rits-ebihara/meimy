@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init auth type: o365 1`] = `
+<Styled(Container)>
+  <WebView
+    cacheEnabled={true}
+    injectedJavaScript="
+
+
+(function(){
+    var userNameInput = document.querySelector(\\"#userNameInput\\");
+    var passwordInput = document.querySelector(\\"#passwordInput\\");
+    var button = document.querySelector(\\"#submitButton\\");
+    if (!button || !userNameInput || !passwordInput) { return; }
+    button.addEventListener(\\"click\\", function() {
+        var userPass = {userId: '', password: ''};
+        userPass.userId = userNameInput.value;
+        userPass.password = passwordInput.value;
+        window.postMessage(JSON.stringify(userPass));
+    });
+})();
+"
+    onLoadStart={[Function]}
+    onMessage={[Function]}
+    originWhitelist={
+      Array [
+        "http://*",
+        "https://*",
+      ]
+    }
+    source={
+      Object {
+        "uri": "https://site-domain",
+      }
+    }
+    useSharedProcessPool={true}
+    useWebKit={true}
+  />
+</Styled(Container)>
+`;
+
+exports[`init auth type: password 1`] = `
+<Styled(Container)>
+  <WebView
+    cacheEnabled={true}
+    injectedJavaScript="
+
+(function(){
+    var eimSys = document.getElementById(\\"eim-system\\");
+    if (!!eimSys) {
+        eimSys.style.minWidth = \\"0\\";
+    }
+})();
+
+(function(){
+    var form = document.querySelector(\\"[name=form1]\\");
+    if (!form) { return; }
+    form.addEventListener(\\"submit\\", function() {
+        var userNameInput = document.querySelector(\\"[name=userName]\\");
+        var passwordInput = document.querySelector(\\"[name=password]\\");
+        var userPass = {userId: '', password: ''};
+        if (!!userNameInput) { userPass.userId = userNameInput.value; }
+        if (!!passwordInput) { userPass.password = passwordInput.value; }
+        window.postMessage(JSON.stringify(userPass));
+    });
+})();
+"
+    onLoadStart={[Function]}
+    onMessage={[Function]}
+    originWhitelist={
+      Array [
+        "http://*",
+        "https://*",
+      ]
+    }
+    source={
+      Object {
+        "uri": "https://site-domain/services/login",
+      }
+    }
+    useSharedProcessPool={true}
+    useWebKit={true}
+  />
+</Styled(Container)>
+`;
+
+exports[`init no account 1`] = `""`;
