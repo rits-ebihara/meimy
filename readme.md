@@ -37,3 +37,24 @@ yarn react-native link
 ## 使い方
 
 くわしくは、[meimy-starter](https://github.com/rits-ebihara/meimy-starter) を御覧ください。
+
+## 更新履歴
+
+* ver 1.0.7
+    * ```webview``` を警告に従い ```react-native``` にあるものではなく、 ```react-native-webview``` を利用するように変更した。
+    * ライセンスの変更。CC はソフトウェア・ライセンスに合わないため。
+
+* ver 1.0.6
+    * 追加機能
+        * スリープから復帰したときの接続チェック機能を追加した。
+        * 検索画面などに利用するため、文書一覧を非表示にするプロパティを追加した。
+    * バグフィックス
+        * getGroupDocById の戻りの型が間違っていた
+
+* ver 1.0.5
+    * バグフィックス
+      * アカウント一覧画面のヘッダの色が、Configが反映されない件を修正した
+
+* ver 1.0.4
+    * ライセンスを変更。商用利用不可とするため。
+    * showAddButton を廃止。 editable を追加して編集可・不可の機能とした
