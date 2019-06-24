@@ -1,6 +1,6 @@
 # EIM モバイルアプリ ツールキット
 
-[![cc by-nc-sa 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/rits-ebihara/meimy.svg?branch=master)](https://travis-ci.org/rits-ebihara/meimy)
 [![Coverage Status](https://coveralls.io/repos/github/rits-ebihara/meimy/badge.svg)](https://coveralls.io/github/rits-ebihara/meimy)
 [![FOSSA Status](https://bit.ly/2QPIhLJ)](https://app.fossa.com/projects/git%2Bgithub.com%2Frits-ebihara%2Fmeimy?ref=badge_shield)
@@ -42,6 +42,7 @@ yarn react-native link
 
 * ver 1.0.7
     * ```webview``` を警告に従い ```react-native``` にあるものではなく、 ```react-native-webview``` を利用するように変更した。
+    	* 現行のプロジェクトで、 package.json の dependencies に "react-native-webview" がない場合は、 ```yarn add react-native-webview``` を実行してください。
     * ライセンスの変更。CC はソフトウェア・ライセンスに合わないため。
 
 * ver 1.0.6
@@ -58,3 +59,4 @@ yarn react-native link
 * ver 1.0.4
     * ライセンスを変更。商用利用不可とするため。
     * showAddButton を廃止。 editable を追加して編集可・不可の機能とした
+

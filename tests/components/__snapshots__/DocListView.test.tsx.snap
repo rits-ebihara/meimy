@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render empty 1`] = `
+<Styled(Content)
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <Styled(List) />
+  <Styled(Text)
+    style={
+      Object {
+        "color": "#fff",
+      }
+    }
+  >
+    対象の文書はありません。
+  </Styled(Text)>
+  <RefreshControlMock
+    onRefresh={[Function]}
+    refreshing={false}
+  />
+</Styled(Content)>
+`;
+
+exports[`render hide 1`] = `
+<Styled(Content)
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <Styled(List)>
+    <Styled(Spinner)
+      color="#aaa"
+    />
+  </Styled(List)>
+  <RefreshControlMock
+    onRefresh={[Function]}
+    refreshing={false}
+  />
+</Styled(Content)>
+`;
+
+exports[`render init 1`] = `
+<Styled(Content)
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <Styled(List)>
+    <Styled(Spinner)
+      color="#aaa"
+    />
+  </Styled(List)>
+  <RefreshControlMock
+    onRefresh={[Function]}
+    refreshing={false}
+  />
+</Styled(Content)>
+`;
+
+exports[`render list exist 1`] = `
+<Styled(Content)
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <Styled(List)>
+    <Styled(ListItem)
+      key="doc001"
+    >
+      <Styled(Text)>
+        hoge001
+      </Styled(Text)>
+    </Styled(ListItem)>
+  </Styled(List)>
+  <Styled(Button)
+    full={true}
+    light={true}
+    onPress={[Function]}
+  >
+    <Styled(Text)>
+      さらに表示
+    </Styled(Text)>
+  </Styled(Button)>
+  <RefreshControlMock
+    onRefresh={[Function]}
+    refreshing={false}
+  />
+</Styled(Content)>
+`;
+
+exports[`render loading 1`] = `
+<Styled(Content)
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={true}
+    />
+  }
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <Styled(List)>
+    <Styled(Spinner)
+      color="#aaa"
+    />
+  </Styled(List)>
+  <RefreshControlMock
+    onRefresh={[Function]}
+    refreshing={true}
+  />
+</Styled(Content)>
+`;

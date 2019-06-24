@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init empty list 1`] = `<Styled(Container) />`;
+
+exports[`init exist list 1`] = `
+<Styled(Container)>
+  <Styled(ListItem)
+    key="appkey001"
+    noIndent={true}
+    onPress={[Function]}
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        app001
+      </Styled(Text)>
+      <Styled(Text)
+        note={true}
+      >
+        app001-desc
+      </Styled(Text)>
+    </Styled(Body)>
+  </Styled(ListItem)>
+  <Styled(ListItem)
+    key="appkey002"
+    noIndent={true}
+    onPress={[Function]}
+  >
+    <Styled(Body)>
+      <Styled(Text)>
+        app002
+      </Styled(Text)>
+      <Styled(Text)
+        note={true}
+      >
+        app002-desc
+      </Styled(Text)>
+    </Styled(Body)>
+  </Styled(ListItem)>
+</Styled(Container)>
+`;
+
+exports[`init loading 1`] = `
+<Styled(Container)>
+  <Styled(Spinner)
+    color="blue"
+  />
+</Styled(Container)>
+`;

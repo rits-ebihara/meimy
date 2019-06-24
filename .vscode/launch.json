@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Debug Jest",
-            "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+            "program": "${workspaceRoot}/node_modules/.bin/jest",
             "args": [
                 // 現在のプロセスで逐次テストを実行していく設定.
                 // この設定をしないと複数のchildプロセスでテストを実行するらしい
@@ -21,8 +21,27 @@
                 "--no-cache"
             ],
             "cwd": "${workspaceRoot}",
-            "console": "integratedTerminal",
             "protocol": "inspector",
+            "windows": {
+                "program": "${workspaceRoot}/node_modules/jest/bin/jest.js"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest Current File",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--config",
+                "jest.config.js"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
         }
     ]
 }

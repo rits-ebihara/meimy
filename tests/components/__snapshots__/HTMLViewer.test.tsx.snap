@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render init 1`] = `
+<WebView
+  cacheEnabled={true}
+  onMessage={[Function]}
+  originWhitelist={
+    Array [
+      "http://*",
+      "https://*",
+    ]
+  }
+  source={
+    Object {
+      "html": "<!DOCTYPE html>
+        <html lang=\\"en\\">
+        <head>
+            <meta charset=\\"UTF-8\\">
+            <meta name=\\"viewport\\" content=\\"width=device-width,initial-scale=1\\">
+            <style>
+                html, body {
+                    font-size: 14pt;
+                }
+                #container {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    margin: 0;
+                    padding: 0;
+                }
+                p {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+            <script>
+                window.addEventListener(\\"load\\", () => {
+                    setTimeout(() => {
+                        const container = document.getElementById('container');
+                        window.ReactNativeWebView.postMessage(container.clientHeight);
+                    }, 100);
+                });
+            </script>
+        </head>
+        <body>
+            <div id=\\"container\\">
+                
+    <p>ほげ</p>
+
+            </div>
+        </body>
+        </html>",
+    }
+  }
+  style={
+    Object {
+      "height": 200,
+    }
+  }
+  useSharedProcessPool={true}
+  useWebKit={true}
+/>
+`;

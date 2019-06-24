@@ -1,4 +1,5 @@
 import Clone from 'clone';
+import console = require('console');
 import { Button, Content, List, Spinner, Text } from 'native-base';
 import React, { Component } from 'react';
 import { RefreshControl } from 'react-native';
@@ -9,7 +10,7 @@ import { IDocListSearchOption, IDocListSort, SearchCondition } from '../eim-serv
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
-interface IProps<T> {
+export interface IProps<T> {
     appKey?: string;
     docListKey: string;
     rowCountAtOnce: number;
@@ -21,7 +22,7 @@ interface IProps<T> {
     onFinishLoad?: () => void;
 }
 
-interface ILocalState<T> {
+export interface ILocalState<T> {
     docListData?: IDocListForView<T>;
     offset: number;
     onSearch: boolean;
@@ -90,8 +91,7 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
         );
     }
 
-    private createRowElement =
-    (docListData: IDocListForView<T> | undefined) => {
+    private createRowElement = (docListData: IDocListForView<T> | undefined) => {
         return !docListData ? null :
             docListData.docList.map((row) => {
                 const cols: {
@@ -119,7 +119,7 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
             </Button>);
     }
 
-    private loadDocList = (offset: number) => {
+    private loadDocList = async (offset: number) => {
         if (offset === 0) {
             this.setState({
                 docListData: undefined,
@@ -131,7 +131,7 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
                 onSearch: true,
             });
         }
-        this.callLoadDocListData(this.props, offset).then((result) => {
+        return this.callLoadDocListData(this.props, offset).then((result) => {
             const { state } = this;
             const docListData = Clone(result);
             if (!!state.docListData) {

@@ -1,7 +1,9 @@
 import { Container, Toast } from 'native-base';
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, NavState, WebView, WebViewMessageEventData, WebViewUriSource } from 'react-native';
+import { NativeSyntheticEvent, NavState, WebViewMessageEventData } from 'react-native';
 import CookieManager from 'react-native-cookies';
+import WebView from 'react-native-webview';
+import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 import UrlParse from 'url-parse';
 
@@ -11,6 +13,7 @@ import NavigateActions from '../../actions/NavigateActions';
 import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
+import { IAccountState } from '../../states/IAccountState';
 import IWebSignInState from '../../states/IWebSignInState';
 
 const config = getConfig();
@@ -20,9 +23,9 @@ const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
 interface IWebSignInProps extends IWebSignInState {
     accountListState: IAccountListState;
 }
-type ThisProps = ICombinedNavProps<IWebSignInProps>;
-interface ILocalState {
-    uriSource: WebViewUriSource;
+export type ThisProps = ICombinedNavProps<IWebSignInProps>;
+export interface ILocalState {
+    uriSource: WebViewSourceUri;
 }
 interface IWebViewMessage {
     userId: string;
@@ -68,7 +71,8 @@ const get365UserIdPass = `
     });
 })();`;
 
-class WebSignIn extends Component<ThisProps, ILocalState> {
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+export class _WebSignIn extends Component<ThisProps, ILocalState> {
     public static navigationOptions = () => {
         return {
             headerStyle: {
@@ -106,29 +110,28 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
                     source={this.state.uriSource}
                     onLoadStart={this.onLoadStartWebView}
                     onMessage={this.onMessage}
-                    ref={(control) => { this.webview = control; }}
+                    ref={this.setRef}
                     injectedJavaScript={script} />
             </Container>
         );
-    }
-    public onMessage = (event: NativeSyntheticEvent<WebViewMessageEventData>) => {
-        const { data: message } = event.nativeEvent;
-        const messageData = JSON.parse(message) as IWebViewMessage;
-        /** ID/Password の保存 */
-        const account = this.props.state.account;
-        if (!account) { return; }
-        account.userId = messageData.userId;
-        account.password = messageData.password;
-        asyncSaveAccountAction(account, this.props.dispatch);
     }
     public componentDidMount = () => {
         CookieManager.clearAll();
         // onLoadStartWebViewでは、state　がなくなる・・・？のでクラスメンバーとして保持する
         this.saveProp = this.props;
     }
-    private postIdPassEimForm = (url: string) => {
-        const { account } = this.props.state;
-        if (!account) { return; }
+    private onMessage = (event: NativeSyntheticEvent<WebViewMessageEventData>) => {
+        const { data: message } = event.nativeEvent;
+        const messageData = JSON.parse(message) as IWebViewMessage;
+        /** ID/Password の保存 */
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const account = this.props.state.account!;
+        account.userId = messageData.userId;
+        account.password = messageData.password;
+        asyncSaveAccountAction(account, this.props.dispatch);
+    }
+    private setRef = (control: WebView) => { this.webview = control; }
+    private postIdPassEimForm = (url: string, account: IAccountState) => {
         // services/v1/login
         if (this.postedIdPass) { return false; }
         if (!url.endsWith('/services/login')) { return false; }
@@ -141,7 +144,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
             + `&password=${encodeURIComponent(account.password)}`;
         const postUrl = UrlParse(url);
         postUrl.set('pathname', '/services/v1/login');
-        const uriSource: WebViewUriSource = {
+        const uriSource: WebViewSourceUri = {
             body,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -155,9 +158,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         });
         return true;
     }
-    private postIdPassFor365 = (url: string): boolean => {
-        const account = this.props.state.account;
-        if (!account) { return false; }
+    private postIdPassFor365 = (url: string, account: IAccountState): boolean => {
         if (this.postedIdPass) { return false; }
         if (!url.startsWith(ricohSamlUrl)) { return false; }
         if (!account.userId || !account.password) {
@@ -168,7 +169,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         const body = `AuthMethod=${encodeURIComponent('FormsAuthentication')}`
             + `&UserName=${encodeURIComponent(account.userId)}`
             + `&Password=${encodeURIComponent(account.password)}`;
-        const uriSource: WebViewUriSource = {
+        const uriSource: WebViewSourceUri = {
             body,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -182,43 +183,45 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         });
         return true;
     }
-    private onLoadStartWebView = (e: NavState) => {
+    private onLoadStartWebView = async (e: NavState) => {
         const { saveProp } = this;
-        const account = saveProp ? saveProp.state.account : null;
-        if (!account) { return; }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const account = saveProp!.state.account!;
         // 引数の型が、 @types と異なるのでキャストし直す
         const navState = (e as NativeSyntheticEvent<NavState>).nativeEvent;
         const { url } = navState;
-        if (!url) { return; }
-        const webview = this.webview;
-        if (!webview) { return; }
-        if (account.authType === 'o365' && this.postIdPassFor365(url)) {
+        if (!url) { return 'no url'; }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const webview = this.webview!;
+        if (account.authType === 'o365' && this.postIdPassFor365(url, account)) {
             webview.stopLoading();
-            return;
+            return 'auth o365';
         }
-        if (account.authType === 'password' && this.postIdPassEimForm(url)) {
+        if (account.authType === 'password' && this.postIdPassEimForm(url, account)) {
             webview.stopLoading();
-            return;
+            return 'auth password';
         }
-        (async () => {
-            // console.log(JSON.stringify(navState.nativeEvent));
-            const cookie = await CookieManager.get(url);
-            if (!cookie.APISID) { return; }
-            // トークンのクッキーが取得できたら成功
-            webview.stopLoading();
-            Toast.show({ text: '認証に成功しました。', type: 'success' });
-            account.eimToken = ['APISID=' + cookie.APISID];
-            asyncSaveAccountAction(account, this.props.dispatch);
-            if (!this.saveProp) { return; }
+        // console.log(JSON.stringify(navState.nativeEvent));
+        const cookie = await CookieManager.get(url);
+        if (!cookie.APISID) {
+            return 'no token';
+        }
+        // トークンのクッキーが取得できたら成功
+        webview.stopLoading();
+        Toast.show({ text: '認証に成功しました。', type: 'success' });
+        account.eimToken = ['APISID=' + cookie.APISID];
+        await asyncSaveAccountAction(account, this.props.dispatch);
+        // if (!this.saveProp) { return; }
 
-            NavigateActions.navigateForLink(
-                this.props.state.accountListState,
-                {
-                    siteDomain: account.siteDomain,
-                    siteName: account.siteName,
-                    tokens: account.eimToken,
-                }, this.saveProp.dispatch, this.saveProp.navigation, true);
-        })();
+        await NavigateActions.navigateForLink(
+            this.props.state.accountListState,
+            {
+                siteDomain: account.siteDomain,
+                siteName: account.siteName,
+                tokens: account.eimToken,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            }, saveProp!.dispatch, saveProp!.navigation, true);
+        return 'set token';
     }
 }
 
@@ -228,4 +231,8 @@ const mapStateToProps = (state: IAccountManagerState): IProps<IWebSignInProps> =
     };
 };
 
-export default connect(mapStateToProps)(WebSignIn);
+export const __private__ = {
+    mapStateToProps,
+};
+
+export default connect(mapStateToProps)(_WebSignIn);

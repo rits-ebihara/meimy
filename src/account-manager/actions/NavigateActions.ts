@@ -25,7 +25,7 @@ export class NavigateController implements INavigateController {
         accountListState: IAccountListState,
         dispatch: Dispatch,
         navigation: NavigationScreenProp<any>,
-        replace: boolean = false,
+        replace: boolean,
         siteDomain: string,
     ) => {
         const accountList = accountListState.accounts;
@@ -49,7 +49,7 @@ export class NavigateController implements INavigateController {
         navigation: NavigationScreenProp<any>,
         accountListState: IAccountListState,
         dispatch: Dispatch,
-        replace: boolean = false
+        replace: boolean,
     ): Promise<boolean> => {
         // トークンがある
         const sa = new EIMServiceAdapter(siteDomain);
