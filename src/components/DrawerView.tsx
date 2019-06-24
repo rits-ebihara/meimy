@@ -9,7 +9,7 @@ import dummyAvatar from '../resources/user.png';
 // import { app, routePageNames } from '../../Commons';
 // import theme, { colorPallet } from '../Styles';
 
-export interface IProps extends DrawerItemsProps {
+export interface IDrawerViewProps extends DrawerItemsProps {
     borderColor: string;
     buttonColor: string;
     appDisplayName: string;
@@ -21,9 +21,9 @@ export interface ILocalState {
     avatarFaceUrl?: ImageURISource;
 }
 
-export class DrawerContent extends Component<IProps, ILocalState> {
+export class DrawerContent extends Component<IDrawerViewProps, ILocalState> {
     private $isMounted = false;
-    public constructor(props: IProps) {
+    public constructor(props: IDrawerViewProps) {
         super(props);
         this.state = {};
     }

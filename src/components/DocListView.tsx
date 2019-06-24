@@ -10,7 +10,7 @@ import { IDocListSearchOption, IDocListSort, SearchCondition } from '../eim-serv
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
-export interface IProps<T> {
+export interface IDocListViewProps<T> {
     appKey?: string;
     docListKey: string;
     rowCountAtOnce: number;
@@ -28,9 +28,9 @@ export interface ILocalState<T> {
     onSearch: boolean;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
+export class DocListView<T = any> extends Component<IDocListViewProps<T>, ILocalState<T>> {
     private $isMounted: boolean = false;
-    public constructor(props: IProps<T>) {
+    public constructor(props: IDocListViewProps<T>) {
         super(props);
         this.state = {
             offset: 0,
@@ -75,7 +75,7 @@ export class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
     public reload = () => {
         this.loadDocList(0);
     }
-    private callLoadDocListData = async (props: IProps<T>, offset: number) => {
+    private callLoadDocListData = async (props: IDocListViewProps<T>, offset: number) => {
         const searchOptions: IDocListSearchOption<T> = {
             limit: props.rowCountAtOnce,
             offset,
