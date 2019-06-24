@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render init 1`] = `
+<Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "flexDirection": "row-reverse",
+      }
+    }
+  >
+    <Styled(Button)
+      key="closeButton"
+      onPress={[Function]}
+      transparent={true}
+    >
+      <Styled(Text)>
+        閉じる
+      </Styled(Text)>
+    </Styled(Button)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "row",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "width": 88,
+        }
+      }
+    >
+      <Styled(Thumbnail)
+        circular={true}
+        large={true}
+        source={
+          Object {
+            "testUri": "../../../src/resources/user.png",
+          }
+        }
+      />
+    </Styled(ViewNB)>
+    <Styled(ViewNB)
+      style={
+        Object {
+          "width": 180,
+        }
+      }
+    >
+      <Styled(Text)>
+        ricoh-00001
+      </Styled(Text)>
+      <Styled(Text)>
+        sosiki-full
+      </Styled(Text)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "column",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(Text) />
+    <Styled(Text)
+      note={true}
+    >
+      site-domain
+    </Styled(Text)>
+    <Styled(Button)
+      bordered={true}
+      color="#900"
+      iconLeft={true}
+      onPress={[Function]}
+      rounded={true}
+      style={
+        Object {
+          "alignSelf": "center",
+          "margin": 10,
+        }
+      }
+    >
+      <Styled(Icon)
+        name="md-swap"
+      />
+      <Styled(Text)>
+        接続先の切り替え
+      </Styled(Text)>
+    </Styled(Button)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "column",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(Text)
+      note={true}
+    >
+      このアプリについて
+    </Styled(Text)>
+    <Styled(Text)
+      style={
+        Object {
+          "fontSize": 16,
+          "fontWeight": "bold",
+        }
+      }
+    >
+      アプリ名
+    </Styled(Text)>
+    <Styled(Text)
+      style={
+        Object {
+          "alignSelf": "flex-end",
+        }
+      }
+    >
+      ver.
+      ver 1.0.0
+    </Styled(Text)>
+  </Styled(ViewNB)>
+</Styled(ViewNB)>
+`;
+
+exports[`render null 1`] = `""`;
+
+exports[`render set avatar 1`] = `
+<Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "flexDirection": "row-reverse",
+      }
+    }
+  >
+    <Styled(Button)
+      key="closeButton"
+      onPress={[Function]}
+      transparent={true}
+    >
+      <Styled(Text)>
+        閉じる
+      </Styled(Text)>
+    </Styled(Button)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "row",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(ViewNB)
+      style={
+        Object {
+          "width": 88,
+        }
+      }
+    >
+      <Styled(Thumbnail)
+        circular={true}
+        large={true}
+        source={
+          Object {
+            "uri": "https://exsample.com",
+          }
+        }
+      />
+    </Styled(ViewNB)>
+    <Styled(ViewNB)
+      style={
+        Object {
+          "width": 180,
+        }
+      }
+    >
+      <Styled(Text)>
+        ricoh-00001
+      </Styled(Text)>
+      <Styled(Text)>
+        sosiki-full
+      </Styled(Text)>
+    </Styled(ViewNB)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "column",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(Text) />
+    <Styled(Text)
+      note={true}
+    >
+      site-domain
+    </Styled(Text)>
+    <Styled(Button)
+      bordered={true}
+      color="#900"
+      iconLeft={true}
+      onPress={[Function]}
+      rounded={true}
+      style={
+        Object {
+          "alignSelf": "center",
+          "margin": 10,
+        }
+      }
+    >
+      <Styled(Icon)
+        name="md-swap"
+      />
+      <Styled(Text)>
+        接続先の切り替え
+      </Styled(Text)>
+    </Styled(Button)>
+  </Styled(ViewNB)>
+  <Styled(ViewNB)
+    style={
+      Object {
+        "borderBottomColor": "#999",
+        "borderBottomWidth": 1,
+        "borderStyle": "solid",
+        "flexDirection": "column",
+        "padding": 10,
+      }
+    }
+  >
+    <Styled(Text)
+      note={true}
+    >
+      このアプリについて
+    </Styled(Text)>
+    <Styled(Text)
+      style={
+        Object {
+          "fontSize": 16,
+          "fontWeight": "bold",
+        }
+      }
+    >
+      アプリ名
+    </Styled(Text)>
+    <Styled(Text)
+      style={
+        Object {
+          "alignSelf": "flex-end",
+        }
+      }
+    >
+      ver.
+      ver 1.0.0
+    </Styled(Text)>
+  </Styled(ViewNB)>
+</Styled(ViewNB)>
+`;

@@ -9,7 +9,7 @@ import dummyAvatar from '../resources/user.png';
 // import { app, routePageNames } from '../../Commons';
 // import theme, { colorPallet } from '../Styles';
 
-interface IProps extends DrawerItemsProps {
+export interface IProps extends DrawerItemsProps {
     borderColor: string;
     buttonColor: string;
     appDisplayName: string;
@@ -17,7 +17,7 @@ interface IProps extends DrawerItemsProps {
     splashPageName: string;
 }
 
-interface ILocalState {
+export interface ILocalState {
     avatarFaceUrl?: ImageURISource;
 }
 
@@ -49,6 +49,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
             <View>
                 <View style={{ flexDirection: 'row-reverse' }}>
                     <Button
+                        key="closeButton"
                         transparent
                         onPress={() => this.props.navigation.toggleDrawer()}>
                         <Text>閉じる</Text>
@@ -59,14 +60,15 @@ export class DrawerContent extends Component<IProps, ILocalState> {
                         <Thumbnail circular large source={this.state.avatarFaceUrl || dummyAvatar} />
                     </View>
                     <View style={{ width: 180 }}>
-                        <Text>{user ? user.properties.displayName : ''}</Text>
+                        <Text>{user.properties.displayName}</Text>
                         <Text>{eimAccount.getDepartmentName()}</Text>
                     </View>
                 </View>
                 <View style={colStyle}>
                     <Text>{}</Text>
                     <Text note>{eimAccount.domain}</Text>
-                    <Button bordered color={this.props.buttonColor} iconLeft rounded
+                    <Button
+                        bordered color={this.props.buttonColor} iconLeft rounded
                         style={{ alignSelf: 'center', margin: 10 }}
                         onPress={this.onPressChangeSite.bind(this)}>
                         <Icon name="md-swap" />
@@ -84,7 +86,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
             </View>
         );
     }
-    public componentDidMount = () => {
+    public componentDidMount = async () => {
         this.$isMounted = true;
         const eimAccount = getEimAccount();
         const { user } = eimAccount;
@@ -92,7 +94,7 @@ export class DrawerContent extends Component<IProps, ILocalState> {
         if (!faceImage) {
             return;
         }
-        eimAccount.getServiceAdapter()
+        return eimAccount.getServiceAdapter()
             .getAttachmentFile(eimAccount.eimTokens, faceImage)
             .then((result) => {
                 if (!this.$isMounted) { return; }
