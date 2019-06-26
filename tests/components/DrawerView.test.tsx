@@ -5,7 +5,7 @@ import React from 'react';
 import { mocked } from 'ts-jest/utils';
 
 import { getEimAccount } from '../../src/account-manager/EimAccount';
-import { DrawerContent, IDrawerViewProps, ILocalState } from '../../src/components/DrawerView';
+import { DrawerContent, IDrawerViewLocalState, IDrawerViewProps } from '../../src/components/DrawerView';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -49,7 +49,7 @@ const createProps = (): IDrawerViewProps => ({
 
 describe('render', () => {
     let props: IDrawerViewProps;
-    let wrapper: ShallowWrapper<IDrawerViewProps, ILocalState, DrawerContent>;
+    let wrapper: ShallowWrapper<IDrawerViewProps, IDrawerViewLocalState, DrawerContent>;
     beforeEach(() => {
         mocked(getEimAccount).mockClear();
         mocked(getEimAccount).mockReturnValue(createEimAccount() as any);
@@ -77,7 +77,7 @@ describe('render', () => {
 
 describe('componentDidMount', () => {
     let props: IDrawerViewProps;
-    let wrapper: ShallowWrapper<IDrawerViewProps, ILocalState, DrawerContent>;
+    let wrapper: ShallowWrapper<IDrawerViewProps, IDrawerViewLocalState, DrawerContent>;
     let instance: DrawerContent;
     beforeEach(() => {
         mocked(getEimAccount).mockClear();
@@ -130,7 +130,7 @@ describe('componentDidMount', () => {
 
 describe('event', () => {
     let props: IDrawerViewProps;
-    let wrapper: ShallowWrapper<IDrawerViewProps, ILocalState, DrawerContent>;
+    let wrapper: ShallowWrapper<IDrawerViewProps, IDrawerViewLocalState, DrawerContent>;
     let instance: DrawerContent;
     let eimAccount = createEimAccount() as any;
     beforeEach(() => {

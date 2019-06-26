@@ -16,8 +16,8 @@ import { AuthType } from '../../../../src/account-manager/states/IAccountState';
 import {
     __private__,
     _Account,
+    IAccountLocaleState,
     IAccountProps,
-    ILocaleState,
 } from '../../../../src/account-manager/views/containers/Account';
 import { EIMServiceAdapter } from '../../../../src/eim-service/EIMServiceAdapter';
 import { ICombinedNavProps } from '../../../../src/redux-helper/redux-helper';
@@ -135,7 +135,7 @@ describe('events', () => {
         expect((wrapper.state() as any)['siteName']).toEqual('name');
         expect((wrapper.state() as any)['siteDomain']).toEqual('domain.eim.ricoh.com');
         expect((wrapper.state() as any)['authType']).toEqual('password');
-        const cloneState = clone(wrapper.state()) as ILocaleState;
+        const cloneState = clone(wrapper.state()) as IAccountLocaleState;
         // 変更後
         const siteNameInput = wrapper.findWhere(n => {
             return n.key() === 'site_name';
@@ -192,7 +192,7 @@ describe('events', () => {
         props.state.siteDomain = 'domain.eim.ricoh.com';
         props.state.siteName = 'name';
         const wrapper = Enzyme.shallow(<_Account {...props} />);
-        const state = wrapper.state() as ILocaleState;
+        const state = wrapper.state() as IAccountLocaleState;
         const instance = wrapper.instance() as _Account;
         // 削除実行
         instance['onPressRemove']();
