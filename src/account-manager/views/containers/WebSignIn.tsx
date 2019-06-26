@@ -24,7 +24,7 @@ interface IWebSignInProps extends IWebSignInState {
     accountListState: IAccountListState;
 }
 export type ThisProps = ICombinedNavProps<IWebSignInProps>;
-export interface ILocalState {
+export interface IWebSigninLocalState {
     uriSource: WebViewSourceUri;
 }
 interface IWebViewMessage {
@@ -72,7 +72,7 @@ const get365UserIdPass = `
 })();`;
 
 // eslint-disable-next-line @typescript-eslint/class-name-casing
-export class _WebSignIn extends Component<ThisProps, ILocalState> {
+export class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
     public static navigationOptions = () => {
         return {
             headerStyle: {

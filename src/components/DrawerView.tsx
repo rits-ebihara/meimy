@@ -17,11 +17,11 @@ export interface IDrawerViewProps extends DrawerItemsProps {
     splashPageName: string;
 }
 
-export interface ILocalState {
+export interface IDrawerViewLocalState {
     avatarFaceUrl?: ImageURISource;
 }
 
-export class DrawerContent extends Component<IDrawerViewProps, ILocalState> {
+export class DrawerContent extends Component<IDrawerViewProps, IDrawerViewLocalState> {
     private $isMounted = false;
     public constructor(props: IDrawerViewProps) {
         super(props);

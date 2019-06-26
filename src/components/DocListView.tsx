@@ -1,5 +1,4 @@
 import Clone from 'clone';
-import console = require('console');
 import { Button, Content, List, Spinner, Text } from 'native-base';
 import React, { Component } from 'react';
 import { RefreshControl } from 'react-native';
@@ -22,13 +21,13 @@ export interface IDocListViewProps<T> {
     onFinishLoad?: () => void;
 }
 
-export interface ILocalState<T> {
+export interface IDocListViewLocalState<T> {
     docListData?: IDocListForView<T>;
     offset: number;
     onSearch: boolean;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class DocListView<T = any> extends Component<IDocListViewProps<T>, ILocalState<T>> {
+export class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocListViewLocalState<T>> {
     private $isMounted: boolean = false;
     public constructor(props: IDocListViewProps<T>) {
         super(props);
