@@ -31,21 +31,23 @@ class EimAppList extends react_1.Component {
             return (react_1.default.createElement(native_base_1.Container, null, this.props.state.loading ? react_1.default.createElement(native_base_1.Spinner, { color: "blue" }) : appListBox));
         };
         this.componentDidMount = () => {
-            EimAppListActions_1.createLoadAppListAction(this.props.dispatch, NavigateActions_1.default, () => {
-                native_base_1.Toast.show({
-                    text: 'ネットワークエラーが発生しました。',
-                    type: 'warning',
-                });
-                this.props.dispatch(EimAppListActions_1.createSetAppListAction([]));
-            });
+            EimAppListActions_1.createLoadAppListAction(this.props.dispatch, NavigateActions_1.default, this.onNetworkError);
         };
         this.onPressItem = (appKey) => {
             NavigateActions_1.default.openApp({ appKey }, this.props.navigation);
         };
-        react_native_1.BackHandler.addEventListener('hardwareBackPress', () => {
+        this.onNetworkError = () => {
+            native_base_1.Toast.show({
+                text: 'ネットワークエラーが発生しました。',
+                type: 'warning',
+            });
+            this.props.dispatch(EimAppListActions_1.createSetAppListAction([]));
+        };
+        this.onPressBackButton = () => {
             this.props.navigation.pop();
             return true;
-        });
+        };
+        react_native_1.BackHandler.addEventListener('hardwareBackPress', this.onPressBackButton);
     }
 }
 EimAppList.navigationOptions = () => {
@@ -61,5 +63,9 @@ const mapStateToProps = (state) => {
     return {
         state: state.appList,
     };
+};
+exports.__private__ = {
+    EimAppList: EimAppList,
+    mapStateToProps,
 };
 exports.default = react_redux_1.connect(mapStateToProps)(EimAppList);

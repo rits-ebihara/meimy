@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render init 1`] = `
+<Styled(Container)
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#009",
+      "justifyContent": "center",
+    }
+  }
+>
+  <Styled(Text)
+    style={
+      Object {
+        "alignSelf": "flex-end",
+        "color": "#fff",
+        "fontSize": 20,
+        "position": "absolute",
+        "top": 0,
+      }
+    }
+  >
+    ver.
+    1.0.0
+  </Styled(Text)>
+  <Styled(ViewNB)>
+    <Styled(Text)
+      style={
+        Object {
+          "color": "#fff",
+          "fontSize": 32,
+        }
+      }
+    >
+      test-app-name
+    </Styled(Text)>
+  </Styled(ViewNB)>
+</Styled(Container)>
+`;

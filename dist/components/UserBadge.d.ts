@@ -15,6 +15,7 @@ export interface IUserBadgeOptionalProps {
     textColor: string;
     style?: ViewStyle;
     type: DirectoryTypeKey;
+    shareMessage?: string;
     onLongPress: (userId: string) => void;
 }
 export interface IUserBadgeProps extends Partial<IUserBadgeOptionalProps> {
@@ -30,6 +31,8 @@ export declare class UserBadge extends React.Component<IUserBadgeProps, IState> 
     private onPressUserBadge;
     private onLongPressUserBadge;
     private userInfoPanel;
+    private onPressTeamsIcon;
+    private onPressMailIcon;
     private serUserInfo;
 }
 export {};

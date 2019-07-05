@@ -18,7 +18,7 @@ class DrawerContent extends react_1.Component {
     constructor(props) {
         super(props);
         this.$isMounted = false;
-        this.componentDidMount = () => {
+        this.componentDidMount = async () => {
             this.$isMounted = true;
             const eimAccount = EimAccount_1.getEimAccount();
             const { user } = eimAccount;
@@ -26,7 +26,7 @@ class DrawerContent extends react_1.Component {
             if (!faceImage) {
                 return;
             }
-            eimAccount.getServiceAdapter()
+            return eimAccount.getServiceAdapter()
                 .getAttachmentFile(eimAccount.eimTokens, faceImage)
                 .then((result) => {
                 if (!this.$isMounted) {
@@ -70,13 +70,13 @@ class DrawerContent extends react_1.Component {
         const { user } = eimAccount;
         return (react_1.default.createElement(native_base_1.View, null,
             react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
-                react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: () => this.props.navigation.toggleDrawer() },
+                react_1.default.createElement(native_base_1.Button, { key: "closeButton", transparent: true, onPress: () => this.props.navigation.toggleDrawer() },
                     react_1.default.createElement(native_base_1.Text, null, "\u9589\u3058\u308B"))),
             react_1.default.createElement(native_base_1.View, { style: rowStyle },
                 react_1.default.createElement(native_base_1.View, { style: { width: 88 } },
                     react_1.default.createElement(native_base_1.Thumbnail, { circular: true, large: true, source: this.state.avatarFaceUrl || user_png_1.default })),
                 react_1.default.createElement(native_base_1.View, { style: { width: 180 } },
-                    react_1.default.createElement(native_base_1.Text, null, user ? user.properties.displayName : ''),
+                    react_1.default.createElement(native_base_1.Text, null, user.properties.displayName),
                     react_1.default.createElement(native_base_1.Text, null, eimAccount.getDepartmentName()))),
             react_1.default.createElement(native_base_1.View, { style: colStyle },
                 react_1.default.createElement(native_base_1.Text, null),

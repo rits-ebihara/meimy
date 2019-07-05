@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { IDocListForView, IDocListRowForView } from '../eim-service/IDocListForView';
 import { IDocListSort, SearchCondition } from '../eim-service/IDocListSearchOption';
 export declare type CreateRowElement<T> = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
-interface IProps<T> {
+export interface IDocListViewProps<T> {
     appKey?: string;
     docListKey: string;
     rowCountAtOnce: number;
@@ -16,14 +16,14 @@ interface IProps<T> {
     hide?: boolean;
     onFinishLoad?: () => void;
 }
-interface ILocalState<T> {
+export interface IDocListViewLocalState<T> {
     docListData?: IDocListForView<T>;
     offset: number;
     onSearch: boolean;
 }
-export declare class DocListView<T = any> extends Component<IProps<T>, ILocalState<T>> {
+export declare class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocListViewLocalState<T>> {
     private $isMounted;
-    constructor(props: IProps<T>);
+    constructor(props: IDocListViewProps<T>);
     render: () => JSX.Element;
     componentDidMount: () => void;
     componentWillUnmount: () => void;
@@ -33,4 +33,3 @@ export declare class DocListView<T = any> extends Component<IProps<T>, ILocalSta
     private createMoreButton;
     private loadDocList;
 }
-export {};

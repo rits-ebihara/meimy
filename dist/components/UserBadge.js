@@ -7,9 +7,15 @@ const clone_1 = __importDefault(require("clone"));
 const native_base_1 = require("native-base");
 const react_1 = __importDefault(require("react"));
 const react_native_1 = require("react-native");
+const url_parse_1 = __importDefault(require("url-parse"));
 const EimAccount_1 = require("../account-manager/EimAccount");
 const group_png_1 = __importDefault(require("../resources/group.png"));
+const ms_teams_png_1 = __importDefault(require("../resources/ms-teams.png"));
 const user_png_1 = __importDefault(require("../resources/user.png"));
+const shareIconStyle = {
+    height: 24,
+    width: 24,
+};
 class UserBadge extends react_1.default.Component {
     constructor(props) {
         super(props);
@@ -57,21 +63,42 @@ class UserBadge extends react_1.default.Component {
             this.props.onLongPress(state.userId);
         };
         this.userInfoPanel = (faceImage) => {
+            const { state } = this;
             return react_1.default.createElement(react_native_1.Modal, { visible: this.state.shownDetailDialog, animationType: "slide", transparent: true, onRequestClose: () => { this.setState({ shownDetailDialog: false }); } },
                 react_1.default.createElement(native_base_1.Card, { style: { marginTop: 50 } },
                     react_1.default.createElement(native_base_1.CardItem, null,
                         react_1.default.createElement(native_base_1.Body, { style: { flex: 1, flexDirection: 'row' } },
                             react_1.default.createElement(native_base_1.Thumbnail, { source: faceImage, large: true, square: true, style: { flexShrink: 0, flexGrow: 0 } }),
                             react_1.default.createElement(native_base_1.View, { style: { marginLeft: 4, flexShrink: 1, flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Text, null, this.state.userName),
-                                react_1.default.createElement(native_base_1.Text, null, this.state.userOrg),
-                                react_1.default.createElement(native_base_1.Text, null, this.state.userEMail)))),
+                                react_1.default.createElement(native_base_1.Text, null, state.userName),
+                                react_1.default.createElement(native_base_1.Text, null, state.userOrg),
+                                react_1.default.createElement(native_base_1.Text, null, state.userEMail),
+                                react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row' } },
+                                    react_1.default.createElement(native_base_1.Button, { transparent: true, small: true, onPress: this.onPressMailIcon.bind(this, state.userEMail || '') },
+                                        react_1.default.createElement(native_base_1.Icon, { style: shareIconStyle, name: "md-mail" })),
+                                    react_1.default.createElement(native_base_1.Button, { transparent: true, small: true, onPress: this.onPressTeamsIcon.bind(this, state.userEMail || '') },
+                                        react_1.default.createElement(react_native_1.Image, { style: shareIconStyle, source: ms_teams_png_1.default })))))),
                     react_1.default.createElement(native_base_1.CardItem, { footer: true },
                         react_1.default.createElement(native_base_1.Left, null),
                         react_1.default.createElement(native_base_1.Text, null),
                         react_1.default.createElement(native_base_1.Right, null,
                             react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: () => { this.setState({ shownDetailDialog: false }); } },
                                 react_1.default.createElement(native_base_1.Text, { style: { color: this.props.textColor } }, "\u9589\u3058\u308B"))))));
+        };
+        this.onPressTeamsIcon = (email) => {
+            const url = url_parse_1.default('https://teams.microsoft.com/l/chat/0/0', true);
+            url.set('query', {
+                users: email,
+                message: this.props.shareMessage || '',
+            });
+            react_native_1.Linking.openURL(url.href);
+        };
+        this.onPressMailIcon = (email) => {
+            const url = url_parse_1.default(`mailto:${email}`);
+            url.set('query', {
+                body: this.props.shareMessage || '',
+            });
+            react_native_1.Linking.openURL(url.href);
         };
         this.state = {
             userId: props.userId,
