@@ -47,5 +47,4 @@ export declare class Config {
     constructor();
     setConfig(params: ISetConfigParams): void;
 }
-export declare const config: Config;
 export declare const getConfig: (userConfig?: Config | undefined) => Config;

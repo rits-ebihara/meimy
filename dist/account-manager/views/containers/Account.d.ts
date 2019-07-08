@@ -15,9 +15,9 @@ interface IDiffState {
 export interface IAccountProps extends IAccountState {
     accountListState: IAccountListState;
 }
-export interface ILocaleState extends IAccountState, IDiffState {
+export interface IAccountLocaleState extends IAccountState, IDiffState {
 }
-export declare class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocaleState> {
+export declare class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccountLocaleState> {
     static navigationOptions: ({ navigation }: NavigationScreenProps<import("react-navigation").NavigationParams, any>) => {
         headerRight: JSX.Element;
         headerStyle: {
@@ -30,7 +30,7 @@ export declare class _Account extends Component<ICombinedNavProps<IAccountProps>
     constructor(props: ICombinedNavProps<IAccountProps>);
     render: () => JSX.Element;
     componentDidMount: () => void;
-    componentDidUpdate: (_preProp: ICombinedNavProps<IAccountState>, preState: ILocaleState) => void;
+    componentDidUpdate: (_preProp: ICombinedNavProps<IAccountState>, preState: IAccountLocaleState) => void;
     private createSignInButton;
     private onPressEdit;
     private onPressCancelEdit;

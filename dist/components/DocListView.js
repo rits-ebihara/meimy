@@ -78,7 +78,7 @@ class DocListView extends react_1.Component {
                 : react_1.default.createElement(native_base_1.Button, { full: true, light: true, onPress: this.loadDocList.bind(this, this.state.offset) },
                     react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")));
         };
-        this.loadDocList = (offset) => {
+        this.loadDocList = async (offset) => {
             if (offset === 0) {
                 this.setState({
                     docListData: undefined,
@@ -90,7 +90,7 @@ class DocListView extends react_1.Component {
                     onSearch: true,
                 });
             }
-            this.callLoadDocListData(this.props, offset).then((result) => {
+            return this.callLoadDocListData(this.props, offset).then((result) => {
                 const { state } = this;
                 const docListData = clone_1.default(result);
                 if (!!state.docListData) {

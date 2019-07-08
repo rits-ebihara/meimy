@@ -15,47 +15,49 @@ const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
 const react_native_device_info_1 = __importDefault(require("react-native-device-info"));
 const url_parse_1 = __importDefault(require("url-parse"));
-const account_manager_1 = require("../account-manager");
 const NavigateActions_1 = __importDefault(require("../account-manager/actions/NavigateActions"));
-let runOnLink = false;
+const Config_1 = require("../account-manager/Config");
+const EimAccount_1 = require("../account-manager/EimAccount");
 //#region Styles
 class SplashScreen extends react_1.Component {
     constructor() {
         super(...arguments);
-        this.componentDidMount = () => {
-            react_native_1.Linking.getInitialURL().then(this.linkInitialURL);
+        this.runOnLink = false;
+        this.componentDidMount = async () => {
             react_native_1.Linking.addEventListener('url', this.urlEvent);
             this.checkConnectOnResume();
+            await react_native_1.Linking.getInitialURL().then(this.linkInitialURL);
         };
         this.checkConnectOnResume = () => {
-            const eimAccount = account_manager_1.getEimAccount();
-            react_native_1.AppState.addEventListener('change', async (state) => {
-                if (state === 'active') {
-                    const token = eimAccount.eimTokens;
-                    if (token.length !== 0) {
-                        const result = await eimAccount.getServiceAdapter().validateToken(token);
-                        if (!result) {
-                            eimAccount.eimTokens = [];
-                            native_base_1.Toast.show({
-                                text: 'サーバーとの接続が切れました。\n再ログインしてください。',
-                            });
-                            NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
-                        }
+            react_native_1.AppState.addEventListener('change', this.reloginAnnounce);
+        };
+        this.reloginAnnounce = async (state) => {
+            const eimAccount = EimAccount_1.getEimAccount();
+            if (state === 'active') {
+                const token = eimAccount.eimTokens;
+                if (token.length !== 0) {
+                    const result = await eimAccount.getServiceAdapter().validateToken(token);
+                    if (!result) {
+                        eimAccount.eimTokens = [];
+                        native_base_1.Toast.show({
+                            text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                        });
+                        NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
                     }
                 }
-            });
+            }
         };
         this.linkInitialURL = async (url) => {
             // ディープリンクから起動された場合
             // 通常起動の場合も反応する。その場合 url = null となる。
-            if (!url || runOnLink) {
+            if (!url || this.runOnLink) {
                 // スプラッシュを表示するため、インターバルを取る
                 setTimeout(() => {
                     NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
                 }, 500);
                 return;
             }
-            runOnLink = true;
+            this.runOnLink = true;
             const receiveUrl = url_parse_1.default(url, '', true);
             const { query } = receiveUrl;
             if (!!query.link && query.hash) {
@@ -88,7 +90,8 @@ class SplashScreen extends react_1.Component {
                 && !!query.token);
         };
         this.fromAccountManager = async (token, domain, appKey, siteName, link) => {
-            const eimAccount = account_manager_1.getEimAccount();
+            const config = Config_1.getConfig();
+            const eimAccount = EimAccount_1.getEimAccount();
             eimAccount.eimTokens = token.split(',');
             eimAccount.domain = domain;
             eimAccount.appKey = appKey;
@@ -103,17 +106,18 @@ class SplashScreen extends react_1.Component {
                     const navProps = {
                         parameter: hashes[4],
                     };
-                    this.props.navigation.navigate(account_manager_1.config.startPage, navProps);
+                    this.props.navigation.navigate(config.startPage, navProps);
                 }
                 return;
             }
             else {
-                this.props.navigation.navigate(account_manager_1.config.startPage);
+                this.props.navigation.navigate(config.startPage);
             }
         };
     }
     render() {
-        const { theme } = account_manager_1.config;
+        const config = Config_1.getConfig();
+        const { theme } = config;
         const containerStyle = {
             alignItems: 'center',
             backgroundColor: theme.brandPrimary,

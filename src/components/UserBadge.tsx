@@ -1,12 +1,14 @@
 import clone from 'clone';
-import { Body, Button, Card, CardItem, Left, Right, Text, Thumbnail, View } from 'native-base';
+import { Body, Button, Card, CardItem, Icon, Left, Right, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { ImageSourcePropType, Modal, ViewStyle } from 'react-native';
+import { Image, ImageSourcePropType, ImageStyle, Linking, Modal, ViewStyle } from 'react-native';
+import URLParse from 'url-parse';
 
 import { getEimAccount } from '../account-manager/EimAccount';
 import { IGroupDoc, IGroupProperties, IUserDoc, IUserProperties } from '../eim-service/EIMDocInterface';
 import { IParsedResponse } from '../eim-service/IResponse';
 import groupFace from '../resources/group.png';
+import teamsIcon from '../resources/ms-teams.png';
 import dummyFace from '../resources/user.png';
 
 export type DirectoryTypeKey = 'user' | 'group' | 'organization';
@@ -25,10 +27,15 @@ export interface IUserBadgeOptionalProps {
     textColor: string;
     style?: ViewStyle;
     type: DirectoryTypeKey;
+    shareMessage?: string;
     onLongPress: (userId: string) => void;
 }
 export interface IUserBadgeProps extends Partial<IUserBadgeOptionalProps> {
     userId: string;
+}
+const shareIconStyle: ImageStyle = {
+    height: 24,
+    width: 24,
 }
 export class UserBadge extends React.Component<IUserBadgeProps, IState> {
     public static defaultProps: IUserBadgeOptionalProps = {
@@ -106,6 +113,7 @@ export class UserBadge extends React.Component<IUserBadgeProps, IState> {
     }
 
     private userInfoPanel = (faceImage: ImageSourcePropType) => {
+        const { state } = this;
         return <Modal visible={this.state.shownDetailDialog}
             animationType="slide" transparent
             onRequestClose={() => { this.setState({ shownDetailDialog: false }); }}>
@@ -114,9 +122,19 @@ export class UserBadge extends React.Component<IUserBadgeProps, IState> {
                     <Body style={{ flex: 1, flexDirection: 'row' }}>
                         <Thumbnail source={faceImage} large square style={{ flexShrink: 0, flexGrow: 0 }} />
                         <View style={{ marginLeft: 4, flexShrink: 1, flexGrow: 1 }}>
-                            <Text>{this.state.userName}</Text>
-                            <Text>{this.state.userOrg}</Text>
-                            <Text>{this.state.userEMail}</Text>
+                            <Text>{state.userName}</Text>
+                            <Text>{state.userOrg}</Text>
+                            <Text>{state.userEMail}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Button transparent small
+                                    onPress={this.onPressMailIcon.bind(this, state.userEMail || '')}>
+                                    <Icon style={shareIconStyle} name="md-mail" />
+                                </Button>
+                                <Button transparent small
+                                    onPress={this.onPressTeamsIcon.bind(this, state.userEMail || '')}>
+                                    <Image style={shareIconStyle} source={teamsIcon} />
+                                </Button>
+                            </View>
                         </View>
                     </Body>
                 </CardItem>
@@ -132,6 +150,21 @@ export class UserBadge extends React.Component<IUserBadgeProps, IState> {
                 </CardItem>
             </Card>
         </Modal>;
+    }
+    private onPressTeamsIcon = (email: string) => {
+        const url = URLParse('https://teams.microsoft.com/l/chat/0/0', true);
+        url.set('query', {
+            users: email,
+            message: this.props.shareMessage || '',
+        });
+        Linking.openURL(url.href);
+    }
+    private onPressMailIcon = (email: string) => {
+        const url = URLParse(`mailto:${email}`);
+        url.set('query', {
+            body: this.props.shareMessage || '',
+        });
+        Linking.openURL(url.href);
     }
     private serUserInfo(userProps: IUserProperties) {
         this.setState({

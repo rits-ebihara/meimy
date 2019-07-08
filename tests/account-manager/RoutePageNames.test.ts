@@ -32,7 +32,7 @@ describe('on load', () => {
         const target = RoutePageNames.authStackNav;
         expect(target).toBeTruthy();
         expect(fn).toBeCalled();
-        const expectArg1 = { "accountList": {}, "accountPage": {}, "appListPage": {}, "webSignInPage": {} };
+        const expectArg1 = { 'accountList': {}, 'accountPage': {}, 'appListPage': {}, 'webSignInPage': {} };
         const expectArg2 = {
             initialRouteName: 'accountList',
         };

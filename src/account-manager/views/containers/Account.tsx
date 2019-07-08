@@ -32,7 +32,7 @@ interface IDiffState {
 export interface IAccountProps extends IAccountState {
     accountListState: IAccountListState;
 }
-export interface ILocaleState extends IAccountState, IDiffState {
+export interface IAccountLocaleState extends IAccountState, IDiffState {
 }
 
 type localStateType = 'siteName' | 'siteDomain' | 'authType';
@@ -47,7 +47,7 @@ interface IErrors {
     hasError: boolean;
 }
 // eslint-disable-next-line @typescript-eslint/class-name-casing
-export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocaleState> {
+export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccountLocaleState> {
     public static navigationOptions = ({ navigation }: NavigationScreenProps) => {
         const { colorPalets } = config;
         return {
@@ -66,7 +66,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
             headerTitle: 'サイト情報',
         };
     }
-    private backupState: ILocaleState | null = null;
+    private backupState: IAccountLocaleState | null = null;
     public constructor(props: ICombinedNavProps<IAccountProps>) {
         super(props);
         BackHandler.addEventListener('hardwareBackPress', this.backPage);
@@ -145,7 +145,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
             removeButtonStyle: !!this.state.id ? {} : { display: 'none' },
         });
     }
-    public componentDidUpdate = (_preProp: ICombinedNavProps<IAccountState>, preState: ILocaleState) => {
+    public componentDidUpdate = (_preProp: ICombinedNavProps<IAccountState>, preState: IAccountLocaleState) => {
         if (this.state.id !== preState.id) {
             this.props.navigation.setParams({
                 removeButtonStyle: !!this.state.id ? {} : { display: 'none' },
@@ -258,7 +258,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         this.setState(account);
         this.setState({ mode: 'view' });
     }
-    private inputCheck = (state?: ILocaleState) => {
+    private inputCheck = (state?: IAccountLocaleState) => {
         const targetState = state || this.state;
         let result = true;
         const changeState = {
@@ -288,7 +288,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, ILocal
         return true;
     }
 
-    private createErrorMessages(state: Readonly<ILocaleState>): IErrors {
+    private createErrorMessages(state: Readonly<IAccountLocaleState>): IErrors {
         const hasError = state.siteDomainError || state.siteNameError;
         const siteErrorMessage: string = (this.state.siteDomainError) ? 'サイトドメインが正しくありません' : '';
         const siteNameErrorMessage: string = (this.state.siteNameError) ? 'サイト名称は必須です' : '';

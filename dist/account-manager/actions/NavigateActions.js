@@ -17,7 +17,7 @@ const EimAppListActions_1 = require("./EimAppListActions");
 class NavigateController {
     constructor() {
         this.linkStates = {};
-        this.transferAccountPage = (accountListState, dispatch, navigation, replace = false, siteDomain) => {
+        this.transferAccountPage = (accountListState, dispatch, navigation, replace, siteDomain) => {
             const accountList = accountListState.accounts;
             let account = accountList.find((a) => a.siteDomain === this.linkStates.siteDomain);
             if (!account) {
@@ -35,7 +35,7 @@ class NavigateController {
                 navigation.navigate(RoutePageNames_1.default.accountPageName);
             }
         };
-        this.determinedAppAndDomain = async (siteDomain, navigation, accountListState, dispatch, replace = false) => {
+        this.determinedAppAndDomain = async (siteDomain, navigation, accountListState, dispatch, replace) => {
             // トークンがある
             const sa = new EIMServiceAdapter_1.EIMServiceAdapter(siteDomain);
             const connected = await sa.validateToken(this.linkStates.tokens || []);

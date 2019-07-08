@@ -109,7 +109,7 @@ $color-secondary-2-4: #552800;
     }
 }
 
-export const config = new Config();
+const config = new Config();
 export const getConfig = (userConfig?: Config) => {
     return userConfig || config;
 };

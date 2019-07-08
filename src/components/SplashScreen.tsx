@@ -1,14 +1,14 @@
 import { Container, Text, Toast, View } from 'native-base';
 import React, { Component } from 'react';
-import { AppState, Linking, TextStyle, ViewStyle } from 'react-native';
+import { AppState, AppStateStatus, Linking, TextStyle, ViewStyle } from 'react-native';
 import DevInfo from 'react-native-device-info';
 import UrlParse from 'url-parse';
 
-import { config, getEimAccount } from '../account-manager';
 import navigateController from '../account-manager/actions/NavigateActions';
+import { getConfig } from '../account-manager/Config';
+import { getEimAccount } from '../account-manager/EimAccount';
 import { ICombinedNavProps } from '../redux-helper/redux-helper';
 
-let runOnLink = false;
 export interface INavProps {
     parameter: string;
 }
@@ -18,7 +18,9 @@ export interface ISplashState {
 }
 //#region Styles
 export abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
+    private runOnLink = false;
     public render() {
+        const config = getConfig();
         const { theme } = config;
         const containerStyle: ViewStyle = {
             alignItems: 'center',
@@ -46,40 +48,41 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
             </Container>
         );
     }
-    public componentDidMount = () => {
-        Linking.getInitialURL().then(this.linkInitialURL);
+    public componentDidMount = async () => {
         Linking.addEventListener('url', this.urlEvent);
         this.checkConnectOnResume();
+        await Linking.getInitialURL().then(this.linkInitialURL);
     }
     private checkConnectOnResume = () => {
+        AppState.addEventListener('change', this.reloginAnnounce);
+    }
+    private reloginAnnounce = async (state: AppStateStatus) => {
         const eimAccount = getEimAccount();
-        AppState.addEventListener('change', async (state) => {
-            if (state === 'active') {
-                const token = eimAccount.eimTokens;
-                if (token.length !== 0) {
-                    const result = await eimAccount.getServiceAdapter().validateToken(token);
-                    if (!result) {
-                        eimAccount.eimTokens = [];
-                        Toast.show({
-                            text: 'サーバーとの接続が切れました。\n再ログインしてください。',
-                        });
-                        navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
-                    }
+        if (state === 'active') {
+            const token = eimAccount.eimTokens;
+            if (token.length !== 0) {
+                const result = await eimAccount.getServiceAdapter().validateToken(token);
+                if (!result) {
+                    eimAccount.eimTokens = [];
+                    Toast.show({
+                        text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                    });
+                    navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
                 }
             }
-        });
+        }
     }
     private linkInitialURL = async (url: string | null) => {
         // ディープリンクから起動された場合
         // 通常起動の場合も反応する。その場合 url = null となる。
-        if (!url || runOnLink) {
+        if (!url || this.runOnLink) {
             // スプラッシュを表示するため、インターバルを取る
             setTimeout(() => {
                 navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
             }, 500);
             return;
         }
-        runOnLink = true;
+        this.runOnLink = true;
         const receiveUrl = UrlParse(url, '', true);
         const { query } = receiveUrl;
         if (!!query.link && query.hash) {
@@ -121,6 +124,7 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
         appKey: string, siteName: string | undefined,
         link: string | undefined,
     ) => {
+        const config = getConfig();
         const eimAccount = getEimAccount();
         eimAccount.eimTokens = token.split(',');
         eimAccount.domain = domain;

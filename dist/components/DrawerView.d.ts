@@ -1,22 +1,21 @@
 import { Component } from 'react';
 import { ImageURISource } from 'react-native';
 import { DrawerItemsProps } from 'react-navigation';
-interface IProps extends DrawerItemsProps {
+export interface IDrawerViewProps extends DrawerItemsProps {
     borderColor: string;
     buttonColor: string;
     appDisplayName: string;
     appVersion: string;
     splashPageName: string;
 }
-interface ILocalState {
+export interface IDrawerViewLocalState {
     avatarFaceUrl?: ImageURISource;
 }
-export declare class DrawerContent extends Component<IProps, ILocalState> {
+export declare class DrawerContent extends Component<IDrawerViewProps, IDrawerViewLocalState> {
     private $isMounted;
-    constructor(props: IProps);
+    constructor(props: IDrawerViewProps);
     render(): JSX.Element | null;
-    componentDidMount: () => void;
+    componentDidMount: () => Promise<void>;
     componentWillUnmount: () => void;
     onPressChangeSite: () => Promise<void>;
 }
-export {};

@@ -6,7 +6,12 @@ import React from 'react';
 import { mocked } from 'ts-jest/utils';
 
 import { getEimAccount } from '../../src/account-manager/EimAccount';
-import { CreateRowElement, DocListView, ILocalState, IProps } from '../../src/components/DocListView';
+import {
+    CreateRowElement,
+    DocListView,
+    IDocListViewLocalState,
+    IDocListViewProps,
+} from '../../src/components/DocListView';
 import { IDocListForView } from '../../src/eim-service/IDocListForView';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
@@ -64,7 +69,7 @@ const rowElement: CreateRowElement<IDummyList> = (row, cols) => (
     </ListItem>
 );
 
-const createProps = (): IProps<IDummyList> => ({
+const createProps = (): IDocListViewProps<IDummyList> => ({
     docListKey: 'doc-list-key',
     rowCountAtOnce: 30,
     rowElement,
@@ -75,8 +80,9 @@ const createProps = (): IProps<IDummyList> => ({
 });
 
 describe('render', () => {
-    let props: IProps<IDummyList>;
-    let wrapper: ShallowWrapper<IProps<IDummyList>, ILocalState<IDummyList>, DocListView<IDummyList>>;
+    let props: IDocListViewProps<IDummyList>;
+    let wrapper: ShallowWrapper<IDocListViewProps<IDummyList>,
+    IDocListViewLocalState<IDummyList>, DocListView<IDummyList>>;
     let instance: DocListView<IDummyList>;
     beforeEach(() => {
         props = createProps();
@@ -142,8 +148,9 @@ describe('reload', () => {
 
 
 describe('loadDocList', () => {
-    let props: IProps<IDummyList>;
-    let wrapper: ShallowWrapper<IProps<IDummyList>, ILocalState<IDummyList>, DocListView<IDummyList>>;
+    let props: IDocListViewProps<IDummyList>;
+    let wrapper: ShallowWrapper<IDocListViewProps<IDummyList>,
+    IDocListViewLocalState<IDummyList>, DocListView<IDummyList>>;
     let instance: DocListView<IDummyList>;
     beforeEach(() => {
         mocked(getEimAccount).mockClear();
