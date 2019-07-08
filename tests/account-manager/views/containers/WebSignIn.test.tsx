@@ -12,7 +12,7 @@ import { IAccountState } from '../../../../src/account-manager/states/IAccountSt
 import {
     __private__,
     _WebSignIn as WebSignIn,
-    ILocalState,
+    IWebSigninLocalState,
     ThisProps,
 } from '../../../../src/account-manager/views/containers/WebSignIn';
 
@@ -96,7 +96,7 @@ describe('init', () => {
 });
 
 describe('events', () => {
-    let wrapper: Enzyme.ShallowWrapper<ThisProps, ILocalState, WebSignIn>;
+    let wrapper: Enzyme.ShallowWrapper<ThisProps, IWebSigninLocalState, WebSignIn>;
     let instance: WebSignIn;
     let props: ThisProps;
     let account: IAccountState;
