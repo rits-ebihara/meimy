@@ -40,6 +40,12 @@ yarn react-native link
 
 ## 更新履歴
 
+* ver 1.0.9
+    * Floating Button に disable を指定できるようにした。
+
+* ver 1.0.8
+    * ユーザーバッジをタップしたときに表示されるカードに、メールと MS Teams へのリンクアイコンを追加した。
+
 * ver 1.0.7
     * ```webview``` を警告に従い ```react-native``` にあるものではなく、 ```react-native-webview``` を利用するように変更した。
     	* 現行のプロジェクトで、 package.json の dependencies に "react-native-webview" がない場合は、 ```yarn add react-native-webview``` を実行してください。

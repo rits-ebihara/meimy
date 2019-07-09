@@ -5,6 +5,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 export interface IFloatingMenuProps {
     buttonColor?: string;
     direction?: 'left' | 'right';
+    disable?: boolean;
     iconName?: string;
     iconType?: 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'Foundation' | 'Ionicons'
     | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial';
@@ -18,6 +19,7 @@ export class FloatingMenu extends Component<IFloatingMenuProps> {
         direction: 'right',
         iconName: 'arrow-forward',
         iconSize: 48,
+        disable: false,
     };
     public render = () => {
         const {
@@ -28,11 +30,12 @@ export class FloatingMenu extends Component<IFloatingMenuProps> {
             iconSize,
             label,
             onPress,
+            disable,
         } = this.props;
         const styles = StyleSheet.create({
             button: {
                 alignItems: 'center',
-                backgroundColor: buttonColor,
+                backgroundColor: disable ? '#aaa' : buttonColor,
                 borderRadius: iconSize as number / 2,
                 elevation: 5,
                 height: iconSize,
@@ -74,7 +77,7 @@ export class FloatingMenu extends Component<IFloatingMenuProps> {
         });
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.button} onPress={onPress}>
+                <TouchableOpacity style={styles.button} onPress={onPress} disabled={disable}>
                     <Icon name={iconName || 'check'} type={iconType} style={styles.icon} />
                 </TouchableOpacity>
                 <View style={styles.labelBox}>

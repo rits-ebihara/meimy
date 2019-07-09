@@ -14,7 +14,7 @@ class FloatingButton extends react_1.Component {
     constructor(props) {
         super(props);
         this.render = () => {
-            const { secondaryButtonSize, position, iconName, iconType, label, } = this.props;
+            const { secondaryButtonSize, position, iconName, iconType, label, disable, } = this.props;
             const styles = this.createStyle(this.props);
             const cloneChildren = react_1.default.Children.map(this.props.children, (child) => {
                 if (!child) {
@@ -33,7 +33,7 @@ class FloatingButton extends react_1.Component {
                             position: 'relative',
                         } }, cloneChildren) : null,
                 react_1.default.createElement(native_base_1.View, { style: styles.buttonContainer },
-                    react_1.default.createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: this.onButtonClick },
+                    react_1.default.createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: this.onButtonClick, disabled: disable },
                         react_1.default.createElement(native_base_1.Icon, { name: iconName, type: iconType, style: styles.icon }),
                         !!label ?
                             react_1.default.createElement(native_base_1.Text, { style: styles.buttonLabel }, label)
@@ -76,7 +76,7 @@ class FloatingButton extends react_1.Component {
         return react_native_1.StyleSheet.create({
             button: {
                 alignItems: 'center',
-                backgroundColor: primaryButtonColor,
+                backgroundColor: props.disable ? '#aaa' : primaryButtonColor,
                 borderRadius: primaryButtonSize / 2,
                 elevation: 5,
                 height: primaryButtonSize,
@@ -120,6 +120,7 @@ class FloatingButton extends react_1.Component {
     }
 }
 FloatingButton.defaultProps = {
+    disable: false,
     iconColor: 'white',
     iconName: 'add',
     iconType: 'Ionicons',

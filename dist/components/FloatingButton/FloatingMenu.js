@@ -14,11 +14,11 @@ class FloatingMenu extends react_1.Component {
     constructor() {
         super(...arguments);
         this.render = () => {
-            const { buttonColor, direction, iconName, iconType, iconSize, label, onPress, } = this.props;
+            const { buttonColor, direction, iconName, iconType, iconSize, label, onPress, disable, } = this.props;
             const styles = react_native_1.StyleSheet.create({
                 button: {
                     alignItems: 'center',
-                    backgroundColor: buttonColor,
+                    backgroundColor: disable ? '#aaa' : buttonColor,
                     borderRadius: iconSize / 2,
                     elevation: 5,
                     height: iconSize,
@@ -59,7 +59,7 @@ class FloatingMenu extends react_1.Component {
                 },
             });
             return (react_1.default.createElement(native_base_1.View, { style: styles.container },
-                react_1.default.createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: onPress },
+                react_1.default.createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: onPress, disabled: disable },
                     react_1.default.createElement(native_base_1.Icon, { name: iconName || 'check', type: iconType, style: styles.icon })),
                 react_1.default.createElement(native_base_1.View, { style: styles.labelBox },
                     react_1.default.createElement(native_base_1.Text, { style: styles.label }, label))));
@@ -71,5 +71,6 @@ FloatingMenu.defaultProps = {
     direction: 'right',
     iconName: 'arrow-forward',
     iconSize: 48,
+    disable: false,
 };
 exports.FloatingMenu = FloatingMenu;

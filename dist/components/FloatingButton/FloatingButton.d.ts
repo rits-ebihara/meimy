@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Animated } from 'react-native';
 declare type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 interface IProps {
+    disable?: boolean;
     iconColor?: string;
     iconName?: string;
     iconType?: 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial';

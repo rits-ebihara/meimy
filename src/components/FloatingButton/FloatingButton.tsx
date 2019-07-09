@@ -6,6 +6,7 @@ import { IFloatingMenuProps } from './FloatingMenu';
 
 type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 interface IProps {
+    disable?: boolean;
     iconColor?: string;
     iconName?: string;
     iconType?: 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'Foundation'
@@ -27,6 +28,7 @@ interface IState {
 
 export class FloatingButton extends Component<IProps, IState> {
     public static defaultProps: Partial<IProps> = {
+        disable: false,
         iconColor: 'white',
         iconName: 'add',
         iconType: 'Ionicons',
@@ -61,6 +63,7 @@ export class FloatingButton extends Component<IProps, IState> {
             iconName,
             iconType,
             label,
+            disable,
         } = this.props;
         const styles = this.createStyle(this.props);
         const cloneChildren = React.Children.map(this.props.children,
@@ -84,7 +87,7 @@ export class FloatingButton extends Component<IProps, IState> {
                     </Animated.View> : null
                 }
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={this.onButtonClick}>
+                    <TouchableOpacity style={styles.button} onPress={this.onButtonClick} disabled={disable}>
                         <Icon name={iconName as string} type={iconType} style={styles.icon} />
                         {!!label ?
                             <Text style={styles.buttonLabel}>{label}</Text>
@@ -130,7 +133,7 @@ export class FloatingButton extends Component<IProps, IState> {
         return StyleSheet.create({
             button: {
                 alignItems: 'center',
-                backgroundColor: primaryButtonColor,
+                backgroundColor: props.disable ? '#aaa' : primaryButtonColor,
                 borderRadius: primaryButtonSize / 2,
                 elevation: 5,
                 height: primaryButtonSize,
