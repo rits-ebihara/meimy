@@ -32,12 +32,11 @@ class DocListView extends react_1.Component {
                 moreButton,
                 !!docListData && docListData.docList.length === 0
                     ? react_1.default.createElement(native_base_1.Text, { style: { color: this.props.theme.textColor } }, "\u5BFE\u8C61\u306E\u6587\u66F8\u306F\u3042\u308A\u307E\u305B\u3093\u3002")
-                    : null,
-                react_1.default.createElement(react_native_1.RefreshControl, { refreshing: this.state.onSearch, onRefresh: this.reload })));
+                    : null));
         };
         this.componentDidMount = () => {
             this.$isMounted = true;
-            this.loadDocList(0);
+            setTimeout(this.loadDocList.bind(this, 0), 100);
         };
         this.componentWillUnmount = () => {
             this.$isMounted = false;

@@ -1,8 +1,7 @@
 import { Container, Toast } from 'native-base';
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, NavState, WebViewMessageEventData } from 'react-native';
+import { NativeSyntheticEvent, NavState, WebView, WebViewMessageEventData } from 'react-native';
 import CookieManager from 'react-native-cookies';
-import WebView from 'react-native-webview';
 import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 import UrlParse from 'url-parse';
@@ -16,6 +15,7 @@ import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';
 import IWebSignInState from '../../states/IWebSignInState';
 
+// import WebView from 'react-native-webview';
 const config = getConfig();
 
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
@@ -107,7 +107,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         return (
             <Container>
                 <WebView
-                    source={this.state.uriSource}
+                    url={this.state.uriSource.uri}
                     onLoadStart={this.onLoadStartWebView}
                     onMessage={this.onMessage}
                     ref={this.setRef}

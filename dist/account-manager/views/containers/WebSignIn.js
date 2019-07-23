@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
+const react_native_1 = require("react-native");
 const react_native_cookies_1 = __importDefault(require("react-native-cookies"));
-const react_native_webview_1 = __importDefault(require("react-native-webview"));
 const react_redux_1 = require("react-redux");
 const url_parse_1 = __importDefault(require("url-parse"));
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const Config_1 = require("../../Config");
+// import WebView from 'react-native-webview';
 const config = Config_1.getConfig();
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
 // 画面内にログインフォームを表示する
@@ -197,7 +198,7 @@ ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
         return (react_1.default.createElement(native_base_1.Container, null,
-            react_1.default.createElement(react_native_webview_1.default, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
+            react_1.default.createElement(react_native_1.WebView, { url: this.state.uriSource.uri, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
     }
 }
 _WebSignIn.navigationOptions = () => {
