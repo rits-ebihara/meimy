@@ -57,16 +57,12 @@ export class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocLi
                     ? <Text style={{ color: this.props.theme.textColor }}>
                         対象の文書はありません。</Text>
                     : null}
-                <RefreshControl
-                    refreshing={this.state.onSearch}
-                    onRefresh={this.reload}
-                />
             </Content>
         );
     }
     public componentDidMount = () => {
         this.$isMounted = true;
-        this.loadDocList(0);
+        setTimeout(this.loadDocList.bind(this, 0), 100);
     }
     public componentWillUnmount = () => {
         this.$isMounted = false;
