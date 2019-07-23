@@ -76,6 +76,7 @@ const createProps = (): IDocListViewProps<IDummyList> => ({
 
 describe('render', () => {
     let props: IDocListViewProps<IDummyList>;
+    // eslint-disable-next-line max-len
     let wrapper: ShallowWrapper<IDocListViewProps<IDummyList>, IDocListViewLocalState<IDummyList>, DocListView<IDummyList>>;
     let instance: DocListView<IDummyList>;
     beforeEach(() => {
@@ -85,6 +86,7 @@ describe('render', () => {
         instance = wrapper.instance();
     });
     test('init', () => {
+        jest.useFakeTimers();
         expect(toJson(wrapper)).toMatchSnapshot();
         expect(wrapper.state()).toEqual({
             offset: 0, onSearch: false,
@@ -93,6 +95,7 @@ describe('render', () => {
         // componentDidMount
         const fn = instance['loadDocList'] = jest.fn();
         instance.componentDidMount();
+        jest.runAllTimers();
         expect(fn).toBeCalled();
         expect(instance['$isMounted']).toEqual(true);
         // componentWillUnmount
@@ -144,7 +147,7 @@ describe('reload', () => {
 describe('loadDocList', () => {
     let props: IDocListViewProps<IDummyList>;
     let wrapper: ShallowWrapper<IDocListViewProps<IDummyList>,
-        IDocListViewLocalState<IDummyList>, DocListView<IDummyList>>;
+    IDocListViewLocalState<IDummyList>, DocListView<IDummyList>>;
     let instance: DocListView<IDummyList>;
     beforeEach(() => {
         mocked(getEimAccount).mockClear();
