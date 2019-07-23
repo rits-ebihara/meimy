@@ -3,7 +3,6 @@
 exports[`init auth type: o365 1`] = `
 <Styled(Container)>
   <WebView
-    cacheEnabled={true}
     injectedJavaScript="
 
 
@@ -28,13 +27,7 @@ exports[`init auth type: o365 1`] = `
         "https://*",
       ]
     }
-    source={
-      Object {
-        "uri": "https://site-domain",
-      }
-    }
-    useSharedProcessPool={true}
-    useWebKit={true}
+    url="https://site-domain"
   />
 </Styled(Container)>
 `;
@@ -42,7 +35,6 @@ exports[`init auth type: o365 1`] = `
 exports[`init auth type: password 1`] = `
 <Styled(Container)>
   <WebView
-    cacheEnabled={true}
     injectedJavaScript="
 
 (function(){
@@ -73,13 +65,7 @@ exports[`init auth type: password 1`] = `
         "https://*",
       ]
     }
-    source={
-      Object {
-        "uri": "https://site-domain/services/login",
-      }
-    }
-    useSharedProcessPool={true}
-    useWebKit={true}
+    url="https://site-domain/services/login"
   />
 </Styled(Container)>
 `;

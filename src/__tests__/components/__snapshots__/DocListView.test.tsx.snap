@@ -24,10 +24,6 @@ exports[`render empty 1`] = `
   >
     対象の文書はありません。
   </Styled(Text)>
-  <RefreshControlMock
-    onRefresh={[Function]}
-    refreshing={false}
-  />
 </Styled(Content)>
 `;
 
@@ -50,10 +46,6 @@ exports[`render hide 1`] = `
       color="#aaa"
     />
   </Styled(List)>
-  <RefreshControlMock
-    onRefresh={[Function]}
-    refreshing={false}
-  />
 </Styled(Content)>
 `;
 
@@ -76,10 +68,6 @@ exports[`render init 1`] = `
       color="#aaa"
     />
   </Styled(List)>
-  <RefreshControlMock
-    onRefresh={[Function]}
-    refreshing={false}
-  />
 </Styled(Content)>
 `;
 
@@ -115,10 +103,6 @@ exports[`render list exist 1`] = `
       さらに表示
     </Styled(Text)>
   </Styled(Button)>
-  <RefreshControlMock
-    onRefresh={[Function]}
-    refreshing={false}
-  />
 </Styled(Content)>
 `;
 
@@ -141,9 +125,5 @@ exports[`render loading 1`] = `
       color="#aaa"
     />
   </Styled(List)>
-  <RefreshControlMock
-    onRefresh={[Function]}
-    refreshing={true}
-  />
 </Styled(Content)>
 `;

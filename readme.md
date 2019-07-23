@@ -7,7 +7,7 @@
 
 ## これはなに？
 
-リコーITソリューションズ が提供する PaaS サービス 'EIM' のモバイルアプリケーションを、効率よく作成するためのツールキットです。
+リコーITソリューションズ が提供する PaaS サービス 'EIM' のモバイルアプリケーションを、効率よく開発するためのツールキットです。
 
 ## 特徴
 
@@ -39,6 +39,11 @@ yarn react-native link
 くわしくは、[meimy-starter](https://github.com/rits-ebihara/meimy-starter) を御覧ください。
 
 ## 更新履歴
+
+* ver 1.0.10
+    * iOS 版での下記不具合を修正した。
+        * EIM認証でトークンが取得できずに、EIMのWeb画面が開いてしまう。
+        * DocListView コンポーネントが表示できず、アプリが落ちてしまう。
 
 * ver 1.0.9
     * Floating Button に disable を指定できるようにした。

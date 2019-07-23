@@ -62,6 +62,7 @@ export class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocLi
     }
     public componentDidMount = () => {
         this.$isMounted = true;
+        // iOS では、setTimeout で setState しないとフリーズしてしまう
         setTimeout(this.loadDocList.bind(this, 0), 100);
     }
     public componentWillUnmount = () => {
