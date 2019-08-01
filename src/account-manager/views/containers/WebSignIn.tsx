@@ -1,6 +1,6 @@
 import { Container, Toast } from 'native-base';
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, NavState, WebView, WebViewMessageEventData } from 'react-native';
+import { NativeSyntheticEvent, NavState, Platform, WebView, WebViewMessageEventData } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
@@ -121,7 +121,11 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         this.saveProp = this.props;
     }
     private onMessage = (event: NativeSyntheticEvent<WebViewMessageEventData>) => {
-        const { data: message } = event.nativeEvent;
+        let { data: message } = event.nativeEvent;
+        if (Platform.OS === 'ios') {
+            // iOS では URIエンコードを２回実施されたものが返ってくる。React Native のバグ？
+            message = decodeURIComponent(decodeURIComponent(message));
+        }
         const messageData = JSON.parse(message) as IWebViewMessage;
         /** ID/Password の保存 */
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
