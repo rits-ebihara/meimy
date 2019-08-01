@@ -36,6 +36,7 @@ class DocListView extends react_1.Component {
         };
         this.componentDidMount = () => {
             this.$isMounted = true;
+            // iOS では、setTimeout で setState しないとフリーズしてしまう
             setTimeout(this.loadDocList.bind(this, 0), 100);
         };
         this.componentWillUnmount = () => {

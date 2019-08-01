@@ -70,7 +70,11 @@ class _WebSignIn extends react_1.Component {
             this.saveProp = this.props;
         };
         this.onMessage = (event) => {
-            const { data: message } = event.nativeEvent;
+            let { data: message } = event.nativeEvent;
+            if (react_native_1.Platform.OS === 'ios') {
+                // iOS では URIエンコードを２回実施されたものが返ってくる。React Native のバグ？
+                message = decodeURIComponent(decodeURIComponent(message));
+            }
             const messageData = JSON.parse(message);
             /** ID/Password の保存 */
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
