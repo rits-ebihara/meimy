@@ -41,7 +41,7 @@ const getEimUserIdPass = `
         var userPass = {userId: '', password: ''};
         if (!!userNameInput) { userPass.userId = userNameInput.value; }
         if (!!passwordInput) { userPass.password = passwordInput.value; }
-        window.postMessage(JSON.stringify(userPass));
+        // window.postMessage(JSON.stringify(userPass));
     });
 })();`;
 // 365 SAML フォーム ユーザーパスワードの取得
@@ -55,7 +55,9 @@ const get365UserIdPass = `
         var userPass = {userId: '', password: ''};
         userPass.userId = userNameInput.value;
         userPass.password = passwordInput.value;
-        window.postMessage(JSON.stringify(userPass));
+        setTimeout(function() {
+            window.postMessage(JSON.stringify(userPass));
+        }, 0);
     });
 })();`;
 // eslint-disable-next-line @typescript-eslint/class-name-casing
