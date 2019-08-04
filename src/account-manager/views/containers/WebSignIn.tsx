@@ -1,8 +1,14 @@
 import { Container, Toast } from 'native-base';
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, NavState, Platform, WebView, WebViewMessageEventData } from 'react-native';
+import {
+    NativeSyntheticEvent,
+    NavState,
+    Platform,
+    WebView,
+    WebViewMessageEventData,
+    WebViewUriSource,
+} from 'react-native';
 import CookieManager from 'react-native-cookies';
-import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 import UrlParse from 'url-parse';
 
@@ -25,7 +31,7 @@ interface IWebSignInProps extends IWebSignInState {
 }
 export type ThisProps = ICombinedNavProps<IWebSignInProps>;
 export interface IWebSigninLocalState {
-    uriSource: WebViewSourceUri;
+    uriSource: WebViewUriSource;
 }
 interface IWebViewMessage {
     userId: string;
@@ -109,7 +115,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         return (
             <Container>
                 <WebView
-                    url={this.state.uriSource.uri}
+                    source={this.state.uriSource}
                     onLoadStart={this.onLoadStartWebView}
                     onMessage={this.onMessage}
                     ref={this.setRef}
@@ -150,7 +156,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
             + `&password=${encodeURIComponent(account.password)}`;
         const postUrl = UrlParse(url);
         postUrl.set('pathname', '/services/v1/login');
-        const uriSource: WebViewSourceUri = {
+        const uriSource: WebViewUriSource = {
             body,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -175,7 +181,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         const body = `AuthMethod=${encodeURIComponent('FormsAuthentication')}`
             + `&UserName=${encodeURIComponent(account.userId)}`
             + `&Password=${encodeURIComponent(account.password)}`;
-        const uriSource: WebViewSourceUri = {
+        const uriSource: WebViewUriSource = {
             body,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',

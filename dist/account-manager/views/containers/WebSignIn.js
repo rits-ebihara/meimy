@@ -204,7 +204,7 @@ ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
         return (react_1.default.createElement(native_base_1.Container, null,
-            react_1.default.createElement(react_native_1.WebView, { url: this.state.uriSource.uri, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
+            react_1.default.createElement(react_native_1.WebView, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
     }
 }
 _WebSignIn.navigationOptions = () => {

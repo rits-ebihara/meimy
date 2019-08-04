@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
+import { WebViewUriSource } from 'react-native';
 import { ICombinedNavProps, IProps } from '../../../redux-helper/redux-helper';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
@@ -9,7 +9,7 @@ interface IWebSignInProps extends IWebSignInState {
 }
 export declare type ThisProps = ICombinedNavProps<IWebSignInProps>;
 export interface IWebSigninLocalState {
-    uriSource: WebViewSourceUri;
+    uriSource: WebViewUriSource;
 }
 export declare class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
     static navigationOptions: () => {
