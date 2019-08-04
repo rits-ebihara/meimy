@@ -15,7 +15,9 @@ exports[`init auth type: o365 1`] = `
         var userPass = {userId: '', password: ''};
         userPass.userId = userNameInput.value;
         userPass.password = passwordInput.value;
-        window.postMessage(JSON.stringify(userPass));
+        setTimeout(function() {
+            window.postMessage(JSON.stringify(userPass));
+        }, 0);
     });
 })();
 "
@@ -27,7 +29,11 @@ exports[`init auth type: o365 1`] = `
         "https://*",
       ]
     }
-    url="https://site-domain"
+    source={
+      Object {
+        "uri": "https://site-domain",
+      }
+    }
   />
 </Styled(Container)>
 `;
@@ -53,7 +59,7 @@ exports[`init auth type: password 1`] = `
         var userPass = {userId: '', password: ''};
         if (!!userNameInput) { userPass.userId = userNameInput.value; }
         if (!!passwordInput) { userPass.password = passwordInput.value; }
-        window.postMessage(JSON.stringify(userPass));
+        // window.postMessage(JSON.stringify(userPass));
     });
 })();
 "
@@ -65,7 +71,11 @@ exports[`init auth type: password 1`] = `
         "https://*",
       ]
     }
-    url="https://site-domain/services/login"
+    source={
+      Object {
+        "uri": "https://site-domain/services/login",
+      }
+    }
   />
 </Styled(Container)>
 `;
