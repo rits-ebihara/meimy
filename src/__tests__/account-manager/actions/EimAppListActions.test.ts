@@ -42,6 +42,9 @@ const getExpectEimApps = (): IEimApp[] => ([
         tokens: ['t001-1'],
     },
 ]);
+const nav = {
+
+} as any;
 test('createSetAppListAction', () => {
     const expectEimApps = getExpectEimApps();
     const action = createSetAppListAction(expectEimApps);
@@ -110,7 +113,7 @@ describe('createLoadAppListAction', () => {
             } as any;
         });
         const onError = jest.fn();
-        await createLoadAppListAction(dispatch, getNavController(getLinkState()), onError);
+        await createLoadAppListAction(dispatch, getNavController(getLinkState()), nav, onError);
         expect(dispatch).toBeCalledTimes(2);
         const expectEimApps = getExpectEimApps();
         expect(dispatch).toHaveBeenLastCalledWith({
@@ -132,7 +135,7 @@ describe('createLoadAppListAction', () => {
         });
         const linkState = getLinkState();
         linkState.siteName = '';
-        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
+        await createLoadAppListAction(dispatch, getNavController(linkState), nav, onError);
         expect(dispatch).toBeCalledTimes(2);
         const expectEimApps = getExpectEimApps();
         expectEimApps[0].siteName = expectEimApps[0].siteDomain;
@@ -154,7 +157,7 @@ describe('createLoadAppListAction', () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
         });
-        await createLoadAppListAction(dispatch, getNavController(getLinkState()), onError);
+        await createLoadAppListAction(dispatch, getNavController(getLinkState()), nav, onError);
         expect(dispatch).toBeCalledWith({ type: LOAD_APP_LIST });
         expect(onError).toBeCalled();
     });
@@ -172,7 +175,7 @@ describe('createLoadAppListAction', () => {
         });
         const linkState = getLinkState();
         linkState.siteDomain = '';
-        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
+        await createLoadAppListAction(dispatch, getNavController(linkState), nav, onError);
         expect(dispatch).toBeCalledTimes(0);
         expect(onError).not.toBeCalled();
     });
@@ -190,7 +193,7 @@ describe('createLoadAppListAction', () => {
         });
         const linkState = getLinkState();
         linkState.tokens = undefined;
-        await createLoadAppListAction(dispatch, getNavController(linkState), onError);
+        await createLoadAppListAction(dispatch, getNavController(linkState), nav, onError);
         expect(dispatch).toBeCalledTimes(0);
         expect(onError).not.toBeCalled();
     });
