@@ -141,6 +141,7 @@ export class NavigateController implements INavigateController {
     public openApp = async (pLinkState: IAuthState, navigation: NavigationScreenProp<any>) => {
         this.linkStates = Object.assign({}, this.linkStates, pLinkState);
         const eimAccount = getEimAccount();
+        eimAccount.clear();
         eimAccount.appKey = this.linkStates.appKey || '';
         eimAccount.domain = this.linkStates.siteDomain || '';
         eimAccount.siteName = this.linkStates.siteName || '';
