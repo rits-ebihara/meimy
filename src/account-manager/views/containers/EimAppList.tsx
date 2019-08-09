@@ -44,7 +44,7 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
         );
     }
     public componentDidMount = () => {
-        createLoadAppListAction(this.props.dispatch, NavigateActions, this.onNetworkError);
+        createLoadAppListAction(this.props.dispatch, NavigateActions, this.props.navigation, this.onNetworkError);
     }
     public onPressItem = (appKey: string) => {
         NavigateActions.openApp({ appKey }, this.props.navigation);

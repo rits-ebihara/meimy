@@ -1,4 +1,5 @@
 // import { Toast } from 'native-base';
+import { NavigationScreenProp } from 'react-navigation';
 import { Action, Dispatch } from 'redux';
 import ShortId from 'shortid';
 
@@ -36,7 +37,9 @@ export const LOAD_APP_LIST = ShortId();
 export interface ILoadAppListAction extends Action {
 }
 export const createLoadAppListAction =
-    async (dispatch: Dispatch, navigateActions: INavigateController, onError: () => void): Promise<void> => {
+    async (dispatch: Dispatch, navigateActions: INavigateController,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        navigation: NavigationScreenProp<any>, onError: () => void): Promise<void> => {
         const { siteDomain, siteName, tokens, appKeyPrefix } = navigateActions.getLinkState();
         if (!siteDomain || !tokens || !appKeyPrefix) { return; }
         dispatch({
@@ -61,7 +64,13 @@ export const createLoadAppListAction =
                             tokens,
                         };
                     });
-                dispatch(createSetAppListAction(appList));
+                // リストに１件しかない場合
+                if (appList.length === 1) {
+                    const appKey = appList[0].appKey;
+                    navigateActions.openApp({ appKey }, navigation);
+                } else {
+                    dispatch(createSetAppListAction(appList));
+                }
             } catch (e) {
                 console.error(e);
                 onError();
