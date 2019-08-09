@@ -6,6 +6,9 @@ export interface INavProps {
 export interface ISplashState {
     appName: string;
 }
+export declare const linkState: {
+    runOnLink: boolean;
+};
 export declare abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
     render(): JSX.Element;
     componentDidMount: () => Promise<void>;

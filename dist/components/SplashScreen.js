@@ -19,7 +19,9 @@ const NavigateActions_1 = __importDefault(require("../account-manager/actions/Na
 const Config_1 = require("../account-manager/Config");
 const EimAccount_1 = require("../account-manager/EimAccount");
 //#region Styles
-let runOnLink = false;
+exports.linkState = {
+    runOnLink: false,
+};
 class SplashScreen extends react_1.Component {
     constructor() {
         super(...arguments);
@@ -50,14 +52,14 @@ class SplashScreen extends react_1.Component {
         this.linkInitialURL = async (url) => {
             // ディープリンクから起動された場合
             // 通常起動の場合も反応する。その場合 url = null となる。
-            if (!url || runOnLink) {
+            if (!url || exports.linkState.runOnLink) {
                 // スプラッシュを表示するため、インターバルを取る
                 setTimeout(() => {
                     NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
                 }, 500);
                 return;
             }
-            runOnLink = true;
+            exports.linkState.runOnLink = true;
             const receiveUrl = url_parse_1.default(url, '', true);
             const { query } = receiveUrl;
             if (!!query.link && query.hash) {
