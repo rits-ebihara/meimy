@@ -28,7 +28,9 @@ jest.mock('../../../eim-service/EIMServiceAdapter.ts', () => {
 });
 jest.mock('../../../account-manager/EimAccount', () => {
     return {
-        getEimAccount: jest.fn(),
+        getEimAccount: jest.fn().mockReturnValue({
+            clear: jest.fn(),
+        }),
     };
 });
 jest.mock('../../../account-manager/Config.ts', () => {
@@ -374,6 +376,7 @@ describe('openApp', () => {
             return {
                 save: eimAccountSave,
                 loadUser: eimAccountLoadUser,
+                clear: jest.fn(),
             } as any;
         });
         const target = new NavigateController();
@@ -397,6 +400,7 @@ describe('openApp', () => {
             return {
                 save: eimAccountSave,
                 loadUser: eimAccountLoadUser,
+                clear: jest.fn(),
             } as any;
         });
         const target = new NavigateController();
