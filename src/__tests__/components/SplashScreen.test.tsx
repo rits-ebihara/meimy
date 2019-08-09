@@ -8,7 +8,7 @@ import { mocked } from 'ts-jest/utils';
 
 import navigateController from '../../account-manager/actions/NavigateActions';
 import { getEimAccount } from '../../account-manager/EimAccount';
-import { ISplashState, SplashScreen } from '../../components/SplashScreen';
+import { ISplashState, linkState, SplashScreen } from '../../components/SplashScreen';
 import { ICombinedNavProps } from '../../redux-helper/redux-helper';
 import { sleep } from '../commonFunctions';
 
@@ -150,15 +150,15 @@ describe('event', () => {
     });
     describe('linkInitialURL', () => {
         test('url is null | runOnLink = true', async () => {
-            instance['runOnLink'] = false;
+            linkState.runOnLink = false;
             await instance['linkInitialURL'](null);
             await sleep();
             expect(navigateController.openAccountManager).toBeCalledWith(
                 props.navigation, props.dispatch
             );
-            expect(instance['runOnLink']).toEqual(false);
+            expect(linkState.runOnLink).toEqual(false);
             // runOnLink = true
-            instance['runOnLink'] = true;
+            linkState.runOnLink = true;
             await instance['linkInitialURL']('http://exsample.com/');
             await sleep();
             expect(navigateController.openAccountManager).toBeCalledWith(
@@ -166,7 +166,7 @@ describe('event', () => {
             );
         });
         test('url is not null && no link || no hash', async () => {
-            instance['runOnLink'] = false;
+            linkState.runOnLink = false;
             await instance['linkInitialURL']('http://exsample.com/');
             expect(navigateController.openAccountManager).not.toBeCalled();
             await instance['linkInitialURL']('http://exsample.com/?link=hoge');
@@ -175,7 +175,7 @@ describe('event', () => {
             expect(navigateController.openAccountManager).not.toBeCalled();
         });
         test('url is not null && link and hash is not null', async () => {
-            instance['runOnLink'] = false;
+            linkState.runOnLink = false;
             await instance['linkInitialURL']('http://exsample.com/?link=hoge&hash=fuga');
             expect(navigateController.openAccountManager).toBeCalledWith(
                 props.navigation, props.dispatch,
