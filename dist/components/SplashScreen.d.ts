@@ -7,7 +7,6 @@ export interface ISplashState {
     appName: string;
 }
 export declare abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
-    private runOnLink;
     render(): JSX.Element;
     componentDidMount: () => Promise<void>;
     private checkConnectOnResume;

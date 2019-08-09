@@ -17,8 +17,8 @@ export interface ISplashState {
     appName: string;
 }
 //#region Styles
+let runOnLink = false;
 export abstract class SplashScreen<T extends ISplashState> extends Component<ICombinedNavProps<T>> {
-    private runOnLink = false;
     public render() {
         const config = getConfig();
         const { theme } = config;
@@ -75,14 +75,14 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
     private linkInitialURL = async (url: string | null) => {
         // ディープリンクから起動された場合
         // 通常起動の場合も反応する。その場合 url = null となる。
-        if (!url || this.runOnLink) {
+        if (!url || runOnLink) {
             // スプラッシュを表示するため、インターバルを取る
             setTimeout(() => {
                 navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
             }, 500);
             return;
         }
-        this.runOnLink = true;
+        runOnLink = true;
         const receiveUrl = UrlParse(url, '', true);
         const { query } = receiveUrl;
         if (!!query.link && query.hash) {

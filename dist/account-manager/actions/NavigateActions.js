@@ -107,6 +107,7 @@ class NavigateController {
         this.openApp = async (pLinkState, navigation) => {
             this.linkStates = Object.assign({}, this.linkStates, pLinkState);
             const eimAccount = EimAccount_1.getEimAccount();
+            eimAccount.clear();
             eimAccount.appKey = this.linkStates.appKey || '';
             eimAccount.domain = this.linkStates.siteDomain || '';
             eimAccount.siteName = this.linkStates.siteName || '';
