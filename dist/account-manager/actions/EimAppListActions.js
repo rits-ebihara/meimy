@@ -13,7 +13,9 @@ exports.createSetAppListAction = (appList) => {
     };
 };
 exports.LOAD_APP_LIST = shortid_1.default();
-exports.createLoadAppListAction = async (dispatch, navigateActions, onError) => {
+exports.createLoadAppListAction = async (dispatch, navigateActions, 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+navigation, onError) => {
     const { siteDomain, siteName, tokens, appKeyPrefix } = navigateActions.getLinkState();
     if (!siteDomain || !tokens || !appKeyPrefix) {
         return;
@@ -40,7 +42,14 @@ exports.createLoadAppListAction = async (dispatch, navigateActions, onError) => 
                     tokens,
                 };
             });
-            dispatch(exports.createSetAppListAction(appList));
+            // リストに１件しかない場合
+            if (appList.length === 1) {
+                const appKey = appList[0].appKey;
+                navigateActions.openApp({ appKey }, navigation);
+            }
+            else {
+                dispatch(exports.createSetAppListAction(appList));
+            }
         }
         catch (e) {
             console.error(e);
