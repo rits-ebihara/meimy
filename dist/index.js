@@ -3,6 +3,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./Localization"));
 __export(require("./account-manager/index"));
 __export(require("./components/index"));
 __export(require("./eim-service/index"));
