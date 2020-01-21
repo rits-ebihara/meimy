@@ -21,7 +21,9 @@ import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';
 import IWebSignInState from '../../states/IWebSignInState';
 
-// import WebView from 'react-native-webview';
+import WKWebView from 'react-native-wkwebview-reborn';
+const IsiOS = Platform.OS === 'ios';
+const useWebKit = IsiOS;
 const config = getConfig();
 
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
@@ -112,25 +114,34 @@ export class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
 ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
+        const webView =
+            <WebView
+                source={this.state.uriSource}
+                onLoadStart={this.onLoadStartWebView}
+                onMessage={this.onMessage}
+                ref={this.setRef}
+                injectedJavaScript={script} />;
+        const wkWebView =
+            <WKWebView
+                source={this.state.uriSource}
+                onLoadStart={this.onLoadStartWebView}
+                onMessage={this.onMessage}
+                ref={this.setRef}
+                injectedJavaScript={script} />;
         return (
             <Container>
-                <WebView
-                    source={this.state.uriSource}
-                    onLoadStart={this.onLoadStartWebView}
-                    onMessage={this.onMessage}
-                    ref={this.setRef}
-                    injectedJavaScript={script} />
+                {IsiOS ? wkWebView : webView}
             </Container>
         );
     }
     public componentDidMount = () => {
-        CookieManager.clearAll();
+        CookieManager.clearAll(useWebKit);
         // onLoadStartWebViewでは、state　がなくなる・・・？のでクラスメンバーとして保持する
         this.saveProp = this.props;
     }
     private onMessage = (event: NativeSyntheticEvent<WebViewMessageEventData>) => {
         let { data: message } = event.nativeEvent;
-        if (Platform.OS === 'ios') {
+        if (IsiOS) {
             // iOS では URIエンコードを２回実施されたものが返ってくる。React Native のバグ？
             message = decodeURIComponent(decodeURIComponent(message));
         }
@@ -214,7 +225,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
             return 'auth password';
         }
         // console.log(JSON.stringify(navState.nativeEvent));
-        const cookie = await CookieManager.get(url);
+        const cookie = await CookieManager.get(url, useWebKit);
         if (!cookie.APISID) {
             return 'no token';
         }
