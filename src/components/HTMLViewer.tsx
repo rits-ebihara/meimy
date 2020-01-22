@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { NativeSyntheticEvent } from 'react-native';
-import WebView from 'react-native-webview';
-import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
+import { NativeSyntheticEvent, WebView, WebViewMessageEventData } from 'react-native';
 
 
 interface IProps {
@@ -28,7 +26,7 @@ export class HtmlViewer extends Component<IProps, IState> {
             />
         );
     }
-    private onMessage = (event: NativeSyntheticEvent<WebViewMessage>) => {
+    private onMessage = (event: NativeSyntheticEvent<WebViewMessageEventData>) => {
         let height = Number(event.nativeEvent.data);
         if (!Number.isNaN(height)) {
             // height = height / PixelRatio.get();
