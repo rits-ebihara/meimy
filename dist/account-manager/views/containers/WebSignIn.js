@@ -19,7 +19,7 @@ const url_parse_1 = __importDefault(require("url-parse"));
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const Config_1 = require("../../Config");
-const react_native_wkwebview_reborn_1 = __importDefault(require("react-native-wkwebview-reborn"));
+const WebView_1 = __importDefault(require("../../../components/WebView"));
 const IsiOS = react_native_1.Platform.OS === 'ios';
 const useWebKit = IsiOS;
 const config = Config_1.getConfig();
@@ -205,9 +205,9 @@ class _WebSignIn extends react_1.Component {
 ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
-        const webView = react_1.default.createElement(react_native_1.WebView, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script });
-        const wkWebView = react_1.default.createElement(react_native_wkwebview_reborn_1.default, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script });
-        return (react_1.default.createElement(native_base_1.Container, null, IsiOS ? wkWebView : webView));
+        return (react_1.default.createElement(native_base_1.Container, null,
+            react_1.default.createElement(WebView_1.default, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script }),
+            ";"));
     }
 }
 _WebSignIn.navigationOptions = () => {

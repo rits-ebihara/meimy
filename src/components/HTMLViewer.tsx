@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, WebView, WebViewMessageEventData } from 'react-native';
+import { NativeSyntheticEvent, WebViewMessageEventData } from 'react-native';
+import WebView from './WebView';
 
 
 interface IProps {

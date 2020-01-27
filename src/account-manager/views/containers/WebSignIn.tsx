@@ -4,7 +4,6 @@ import {
     NativeSyntheticEvent,
     NavState,
     Platform,
-    WebView,
     WebViewMessageEventData,
     WebViewUriSource,
 } from 'react-native';
@@ -21,7 +20,7 @@ import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';
 import IWebSignInState from '../../states/IWebSignInState';
 
-import WKWebView from 'react-native-wkwebview-reborn';
+import WebView from '../../../components/WebView';
 const IsiOS = Platform.OS === 'ios';
 const useWebKit = IsiOS;
 const config = getConfig();
@@ -93,7 +92,7 @@ export class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
         };
     }
     private postedIdPass = false;
-    private webview: WebView | null = null;
+    private webview : any = null;
     private saveProp: ICombinedNavProps<IWebSignInProps> | undefined;
     public constructor(props: ThisProps) {
         super(props);
@@ -114,24 +113,14 @@ export class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
 ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
-        const webView =
-            <WebView
-                source={this.state.uriSource}
-                onLoadStart={this.onLoadStartWebView}
-                onMessage={this.onMessage}
-                ref={this.setRef}
-                injectedJavaScript={script} />;
-        const wkWebView =
-            <WKWebView
-                source={this.state.uriSource}
-                onLoadStart={this.onLoadStartWebView}
-                onMessage={this.onMessage}
-                ref={this.setRef}
-                injectedJavaScript={script} />;
         return (
             <Container>
-                {wkWebView}
-                {IsiOS ? wkWebView : webView}
+                <WebView
+                    source={this.state.uriSource}
+                    onLoadStart={this.onLoadStartWebView}
+                    onMessage={this.onMessage}
+                    ref={this.setRef}
+                    injectedJavaScript={script} />;
             </Container>
         );
     }
@@ -154,7 +143,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         account.password = messageData.password;
         asyncSaveAccountAction(account, this.props.dispatch);
     }
-    private setRef = (control: WebView) => { this.webview = control; }
+    private setRef = (control: any) => { this.webview = control; }
     private postIdPassEimForm = (url: string, account: IAccountState) => {
         // services/v1/login
         if (this.postedIdPass) { return false; }
