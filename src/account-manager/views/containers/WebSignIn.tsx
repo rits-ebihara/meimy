@@ -120,7 +120,7 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
                     onLoadStart={this.onLoadStartWebView}
                     onMessage={this.onMessage}
                     ref={this.setRef}
-                    injectedJavaScript={script} />;
+                    injectedJavaScript={script} />
             </Container>
         );
     }
