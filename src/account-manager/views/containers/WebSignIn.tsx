@@ -92,7 +92,7 @@ export class _WebSignIn extends Component<ThisProps, IWebSigninLocalState> {
         };
     }
     private postedIdPass = false;
-    private webview : any = null;
+    private webview: any = null;
     private saveProp: ICombinedNavProps<IWebSignInProps> | undefined;
     public constructor(props: ThisProps) {
         super(props);
