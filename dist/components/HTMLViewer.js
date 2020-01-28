@@ -11,7 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const react_native_webview_1 = __importDefault(require("react-native-webview"));
+const WebView_1 = __importDefault(require("./WebView"));
 class HtmlViewer extends react_1.Component {
     constructor(props) {
         super(props);
@@ -69,7 +69,7 @@ class HtmlViewer extends react_1.Component {
         };
     }
     render() {
-        return (react_1.default.createElement(react_native_webview_1.default, { source: { html: this.createHtml(this.props.html) }, style: { height: this.state.height }, onMessage: this.onMessage }));
+        return (react_1.default.createElement(WebView_1.default, { source: { html: this.createHtml(this.props.html) }, style: { height: this.state.height }, onMessage: this.onMessage }));
     }
 }
 exports.HtmlViewer = HtmlViewer;

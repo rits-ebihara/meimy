@@ -19,7 +19,9 @@ const url_parse_1 = __importDefault(require("url-parse"));
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const Config_1 = require("../../Config");
-// import WebView from 'react-native-webview';
+const WebView_1 = __importDefault(require("../../../components/WebView"));
+const IsiOS = react_native_1.Platform.OS === 'ios';
+const useWebKit = IsiOS;
 const config = Config_1.getConfig();
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
 // 画面内にログインフォームを表示する
@@ -67,13 +69,13 @@ class _WebSignIn extends react_1.Component {
         this.postedIdPass = false;
         this.webview = null;
         this.componentDidMount = () => {
-            react_native_cookies_1.default.clearAll();
+            react_native_cookies_1.default.clearAll(useWebKit);
             // onLoadStartWebViewでは、state　がなくなる・・・？のでクラスメンバーとして保持する
             this.saveProp = this.props;
         };
         this.onMessage = (event) => {
             let { data: message } = event.nativeEvent;
-            if (react_native_1.Platform.OS === 'ios') {
+            if (IsiOS) {
                 // iOS では URIエンコードを２回実施されたものが返ってくる。React Native のバグ？
                 message = decodeURIComponent(decodeURIComponent(message));
             }
@@ -167,7 +169,7 @@ class _WebSignIn extends react_1.Component {
                 return 'auth password';
             }
             // console.log(JSON.stringify(navState.nativeEvent));
-            const cookie = await react_native_cookies_1.default.get(url);
+            const cookie = await react_native_cookies_1.default.get(url, useWebKit);
             if (!cookie.APISID) {
                 return 'no token';
             }
@@ -204,7 +206,7 @@ ${account.authType === 'o365' ? '' : eimLoginFormSet}
 ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
 `;
         return (react_1.default.createElement(native_base_1.Container, null,
-            react_1.default.createElement(react_native_1.WebView, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
+            react_1.default.createElement(WebView_1.default, { source: this.state.uriSource, onLoadStart: this.onLoadStartWebView, onMessage: this.onMessage, ref: this.setRef, injectedJavaScript: script })));
     }
 }
 _WebSignIn.navigationOptions = () => {
