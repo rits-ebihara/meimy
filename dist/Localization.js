@@ -30,4 +30,5 @@ class Localization {
 exports.createLocalization = (langResource = getInitLangResource()) => {
     const localization = new Localization();
     localization.setLangList(new react_native_localization_1.default(langResource));
+    return localization;
 };

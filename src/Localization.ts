@@ -36,4 +36,5 @@ export const createLocalization =
     <T extends string>(langResource: Partial<GlobalStrings<TStrings<T>>> = getInitLangResource()) => {
         const localization = new Localization<T>();
         localization.setLangList(new LocalizedStrings(langResource));
+        return localization;
     }
