@@ -16,15 +16,21 @@ const getInitLangResource = (): GlobalStrings<TStrings<string>> => ({
 class Localization<T extends string> {
     private langList: LocalizedStrings<T>;
 
-    public constructor() {
+    private constructor() {
         this.langList = new LocalizedStrings(getInitLangResource());
     }
 
-    public setLangList(langList: LocalizedStrings<T>) {
+    private setLangList(langList: LocalizedStrings<T>) {
         this.langList = langList;
     }
 
-    public replaceLang = (key: T, ...restparam: string[]): string => {
+    public static create<T extends string>(langResource: Partial<GlobalStrings<TStrings<T>>> = getInitLangResource()) {
+        const localization = new Localization<T>();
+        localization.setLangList(new LocalizedStrings(langResource));
+        return localization;
+    }
+
+    public replaceLang(key: T, ...restparam: string[]): string {
         // 可変長引数が存在する場合、その引数のリプレイスを行う。
         return (this.langList[key] || key).replace(/\{(\d+)\}/g, (...args) => {
             return restparam[args[1]];
@@ -32,9 +38,4 @@ class Localization<T extends string> {
     }
 }
 
-export const createLocalization =
-    <T extends string>(langResource: Partial<GlobalStrings<TStrings<T>>> = getInitLangResource()) => {
-        const localization = new Localization<T>();
-        localization.setLangList(new LocalizedStrings(langResource));
-        return localization;
-    }
+export default Localization;
