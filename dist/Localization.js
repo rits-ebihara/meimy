@@ -32,4 +32,4 @@ class Localization {
         });
     }
 }
-exports.default = Localization;
+exports.Localization = Localization;

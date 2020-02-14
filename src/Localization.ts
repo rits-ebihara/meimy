@@ -13,7 +13,7 @@ const getInitLangResource = (): GlobalStrings<TStrings<string>> => ({
     nl: {},
 });
 
-class Localization<T extends string> {
+export class Localization<T extends string> {
     private langList: LocalizedStrings<T>;
 
     private constructor() {
@@ -37,5 +37,3 @@ class Localization<T extends string> {
         });
     }
 }
-
-export default Localization;
