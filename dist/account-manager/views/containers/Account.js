@@ -23,6 +23,7 @@ const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions
 const WebSignInActions_1 = require("../../actions/WebSignInActions");
 const Config_1 = require("../../Config");
 const RoutePageNames_1 = __importDefault(require("../../RoutePageNames"));
+const LangProfile_1 = require("../../../LangProfile");
 const config = Config_1.getConfig();
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 class _Account extends react_1.Component {
@@ -51,18 +52,18 @@ class _Account extends react_1.Component {
                 react_1.default.createElement(native_base_1.Content, null,
                     react_1.default.createElement(native_base_1.Card, { style: { paddingBottom: 24 } },
                         react_1.default.createElement(native_base_1.Item, { stackedLabel: true },
-                            react_1.default.createElement(native_base_1.Label, null, "\u30B5\u30A4\u30C8\u540D\u79F0"),
+                            react_1.default.createElement(native_base_1.Label, null, LangProfile_1.langProfile.replaceLang('LK_siteName')),
                             react_1.default.createElement(native_base_1.Input, { key: "site_name", value: state.siteName, editable: state.mode === 'edit', style: style.textboxStyle, onChangeText: (text) => { this.onChangeState('siteName', text); } })),
                         react_1.default.createElement(native_base_1.Text, { style: errorMessageStyle }, siteNameErrorMessage),
                         react_1.default.createElement(native_base_1.Item, { stackedLabel: true },
-                            react_1.default.createElement(native_base_1.Label, null, "\u30B5\u30A4\u30C8\u30C9\u30E1\u30A4\u30F3"),
+                            react_1.default.createElement(native_base_1.Label, null, LangProfile_1.langProfile.replaceLang('LK_siteDomain')),
                             react_1.default.createElement(native_base_1.Input, { key: "site_domain", value: state.siteDomain, editable: state.mode === 'edit', style: style.textboxStyle, keyboardType: "url", autoCapitalize: "none", onChangeText: (text) => { this.onChangeState('siteDomain', text); } })),
                         react_1.default.createElement(native_base_1.Text, { style: errorMessageStyle }, siteErrorMessage),
                         react_1.default.createElement(native_base_1.Item, { style: { marginTop: 12, marginBottom: 12 } },
-                            react_1.default.createElement(native_base_1.Label, null, "\u8A8D\u8A3C\u65B9\u5F0F"),
+                            react_1.default.createElement(native_base_1.Label, null, LangProfile_1.langProfile.replaceLang('LK_authenticationMethod')),
                             react_1.default.createElement(native_base_1.Picker, { key: "auth-type", mode: "dropdown", enabled: state.mode === 'edit', iosIcon: react_1.default.createElement(native_base_1.Icon, { name: "ios-arrow-down" }), textStyle: style.textboxStyle, selectedValue: state.authType, style: react_native_1.Platform.OS === 'android' ? style.textboxStyle : {}, onValueChange: (text) => { this.onChangeState('authType', text); } },
-                                react_1.default.createElement(native_base_1.Picker.Item, { label: "\u30D1\u30B9\u30EF\u30FC\u30C9", value: "password" }),
-                                react_1.default.createElement(native_base_1.Picker.Item, { label: "Office365\u8A8D\u8A3C", value: "o365" }))),
+                                react_1.default.createElement(native_base_1.Picker.Item, { label: LangProfile_1.langProfile.replaceLang('LK_password'), value: "password" }),
+                                react_1.default.createElement(native_base_1.Picker.Item, { label: LangProfile_1.langProfile.replaceLang('LK_office'), value: "o365" }))),
                         this.createSignInButton(hasError))),
                 (state.mode === 'view') ? viewingMenu : editingMenu));
         };
@@ -87,7 +88,7 @@ class _Account extends react_1.Component {
             };
             if (state.mode === 'view') {
                 return react_1.default.createElement(native_base_1.Button, { key: "sign-in-button", block: true, rounded: true, success: true, style: buttonStyle, disabled: hasError, onPress: this.onPressConnect },
-                    react_1.default.createElement(native_base_1.Text, null, "\u30B5\u30A4\u30F3\u30A4\u30F3"));
+                    react_1.default.createElement(native_base_1.Text, null, LangProfile_1.langProfile.replaceLang('LK_signIn')));
             }
             return null;
         };
@@ -108,17 +109,17 @@ class _Account extends react_1.Component {
         };
         this.onPressRemove = () => {
             const me = this;
-            react_native_1.Alert.alert('アカウントの削除', `${this.state.siteName}を削除して良いですか?`, [
+            react_native_1.Alert.alert(LangProfile_1.langProfile.replaceLang('LK_accountDelete'), LangProfile_1.langProfile.replaceLang('LK_MSG_siteNameDelete', this.state.siteName), [
                 {
                     style: 'default',
-                    text: 'キャンセル',
+                    text: LangProfile_1.langProfile.replaceLang('LK_cancel'),
                 },
                 {
                     onPress: () => {
                         AccountActions_1.asyncRemoveAccountAction(me.state.id, me.props.dispatch, me.navPop);
                     },
                     style: 'destructive',
-                    text: '削除',
+                    text: LangProfile_1.langProfile.replaceLang('LK_delete'),
                 },
             ]);
         };
@@ -210,12 +211,17 @@ class _Account extends react_1.Component {
     }
     createErrorMessages(state) {
         const hasError = state.siteDomainError || state.siteNameError;
-        const siteErrorMessage = (this.state.siteDomainError) ? 'サイトドメインが正しくありません' : '';
-        const siteNameErrorMessage = (this.state.siteNameError) ? 'サイト名称は必須です' : '';
+        const siteErrorMessage = (this.state.siteDomainError) ?
+            LangProfile_1.langProfile.replaceLang('LK_MSG_siteDomain') : '';
+        const siteNameErrorMessage = (this.state.siteNameError) ?
+            LangProfile_1.langProfile.replaceLang('LK_MSG_siteNameRequired') : '';
         return { siteNameErrorMessage, siteErrorMessage, hasError };
     }
     async successConnect(tokens) {
-        native_base_1.Toast.show({ text: '認証に成功しました。', type: 'success' });
+        native_base_1.Toast.show({
+            text: LangProfile_1.langProfile.replaceLang('LK_MSG_authentication'),
+            type: 'success'
+        });
         // トークンを保存する
         const account = clone_1.default(this.state);
         account.eimToken = tokens;
@@ -254,7 +260,7 @@ _Account.navigationOptions = ({ navigation }) => {
             backgroundColor: colorPalets.$colorPrimary3,
         },
         headerTintColor: colorPalets.$invertColor,
-        headerTitle: 'サイト情報',
+        headerTitle: LangProfile_1.langProfile.replaceLang('LK_siteInfo'),
     };
 };
 exports._Account = _Account;

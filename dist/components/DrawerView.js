@@ -14,6 +14,7 @@ const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const EimAccount_1 = require("../account-manager/EimAccount");
 const user_png_1 = __importDefault(require("../resources/user.png"));
+const LangProfile_1 = require("../LangProfile");
 class DrawerContent extends react_1.Component {
     constructor(props) {
         super(props);
@@ -71,7 +72,7 @@ class DrawerContent extends react_1.Component {
         return (react_1.default.createElement(native_base_1.View, null,
             react_1.default.createElement(native_base_1.View, { style: { flexDirection: 'row-reverse' } },
                 react_1.default.createElement(native_base_1.Button, { key: "closeButton", transparent: true, onPress: () => this.props.navigation.toggleDrawer() },
-                    react_1.default.createElement(native_base_1.Text, null, "\u9589\u3058\u308B"))),
+                    react_1.default.createElement(native_base_1.Text, null, LangProfile_1.langProfile.replaceLang('LK_close')))),
             react_1.default.createElement(native_base_1.View, { style: rowStyle },
                 react_1.default.createElement(native_base_1.View, { style: { width: 88 } },
                     react_1.default.createElement(native_base_1.Thumbnail, { circular: true, large: true, source: this.state.avatarFaceUrl || user_png_1.default })),
@@ -83,9 +84,9 @@ class DrawerContent extends react_1.Component {
                 react_1.default.createElement(native_base_1.Text, { note: true }, eimAccount.domain),
                 react_1.default.createElement(native_base_1.Button, { bordered: true, color: this.props.buttonColor, iconLeft: true, rounded: true, style: { alignSelf: 'center', margin: 10 }, onPress: this.onPressChangeSite.bind(this) },
                     react_1.default.createElement(native_base_1.Icon, { name: "md-swap" }),
-                    react_1.default.createElement(native_base_1.Text, null, "\u63A5\u7D9A\u5148\u306E\u5207\u308A\u66FF\u3048"))),
+                    react_1.default.createElement(native_base_1.Text, null, LangProfile_1.langProfile.replaceLang('LK_accessPoint')))),
             react_1.default.createElement(native_base_1.View, { style: colStyle },
-                react_1.default.createElement(native_base_1.Text, { note: true }, "\u3053\u306E\u30A2\u30D7\u30EA\u306B\u3064\u3044\u3066"),
+                react_1.default.createElement(native_base_1.Text, { note: true }, LangProfile_1.langProfile.replaceLang('LK_MSG_app')),
                 react_1.default.createElement(native_base_1.Text, { style: {
                         fontSize: 16,
                         fontWeight: 'bold',

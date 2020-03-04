@@ -8,6 +8,7 @@ import navigateController from '../account-manager/actions/NavigateActions';
 import { getConfig } from '../account-manager/Config';
 import { getEimAccount } from '../account-manager/EimAccount';
 import { ICombinedNavProps } from '../redux-helper/redux-helper';
+import { langProfile } from '../LangProfile';
 
 export interface INavProps {
     parameter: string;
@@ -67,7 +68,7 @@ export abstract class SplashScreen<T extends ISplashState> extends Component<ICo
                 if (!result) {
                     eimAccount.eimTokens = [];
                     Toast.show({
-                        text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                        text: langProfile.replaceLang('LK_MSG_serverError'),
                     });
                     navigateController.openAccountManager(this.props.navigation, this.props.dispatch);
                 }

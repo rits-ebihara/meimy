@@ -19,6 +19,7 @@ const url_parse_1 = __importDefault(require("url-parse"));
 const AccountActions_1 = require("../../actions/AccountActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const Config_1 = require("../../Config");
+const LangProfile_1 = require("../../../LangProfile");
 // import WebView from 'react-native-webview';
 const config = Config_1.getConfig();
 const ricohSamlUrl = 'https://adfs.jp.ricoh.com/adfs/ls/';
@@ -173,7 +174,10 @@ class _WebSignIn extends react_1.Component {
             }
             // トークンのクッキーが取得できたら成功
             webview.stopLoading();
-            native_base_1.Toast.show({ text: '認証に成功しました。', type: 'success' });
+            native_base_1.Toast.show({
+                text: LangProfile_1.langProfile.replaceLang('LK_MSG_authentication'),
+                type: 'success'
+            });
             account.eimToken = ['APISID=' + cookie.APISID];
             await AccountActions_1.asyncSaveAccountAction(account, this.props.dispatch);
             // if (!this.saveProp) { return; }

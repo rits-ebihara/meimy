@@ -8,6 +8,7 @@ import { getConfig } from '../Config';
 import { createInitAccountListState, IAccountListState } from '../states/IAccountLisState';
 import { IAccountState } from '../states/IAccountState';
 import { asyncLoadAccountListAfterShow } from './AccountListActions';
+import { langProfile } from '../../LangProfile';
 
 export const SET_ACCOUNT_ACTION = ShortId();
 
@@ -54,7 +55,7 @@ export const asyncSaveAccountAction
             }
             await setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
         } catch (error) {
-            Alert.alert('error', '保存に失敗しました');
+            Alert.alert('error', langProfile.replaceLang('LK_MSG_saveError'));
             console.error(error);
         }
         // ステートを更新して、一覧に戻ったときに画面の表示が新しくなっているようにする
@@ -82,7 +83,7 @@ export const asyncRemoveAccountAction = async (
             accountList.accounts = accountList.accounts.filter((a) => a.id !== targetId);
             await setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
         } catch (error) {
-            Alert.alert('error', '保存に失敗しました');
+            Alert.alert('error', langProfile.replaceLang('LK_MSG_saveError'));
             console.error(error);
         }
     };

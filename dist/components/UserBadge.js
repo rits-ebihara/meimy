@@ -12,6 +12,7 @@ const EimAccount_1 = require("../account-manager/EimAccount");
 const group_png_1 = __importDefault(require("../resources/group.png"));
 const ms_teams_png_1 = __importDefault(require("../resources/ms-teams.png"));
 const user_png_1 = __importDefault(require("../resources/user.png"));
+const LangProfile_1 = require("../LangProfile");
 const shareIconStyle = {
     height: 24,
     width: 24,
@@ -83,7 +84,7 @@ class UserBadge extends react_1.default.Component {
                         react_1.default.createElement(native_base_1.Text, null),
                         react_1.default.createElement(native_base_1.Right, null,
                             react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: () => { this.setState({ shownDetailDialog: false }); } },
-                                react_1.default.createElement(native_base_1.Text, { style: { color: this.props.textColor } }, "\u9589\u3058\u308B"))))));
+                                react_1.default.createElement(native_base_1.Text, { style: { color: this.props.textColor } }, LangProfile_1.langProfile.replaceLang('LK_close')))))));
         };
         this.onPressTeamsIcon = (email) => {
             const url = url_parse_1.default('https://teams.microsoft.com/l/chat/0/0', true);

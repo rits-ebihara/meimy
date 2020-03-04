@@ -14,6 +14,7 @@ import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { createInitAccountState, IAccountState } from '../../states/IAccountState';
 import { IAuthState } from '../../states/IAuthStates';
+import { langProfile } from '../../../LangProfile';
 
 const config = getConfig();
 // eslint-disable-next-line @typescript-eslint/class-name-casing
@@ -24,7 +25,7 @@ export class _AccountList extends Component<ICombinedNavProps<IAccountListState>
             backgroundColor: config.colorPalets.$colorPrimary3,
         },
         headerTintColor: config.colorPalets.$invertColor,
-        headerTitle: 'EIMサイト一覧',
+        headerTitle: langProfile.replaceLang('LK_EIMSiteList'),
     });
     public render = () => {
         // console.log(this.props.state.accounts);
