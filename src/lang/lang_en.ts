@@ -10,7 +10,7 @@ export const enResource: TStrings<TKey> = {
     'LK_siteDomain': 'Site Domain',
     'LK_authenticationMethod': 'Verification Method',
     'LK_password': 'Password',
-    'LK_office': 'Office365 Verification',
+    'LK_office': 'Office365',
     'LK_signIn': 'Sign-in',
     'LK_accountDelete': 'Delete Account',
     'LK_MSG_siteNameDelete': 'Delete {0}?',
