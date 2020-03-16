@@ -5,6 +5,7 @@ import { DrawerItemsProps } from 'react-navigation';
 
 import { getEimAccount } from '../account-manager/EimAccount';
 import dummyAvatar from '../resources/user.png';
+import { langProfile } from '../LangProfile';
 
 // import { app, routePageNames } from '../../Commons';
 // import theme, { colorPallet } from '../Styles';
@@ -52,7 +53,7 @@ export class DrawerContent extends Component<IDrawerViewProps, IDrawerViewLocalS
                         key="closeButton"
                         transparent
                         onPress={() => this.props.navigation.toggleDrawer()}>
-                        <Text>閉じる</Text>
+                        <Text>{langProfile.replaceLang('LK_close')}</Text>
                     </Button>
                 </View>
                 <View style={rowStyle}>
@@ -72,11 +73,11 @@ export class DrawerContent extends Component<IDrawerViewProps, IDrawerViewLocalS
                         style={{ alignSelf: 'center', margin: 10 }}
                         onPress={this.onPressChangeSite.bind(this)}>
                         <Icon name="md-swap" />
-                        <Text>接続先の切り替え</Text>
+                        <Text>{langProfile.replaceLang('LK_accessPoint')}</Text>
                     </Button>
                 </View>
                 <View style={colStyle} >
-                    <Text note>このアプリについて</Text>
+                    <Text note>{langProfile.replaceLang('LK_MSG_app')}</Text>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 'bold',

@@ -24,17 +24,18 @@ import { IDocListRowForView } from '../../eim-service/IDocListForView';
 import { IDocListSearchOption, SearchCondition } from '../../eim-service/IDocListSearchOption';
 import { DirectoryTypeKey } from '../UserBadge';
 import { IGroupList, IOrganizationList, IUserList } from './IUserList';
+import { langProfile } from '../../LangProfile';
 
 const config = getConfig();
 
 type DocListName = 'userdoclist' | 'groupdoclist' | 'organizationdoclist';
 
-type directoryTypeName = 'ユーザー' | '組織' | 'グループ';
+type directoryTypeName = 'LK_user' | 'LK_organization' | 'LK_group';
 
 const directoryType: { [key in DirectoryTypeKey]: directoryTypeName } = {
-    user: 'ユーザー',
-    group: 'グループ',
-    organization: '組織',
+    user: 'LK_user',
+    group: 'LK_group',
+    organization: 'LK_organization',
 };
 
 export interface IFilter {
@@ -152,7 +153,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
                             <Form style={searchBox}>
                                 <Item fixedLabel style={{ flexGrow: 1 }}>
                                     <Input key="search-word-input" value={this.state.searchWords}
-                                        placeholder="検索ワードを入力してください"
+                                        placeholder={langProfile.replaceLang('LK_MSG_searchWord')}
                                         onChangeText={this.changeSearchWords}
                                         onSubmitEditing={this.pressSearchButton}
                                         returnKeyType="search" />
@@ -168,9 +169,9 @@ export class UserSelectScreen extends Component<IProps, IState> {
                             </Form>
                             <Content style={{ flexGrow: 1 }}>
                                 {this.state.showNoResultMessage ?
-                                    <Text style={warnMessageStyle}>該当するものがありません。</Text>
-                                    : null
-                                }
+                                    <Text style={warnMessageStyle}>
+                                        {langProfile.replaceLang('LK_MSG_applicable')}
+                                    </Text> : null}
                                 <List key="result-list">
                                     {this.createSearchedUserList()}
                                 </List>
@@ -195,7 +196,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             (0 < this.state.searchResult.length && this.state.canContinue) ?
                 <Button key="more-search-button" full
                     onPress={this.pressMoreSearch}>
-                    <Text>さらに表示</Text>
+                    <Text>{langProfile.replaceLang('LK_show')}</Text>
                 </Button> :
                 null
     }
@@ -236,17 +237,26 @@ export class UserSelectScreen extends Component<IProps, IState> {
         // ユーザー
         if (filter.users) {
             items.push(
-                <Picker.Item key={'user'} label={directoryType['user']} value={'user'} />
+                <Picker.Item
+                    key={'user'}
+                    label={langProfile.replaceLang(directoryType['user'])}
+                    value={'user'} />
             );
         }
         if (filter.groups) {
             items.push(
-                <Picker.Item key={'group'} label={directoryType['group']} value={'group'} />
+                <Picker.Item
+                    key={'group'}
+                    label={langProfile.replaceLang(directoryType['group'])}
+                    value={'group'} />
             );
         }
         if (filter.organizations) {
             items.push(
-                <Picker.Item key={'organization'} label={directoryType['organization']} value={'organization'} />
+                <Picker.Item
+                    key={'organization'}
+                    label={langProfile.replaceLang(directoryType['organization'])}
+                    value={'organization'} />
             );
         }
         if (items.length < 2) {
@@ -375,7 +385,7 @@ export class UserSelectScreen extends Component<IProps, IState> {
             });
         } catch {
             Toast.show({
-                text: 'ネットワーク エラー',
+                text: langProfile.replaceLang('LK_netWork'),
                 type: 'danger',
             });
         }

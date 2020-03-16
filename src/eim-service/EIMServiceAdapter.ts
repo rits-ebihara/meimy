@@ -9,6 +9,7 @@ import { IDocListSearchOption } from './IDocListSearchOption';
 import { ILangResources } from './ILangResources';
 import { IParsedResponse, IResponse } from './IResponse';
 import { IResponseDownloadFile } from './IResponseDownloadFile';
+import { langProfile } from '../LangProfile';
 
 export const dateParser = (_key: string, value: any) => {
     const dateReg = /^\d{4}-\d{2}-\d{2}T(?:\d{2}:){2}\d{2}\.\d{3}Z$/;
@@ -152,7 +153,7 @@ export class EIMServiceAdapter {
             const fileInfo = JSON.parse(response.body, dateParser) as IResponseDownloadFile;
             return fileInfo;
         } else {
-            throw new Error(`添付ファイルの取得に失敗しました。(status code:${response.statusCode})`);
+            throw new Error(langProfile.replaceLang('LK_MSG_file', response.statusCode.toString()));
         }
     }
     public getLoginUser = async (tokens: string[]) => {
@@ -185,7 +186,7 @@ export class EIMServiceAdapter {
             if (result.statusCode === 200) {
                 return JSON.parse(result.body) as ILangResources;
             } else {
-                throw new Error(`文字列リソースの取得に失敗しました。 (status code:${result.statusCode}`);
+                throw new Error(langProfile.replaceLang('LK_MSG_stringResource', result.statusCode.toString()));
             }
         } catch (e) {
             throw e;

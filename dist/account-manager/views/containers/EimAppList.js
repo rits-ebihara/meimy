@@ -17,6 +17,7 @@ const react_redux_1 = require("react-redux");
 const EimAppListActions_1 = require("../../actions/EimAppListActions");
 const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
 const Config_1 = require("../../Config");
+const LangProfile_1 = require("../../../LangProfile");
 const config = Config_1.getConfig();
 class EimAppList extends react_1.Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class EimAppList extends react_1.Component {
         };
         this.onNetworkError = () => {
             native_base_1.Toast.show({
-                text: 'ネットワークエラーが発生しました。',
+                text: LangProfile_1.langProfile.replaceLang('LK_MSG_networkError'),
                 type: 'warning',
             });
             this.props.dispatch(EimAppListActions_1.createSetAppListAction([]));
@@ -56,7 +57,7 @@ EimAppList.navigationOptions = () => {
             backgroundColor: config.colorPalets.$colorPrimary3,
         },
         headerTintColor: config.colorPalets.$invertColor,
-        headerTitle: 'アプリ一覧',
+        headerTitle: LangProfile_1.langProfile.replaceLang('LK_appList'),
     };
 };
 const mapStateToProps = (state) => {

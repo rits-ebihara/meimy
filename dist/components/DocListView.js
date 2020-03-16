@@ -15,6 +15,7 @@ const native_base_1 = require("native-base");
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
 const EimAccount_1 = require("../account-manager/EimAccount");
+const LangProfile_1 = require("../LangProfile");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class DocListView extends react_1.Component {
     constructor(props) {
@@ -30,9 +31,8 @@ class DocListView extends react_1.Component {
                     list :
                     react_1.default.createElement(native_base_1.Spinner, { color: this.props.theme.brandPrimary })),
                 moreButton,
-                !!docListData && docListData.docList.length === 0
-                    ? react_1.default.createElement(native_base_1.Text, { style: { color: this.props.theme.textColor } }, "\u5BFE\u8C61\u306E\u6587\u66F8\u306F\u3042\u308A\u307E\u305B\u3093\u3002")
-                    : null));
+                !!docListData && docListData.docList.length === 0 ?
+                    react_1.default.createElement(native_base_1.Text, { style: { color: this.props.theme.textColor } }, LangProfile_1.langProfile.replaceLang('LK_MSG_document')) : null));
         };
         this.componentDidMount = () => {
             this.$isMounted = true;
@@ -76,7 +76,7 @@ class DocListView extends react_1.Component {
             return ((this.state.onSearch) ?
                 react_1.default.createElement(native_base_1.Spinner, { color: this.props.theme.brandPrimary })
                 : react_1.default.createElement(native_base_1.Button, { full: true, light: true, onPress: this.loadDocList.bind(this, this.state.offset) },
-                    react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")));
+                    react_1.default.createElement(native_base_1.Text, null, LangProfile_1.langProfile.replaceLang('LK_show'))));
         };
         this.loadDocList = async (offset) => {
             if (offset === 0) {

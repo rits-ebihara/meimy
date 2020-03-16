@@ -1,25 +1,26 @@
-"use strict";
+'use strict';
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    result['default'] = mod;
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+    return (mod && mod.__esModule) ? mod : { 'default': mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const native_base_1 = require("native-base");
-const react_1 = __importStar(require("react"));
-const react_native_1 = require("react-native");
-const react_native_cookies_1 = __importDefault(require("react-native-cookies"));
-const react_redux_1 = require("react-redux");
-const url_parse_1 = __importDefault(require("url-parse"));
-const AccountActions_1 = require("../../actions/AccountActions");
-const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions"));
-const Config_1 = require("../../Config");
-const WebView_1 = __importDefault(require("../../../components/WebView"));
+Object.defineProperty(exports, '__esModule', { value: true });
+const native_base_1 = require('native-base');
+const react_1 = __importStar(require('react'));
+const react_native_1 = require('react-native');
+const react_native_cookies_1 = __importDefault(require('react-native-cookies'));
+const react_redux_1 = require('react-redux');
+const url_parse_1 = __importDefault(require('url-parse'));
+const AccountActions_1 = require('../../actions/AccountActions');
+const NavigateActions_1 = __importDefault(require('../../actions/NavigateActions'));
+const Config_1 = require('../../Config');
+const LangProfile_1 = require('../../../LangProfile');
+const WebView_1 = __importDefault(require('../../../components/WebView'));
 const IsiOS = react_native_1.Platform.OS === 'ios';
 const useWebKit = IsiOS;
 const config = Config_1.getConfig();
@@ -175,7 +176,10 @@ class _WebSignIn extends react_1.Component {
             }
             // トークンのクッキーが取得できたら成功
             webview.stopLoading();
-            native_base_1.Toast.show({ text: '認証に成功しました。', type: 'success' });
+            native_base_1.Toast.show({
+                text: LangProfile_1.langProfile.replaceLang('LK_MSG_authentication'),
+                type: 'success'
+            });
             account.eimToken = ['APISID=' + cookie.APISID];
             await AccountActions_1.asyncSaveAccountAction(account, this.props.dispatch);
             // if (!this.saveProp) { return; }

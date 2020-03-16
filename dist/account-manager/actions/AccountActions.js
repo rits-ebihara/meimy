@@ -10,6 +10,7 @@ const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
 const Config_1 = require("../Config");
 const IAccountLisState_1 = require("../states/IAccountLisState");
 const AccountListActions_1 = require("./AccountListActions");
+const LangProfile_1 = require("../../LangProfile");
 exports.SET_ACCOUNT_ACTION = shortid_1.default();
 exports.createSetAccountAction = (account) => {
     return {
@@ -49,7 +50,7 @@ exports.asyncSaveAccountAction = async (account, dispatch) => {
         await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
     }
     catch (error) {
-        react_native_1.Alert.alert('error', '保存に失敗しました');
+        react_native_1.Alert.alert('error', LangProfile_1.langProfile.replaceLang('LK_MSG_saveError'));
         console.error(error);
     }
     // ステートを更新して、一覧に戻ったときに画面の表示が新しくなっているようにする
@@ -72,7 +73,7 @@ exports.asyncRemoveAccountAction = async (targetId, dispatch, onSuccess) => {
             await react_native_keychain_1.setGenericPassword('dummy', JSON.stringify(accountList), { service: config.accountListServiceName });
         }
         catch (error) {
-            react_native_1.Alert.alert('error', '保存に失敗しました');
+            react_native_1.Alert.alert('error', LangProfile_1.langProfile.replaceLang('LK_MSG_saveError'));
             console.error(error);
         }
     };
