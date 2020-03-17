@@ -57,7 +57,9 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                     transparent
                     onPress={navigation.getParam('remove')}
                     style={navigation.getParam('removeButtonStyle')}>
-                    <Text style={{ color: '#fff', fontSize: 16, marginTop: 10 }}>削除</Text>
+                    <Text style={{ color: '#fff', fontSize: 16, marginTop: 10 }}>
+                        {langProfile.replaceLang('LK_delete')}
+                    </Text>
                 </Button>
             ),
             headerStyle: {
