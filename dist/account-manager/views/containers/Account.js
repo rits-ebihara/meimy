@@ -255,7 +255,7 @@ _Account.navigationOptions = ({ navigation }) => {
     const { colorPalets } = config;
     return {
         headerRight: (react_1.default.createElement(native_base_1.Button, { transparent: true, onPress: navigation.getParam('remove'), style: navigation.getParam('removeButtonStyle') },
-            react_1.default.createElement(native_base_1.Text, { style: { color: '#fff', fontSize: 16, marginTop: 10 } }, "\u524A\u9664"))),
+            react_1.default.createElement(native_base_1.Text, { style: { color: '#fff', fontSize: 16, marginTop: 10 } }, LangProfile_1.langProfile.replaceLang('LK_delete')))),
         headerStyle: {
             backgroundColor: colorPalets.$colorPrimary3,
         },
