@@ -17,6 +17,7 @@ import { IAccountManagerState } from '../../IAccountManagerState';
 import RoutePageNames from '../../RoutePageNames';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { AuthType, IAccountState } from '../../states/IAccountState';
+import { langProfile } from '../../../LangProfile';
 
 const config = getConfig();
 
@@ -56,14 +57,16 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                     transparent
                     onPress={navigation.getParam('remove')}
                     style={navigation.getParam('removeButtonStyle')}>
-                    <Text style={{ color: '#fff', fontSize: 16, marginTop: 10 }}>削除</Text>
+                    <Text style={{ color: '#fff', fontSize: 16, marginTop: 10 }}>
+                        {langProfile.replaceLang('LK_delete')}
+                    </Text>
                 </Button>
             ),
             headerStyle: {
                 backgroundColor: colorPalets.$colorPrimary3,
             },
             headerTintColor: colorPalets.$invertColor,
-            headerTitle: 'サイト情報',
+            headerTitle: langProfile.replaceLang('LK_siteInfo'),
         };
     }
     private backupState: IAccountLocaleState | null = null;
@@ -101,14 +104,14 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                 <Content>
                     <Card style={{ paddingBottom: 24 }}>
                         <Item stackedLabel>
-                            <Label>サイト名称</Label>
+                            <Label>{langProfile.replaceLang('LK_siteName')}</Label>
                             <Input key="site_name" value={state.siteName} editable={state.mode === 'edit'}
                                 style={style.textboxStyle}
                                 onChangeText={(text) => { this.onChangeState('siteName', text); }} />
                         </Item>
                         <Text style={errorMessageStyle}>{siteNameErrorMessage}</Text>
                         <Item stackedLabel>
-                            <Label>サイトドメイン</Label>
+                            <Label>{langProfile.replaceLang('LK_siteDomain')}</Label>
                             <Input key="site_domain" value={state.siteDomain} editable={state.mode === 'edit'}
                                 style={style.textboxStyle}
                                 keyboardType="url"
@@ -117,7 +120,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                         </Item>
                         <Text style={errorMessageStyle}>{siteErrorMessage}</Text>
                         <Item style={{ marginTop: 12, marginBottom: 12 }}>
-                            <Label>認証方式</Label>
+                            <Label>{langProfile.replaceLang('LK_authenticationMethod')}</Label>
                             <Picker
                                 key="auth-type"
                                 mode="dropdown"
@@ -127,8 +130,8 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                                 selectedValue={state.authType}
                                 style={Platform.OS === 'android' ? style.textboxStyle as TextStyle : {}}
                                 onValueChange={(text) => { this.onChangeState('authType', text); }}>
-                                <Picker.Item label="パスワード" value="password" />
-                                <Picker.Item label="Office365認証" value="o365" />
+                                <Picker.Item label={langProfile.replaceLang('LK_password')} value="password" />
+                                <Picker.Item label={langProfile.replaceLang('LK_office')} value="o365" />
                             </Picker>
                         </Item>
                         {this.createSignInButton(hasError)}
@@ -162,7 +165,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
             return <Button key="sign-in-button"
                 block rounded success style={buttonStyle} disabled={hasError}
                 onPress={this.onPressConnect}>
-                <Text>サインイン</Text>
+                <Text>{langProfile.replaceLang('LK_signIn')}</Text>
             </Button>;
         }
         return null;
@@ -185,12 +188,12 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
     private onPressRemove = () => {
         const me = this;
         Alert.alert(
-            'アカウントの削除',
-            `${this.state.siteName}を削除して良いですか?`,
+            langProfile.replaceLang('LK_accountDelete'),
+            langProfile.replaceLang('LK_MSG_siteNameDelete', this.state.siteName),
             [
                 {
                     style: 'default',
-                    text: 'キャンセル',
+                    text: langProfile.replaceLang('LK_cancel'),
                 },
                 {
                     onPress: () => {
@@ -200,7 +203,7 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
                             me.navPop);
                     },
                     style: 'destructive',
-                    text: '削除',
+                    text: langProfile.replaceLang('LK_delete'),
                 },
             ],
         );
@@ -290,13 +293,18 @@ export class _Account extends Component<ICombinedNavProps<IAccountProps>, IAccou
 
     private createErrorMessages(state: Readonly<IAccountLocaleState>): IErrors {
         const hasError = state.siteDomainError || state.siteNameError;
-        const siteErrorMessage: string = (this.state.siteDomainError) ? 'サイトドメインが正しくありません' : '';
-        const siteNameErrorMessage: string = (this.state.siteNameError) ? 'サイト名称は必須です' : '';
+        const siteErrorMessage: string = (this.state.siteDomainError) ?
+            langProfile.replaceLang('LK_MSG_siteDomain') : '';
+        const siteNameErrorMessage: string = (this.state.siteNameError) ?
+            langProfile.replaceLang('LK_MSG_siteNameRequired') : '';
         return { siteNameErrorMessage, siteErrorMessage, hasError };
     }
 
     private async successConnect(tokens: string[]) {
-        Toast.show({ text: '認証に成功しました。', type: 'success' });
+        Toast.show({
+            text: langProfile.replaceLang('LK_MSG_authentication'),
+            type: 'success'
+        });
         // トークンを保存する
         const account = Clone(this.state) as IAccountState;
         account.eimToken = tokens;

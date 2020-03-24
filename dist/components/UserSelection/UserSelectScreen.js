@@ -13,11 +13,12 @@ const react_native_1 = require("react-native");
 const Config_1 = require("../../account-manager/Config");
 const EimAccount_1 = require("../../account-manager/EimAccount");
 const EIMServiceAdapter_1 = require("../../eim-service/EIMServiceAdapter");
+const LangProfile_1 = require("../../LangProfile");
 const config = Config_1.getConfig();
 const directoryType = {
-    user: 'ユーザー',
-    group: 'グループ',
-    organization: '組織',
+    user: 'LK_user',
+    group: 'LK_group',
+    organization: 'LK_organization',
 };
 const containerStyle = {
     backgroundColor: '#fff',
@@ -76,7 +77,7 @@ class UserSelectScreen extends react_1.Component {
                 react_1.default.createElement(native_base_1.Spinner, null) :
                 (0 < this.state.searchResult.length && this.state.canContinue) ?
                     react_1.default.createElement(native_base_1.Button, { key: "more-search-button", full: true, onPress: this.pressMoreSearch },
-                        react_1.default.createElement(native_base_1.Text, null, "\u3055\u3089\u306B\u8868\u793A")) :
+                        react_1.default.createElement(native_base_1.Text, null, LangProfile_1.langProfile.replaceLang('LK_show'))) :
                     null;
         };
         this.closeButtonPress = () => {
@@ -108,13 +109,13 @@ class UserSelectScreen extends react_1.Component {
             const filter = this.props.filter;
             // ユーザー
             if (filter.users) {
-                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'user', label: directoryType['user'], value: 'user' }));
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'user', label: LangProfile_1.langProfile.replaceLang(directoryType['user']), value: 'user' }));
             }
             if (filter.groups) {
-                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'group', label: directoryType['group'], value: 'group' }));
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'group', label: LangProfile_1.langProfile.replaceLang(directoryType['group']), value: 'group' }));
             }
             if (filter.organizations) {
-                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'organization', label: directoryType['organization'], value: 'organization' }));
+                items.push(react_1.default.createElement(react_native_1.Picker.Item, { key: 'organization', label: LangProfile_1.langProfile.replaceLang(directoryType['organization']), value: 'organization' }));
             }
             if (items.length < 2) {
                 return null;
@@ -228,7 +229,7 @@ class UserSelectScreen extends react_1.Component {
             }
             catch (_a) {
                 native_base_1.Toast.show({
-                    text: 'ネットワーク エラー',
+                    text: LangProfile_1.langProfile.replaceLang('LK_netWork'),
                     type: 'danger',
                 });
             }
@@ -280,14 +281,13 @@ class UserSelectScreen extends react_1.Component {
                     react_1.default.createElement(native_base_1.View, { style: { flex: 1 } },
                         react_1.default.createElement(native_base_1.Form, { style: searchBox },
                             react_1.default.createElement(native_base_1.Item, { fixedLabel: true, style: { flexGrow: 1 } },
-                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: "\u691C\u7D22\u30EF\u30FC\u30C9\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", onChangeText: this.changeSearchWords, onSubmitEditing: this.pressSearchButton, returnKeyType: "search" })),
+                                react_1.default.createElement(native_base_1.Input, { key: "search-word-input", value: this.state.searchWords, placeholder: LangProfile_1.langProfile.replaceLang('LK_MSG_searchWord'), onChangeText: this.changeSearchWords, onSubmitEditing: this.pressSearchButton, returnKeyType: "search" })),
                             react_1.default.createElement(native_base_1.Button, { key: "search-button", icon: true, transparent: true, style: { flexGrow: 0 }, onPress: this.pressSearchButton },
                                 react_1.default.createElement(native_base_1.Icon, { name: "search" })),
                             react_1.default.createElement(native_base_1.View, { style: { flexGrow: 1 } }, this.createDirectoryTypePicker(this.state.selectedDirectoryType))),
                         react_1.default.createElement(native_base_1.Content, { style: { flexGrow: 1 } },
                             this.state.showNoResultMessage ?
-                                react_1.default.createElement(native_base_1.Text, { style: warnMessageStyle }, "\u8A72\u5F53\u3059\u308B\u3082\u306E\u304C\u3042\u308A\u307E\u305B\u3093\u3002")
-                                : null,
+                                react_1.default.createElement(native_base_1.Text, { style: warnMessageStyle }, LangProfile_1.langProfile.replaceLang('LK_MSG_applicable')) : null,
                             react_1.default.createElement(native_base_1.List, { key: "result-list" }, this.createSearchedUserList()),
                             this.createContinueButton()))))));
     }

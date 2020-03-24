@@ -18,6 +18,7 @@ const url_parse_1 = __importDefault(require("url-parse"));
 const NavigateActions_1 = __importDefault(require("../account-manager/actions/NavigateActions"));
 const Config_1 = require("../account-manager/Config");
 const EimAccount_1 = require("../account-manager/EimAccount");
+const LangProfile_1 = require("../LangProfile");
 //#region Styles
 exports.linkState = {
     runOnLink: false,
@@ -42,7 +43,7 @@ class SplashScreen extends react_1.Component {
                     if (!result) {
                         eimAccount.eimTokens = [];
                         native_base_1.Toast.show({
-                            text: 'サーバーとの接続が切れました。\n再ログインしてください。',
+                            text: LangProfile_1.langProfile.replaceLang('LK_MSG_serverError'),
                         });
                         NavigateActions_1.default.openAccountManager(this.props.navigation, this.props.dispatch);
                     }

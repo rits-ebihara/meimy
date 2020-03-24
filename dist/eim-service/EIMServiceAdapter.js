@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const moment_1 = __importDefault(require("moment"));
 const url_parse_1 = __importDefault(require("url-parse"));
 const ClientError_1 = require("./ClientError");
+const LangProfile_1 = require("../LangProfile");
 exports.dateParser = (_key, value) => {
     const dateReg = /^\d{4}-\d{2}-\d{2}T(?:\d{2}:){2}\d{2}\.\d{3}Z$/;
     if (typeof value === 'string' && dateReg.test(value)) {
@@ -111,7 +112,7 @@ class EIMServiceAdapter {
                 return fileInfo;
             }
             else {
-                throw new Error(`添付ファイルの取得に失敗しました。(status code:${response.statusCode})`);
+                throw new Error(LangProfile_1.langProfile.replaceLang('LK_MSG_file', response.statusCode.toString()));
             }
         };
         this.getLoginUser = async (tokens) => {
@@ -138,7 +139,7 @@ class EIMServiceAdapter {
                     return JSON.parse(result.body);
                 }
                 else {
-                    throw new Error(`文字列リソースの取得に失敗しました。 (status code:${result.statusCode}`);
+                    throw new Error(LangProfile_1.langProfile.replaceLang('LK_MSG_stringResource', result.statusCode.toString()));
                 }
             }
             catch (e) {

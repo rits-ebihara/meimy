@@ -20,6 +20,7 @@ const NavigateActions_1 = __importDefault(require("../../actions/NavigateActions
 const Config_1 = require("../../Config");
 const RoutePageNames_1 = __importDefault(require("../../RoutePageNames"));
 const IAccountState_1 = require("../../states/IAccountState");
+const LangProfile_1 = require("../../../LangProfile");
 const config = Config_1.getConfig();
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 class _AccountList extends react_1.Component {
@@ -77,7 +78,7 @@ _AccountList.navigationOptions = () => ({
         backgroundColor: config.colorPalets.$colorPrimary3,
     },
     headerTintColor: config.colorPalets.$invertColor,
-    headerTitle: 'EIMサイト一覧',
+    headerTitle: LangProfile_1.langProfile.replaceLang('LK_EIMSiteList'),
 });
 exports._AccountList = _AccountList;
 const mapStateToProps = (state) => {

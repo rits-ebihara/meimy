@@ -6,6 +6,7 @@ import { RefreshControl } from 'react-native';
 import { getEimAccount } from '../account-manager/EimAccount';
 import { IDocListForView, IDocListRowForView } from '../eim-service/IDocListForView';
 import { IDocListSearchOption, IDocListSort, SearchCondition } from '../eim-service/IDocListSearchOption';
+import { langProfile } from '../LangProfile';
 
 export type CreateRowElement<T>
     = (row: IDocListRowForView<T>, cols: T) => JSX.Element;
@@ -53,10 +54,10 @@ export class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocLi
                         <Spinner color={this.props.theme.brandPrimary} />}
                 </List>
                 {moreButton}
-                {!!docListData && docListData.docList.length === 0
-                    ? <Text style={{ color: this.props.theme.textColor }}>
-                        対象の文書はありません。</Text>
-                    : null}
+                {!!docListData && docListData.docList.length === 0 ?
+                    <Text style={{ color: this.props.theme.textColor }}>
+                        {langProfile.replaceLang('LK_MSG_document')}
+                    </Text> : null}
             </Content>
         );
     }
@@ -111,7 +112,7 @@ export class DocListView<T = any> extends Component<IDocListViewProps<T>, IDocLi
             <Spinner color={this.props.theme.brandPrimary} />
             : <Button full light
                 onPress={this.loadDocList.bind(this, this.state.offset)}>
-                <Text>さらに表示</Text>
+                <Text>{langProfile.replaceLang('LK_show')}</Text>
             </Button>);
     }
 

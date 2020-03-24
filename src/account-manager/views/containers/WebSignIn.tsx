@@ -19,6 +19,7 @@ import { IAccountManagerState } from '../../IAccountManagerState';
 import { IAccountListState } from '../../states/IAccountLisState';
 import { IAccountState } from '../../states/IAccountState';
 import IWebSignInState from '../../states/IWebSignInState';
+import { langProfile } from '../../../LangProfile';
 
 import WebView from '../../../components/WebView';
 const IsiOS = Platform.OS === 'ios';
@@ -221,7 +222,10 @@ ${account.authType === 'o365' ? get365UserIdPass : getEimUserIdPass}
         }
         // トークンのクッキーが取得できたら成功
         webview.stopLoading();
-        Toast.show({ text: '認証に成功しました。', type: 'success' });
+        Toast.show({
+            text: langProfile.replaceLang('LK_MSG_authentication'),
+            type: 'success'
+        });
         account.eimToken = ['APISID=' + cookie.APISID];
         await asyncSaveAccountAction(account, this.props.dispatch);
         // if (!this.saveProp) { return; }

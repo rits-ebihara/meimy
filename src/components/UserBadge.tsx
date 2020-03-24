@@ -10,6 +10,7 @@ import { IParsedResponse } from '../eim-service/IResponse';
 import groupFace from '../resources/group.png';
 import teamsIcon from '../resources/ms-teams.png';
 import dummyFace from '../resources/user.png';
+import { langProfile } from '../LangProfile';
 
 export type DirectoryTypeKey = 'user' | 'group' | 'organization';
 
@@ -144,7 +145,9 @@ export class UserBadge extends React.Component<IUserBadgeProps, IState> {
                     <Right>
                         <Button transparent
                             onPress={() => { this.setState({ shownDetailDialog: false }); }}>
-                            <Text style={{ color: this.props.textColor }}>閉じる</Text>
+                            <Text style={{ color: this.props.textColor }}>
+                                {langProfile.replaceLang('LK_close')}
+                            </Text>
                         </Button>
                     </Right>
                 </CardItem>

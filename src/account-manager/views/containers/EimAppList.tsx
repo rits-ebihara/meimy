@@ -9,6 +9,7 @@ import NavigateActions from '../../actions/NavigateActions';
 import { getConfig } from '../../Config';
 import { IAccountManagerState } from '../../IAccountManagerState';
 import IEimAppList from '../../states/IEimAppListState';
+import { langProfile } from '../../../LangProfile';
 
 const config = getConfig();
 
@@ -19,7 +20,7 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
                 backgroundColor: config.colorPalets.$colorPrimary3,
             },
             headerTintColor: config.colorPalets.$invertColor,
-            headerTitle: 'アプリ一覧',
+            headerTitle: langProfile.replaceLang('LK_appList'),
         };
     }
     public constructor(props: ICombinedNavProps<IEimAppList>) {
@@ -52,7 +53,7 @@ class EimAppList extends Component<ICombinedNavProps<IEimAppList>> {
 
     private onNetworkError = () => {
         Toast.show({
-            text: 'ネットワークエラーが発生しました。',
+            text: langProfile.replaceLang('LK_MSG_networkError'),
             type: 'warning',
         });
         this.props.dispatch(createSetAppListAction([]));
