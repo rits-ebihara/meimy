@@ -65,7 +65,7 @@
         "@react-navigation/core": "^3.3.1",
         "clone": "^2.1.2",
         "fs-extra": "^7.0.1",
-        "lodash": "4.17.13",
+        "lodash": "4.17.19",
         "moment": "^2.24.0",
         "object-path": "^0.11.4",
         "shortid": "^2.2.14",
