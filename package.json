@@ -67,7 +67,7 @@
         "fs-extra": "^7.0.1",
         "lodash": "4.17.13",
         "moment": "^2.24.0",
-        "object-path": "^0.11.4",
+        "object-path": "^0.11.5",
         "shortid": "^2.2.14",
         "url-parse": "^1.4.6"
     },
